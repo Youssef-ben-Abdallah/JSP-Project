@@ -70,7 +70,16 @@
                             <span class="placeholder-label"><%= location.toUpperCase() %></span>
                         </div>
                         <div class="card-body">
-                            <span class="badge-category"><%= p.getCategoryName() != null ? p.getCategoryName() : "Collection" %></span>
+                            <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+                                <span class="badge-category"><%= p.getCategoryName() != null ? p.getCategoryName() : "Collection" %></span>
+                                <%
+                                    if (p.getSubCategoryName() != null) {
+                                %>
+                                <span class="badge-subcategory"><%= p.getSubCategoryName() %></span>
+                                <%
+                                    }
+                                %>
+                            </div>
                             <h5 class="card-title"><%= p.getName() %></h5>
                             <p class="card-text"><%= p.getDescription() %></p>
                             <div class="d-flex justify-content-between align-items-center mt-3">

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="java.util.*,org.example.model.Product" %>
+<%@ page import="java.util.*,org.example.model.Product,org.example.model.Category,org.example.model.SubCategory" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +15,33 @@
             <h1>Catalogue immersif</h1>
             <p>Chaque fiche produit s’accompagne d’un décor lumineux inspiré d’une destination. Inspirez-vous de ces ambiances pour sublimer vos prochaines vitrines.</p>
         </div>
+
+        <%
+            Category selectedCategory = (Category) request.getAttribute("selectedCategory");
+            SubCategory selectedSubCategory = (SubCategory) request.getAttribute("selectedSubCategory");
+            if (selectedCategory != null || selectedSubCategory != null) {
+        %>
+        <div class="filter-banner glass-card p-4 mb-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <span class="filter-label">Filtre actif</span>
+                <%
+                    if (selectedCategory != null) {
+                %>
+                <span class="filter-chip"><%= selectedCategory.getName() %></span>
+                <%
+                    }
+                    if (selectedSubCategory != null) {
+                %>
+                <span class="filter-chip is-accent"><%= selectedSubCategory.getName() %></span>
+                <%
+                    }
+                %>
+            </div>
+            <a class="btn btn-outline-light btn-sm" href="${pageContext.request.contextPath}/products">Réinitialiser</a>
+        </div>
+        <%
+            }
+        %>
 
         <div class="glass-card p-4 mb-5 placeholder-banner" role="img" aria-label="Itinéraire design - Nice, Lille, Montpellier">
             <strong class="d-block mb-1">Parcours inspiration</strong>
@@ -37,7 +64,16 @@
                         <span class="placeholder-label"><%= location.toUpperCase() %></span>
                     </div>
                     <div class="card-body">
-                        <span class="badge-category"><%= p.getCategoryName() != null ? p.getCategoryName() : "Collection" %></span>
+                        <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+                            <span class="badge-category"><%= p.getCategoryName() != null ? p.getCategoryName() : "Collection" %></span>
+                            <%
+                                if (p.getSubCategoryName() != null) {
+                            %>
+                            <span class="badge-subcategory"><%= p.getSubCategoryName() %></span>
+                            <%
+                                }
+                            %>
+                        </div>
                         <h5 class="card-title"><%= p.getName() %></h5>
                         <p class="card-text"><%= p.getDescription() %></p>
                         <div class="d-flex justify-content-between align-items-center mt-3">

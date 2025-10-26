@@ -502,3 +502,211 @@ main.page-wrapper {
         scroll-behavior: auto !important;
     }
 }
+
+.navbar.glass-nav .dropdown-menu {
+    background: rgba(11, 18, 43, 0.9);
+    border: var(--glass-border);
+    box-shadow: var(--shadow-lg);
+    border-radius: 20px;
+    padding: 1.5rem;
+    min-width: 260px;
+    color: #fff;
+}
+
+.dropdown-mega .dropdown-menu {
+    width: min(960px, 92vw);
+}
+
+@media (min-width: 992px) {
+    .dropdown-mega:hover > .dropdown-menu,
+    .dropdown-mega:focus-within > .dropdown-menu {
+        display: block;
+    }
+}
+
+.mega-menu {
+    background: rgba(12, 20, 50, 0.94);
+}
+
+.mega-menu-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.mega-menu-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 16px;
+    transition: background 220ms var(--transition-base);
+}
+
+.mega-menu-column:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.mega-menu-title {
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.mega-menu-title:hover,
+.mega-menu-title:focus {
+    color: var(--accent);
+}
+
+.mega-menu-desc {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.25rem;
+}
+
+.mega-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.45rem;
+}
+
+.mega-menu-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    transition: background 200ms var(--transition-base), color 200ms var(--transition-base);
+}
+
+.mega-menu-list a:hover,
+.mega-menu-list a:focus {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+.mega-menu-placeholder,
+.mega-menu-empty {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.55);
+    padding: 0.35rem 0.6rem;
+}
+
+.navbar-actions .btn-soft {
+    padding: 0.65rem 1.4rem;
+    box-shadow: 0 12px 26px rgba(16, 29, 86, 0.28);
+}
+
+.navbar-actions .nav-link {
+    font-size: 0.9rem;
+}
+
+.btn-soft.btn-sm {
+    padding: 0.65rem 1.3rem;
+    font-size: 0.9rem;
+}
+
+.badge-subcategory {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(143, 69, 255, 0.16);
+    color: #461a92;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.filter-banner {
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(27, 92, 255, 0.25), rgba(143, 69, 255, 0.25));
+}
+
+.filter-label {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+}
+
+.filter-chip.is-accent {
+    background: rgba(255, 189, 60, 0.25);
+    border-color: rgba(255, 189, 60, 0.45);
+}
+
+.admin-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.admin-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.65rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(27, 92, 255, 0.2);
+    background: rgba(255, 255, 255, 0.75);
+    color: var(--text-primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 200ms var(--transition-base);
+}
+
+.admin-nav-link:hover,
+.admin-nav-link:focus {
+    transform: translateY(-1px);
+    border-color: rgba(27, 92, 255, 0.45);
+    box-shadow: 0 10px 24px rgba(27, 92, 255, 0.18);
+}
+
+.admin-nav-link.is-active {
+    background: linear-gradient(135deg, rgba(27, 92, 255, 0.92), rgba(143, 69, 255, 0.88));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 18px 32px rgba(27, 92, 255, 0.25);
+}
+
+.admin-nav-icon {
+    font-size: 1.1rem;
+}
+
+@media (max-width: 991.98px) {
+    .mega-menu {
+        width: 100%;
+    }
+
+    .mega-menu-column {
+        padding: 0.5rem 0;
+    }
+
+    .navbar-actions {
+        margin-top: 1.5rem;
+        align-items: flex-start !important;
+    }
+
+    .navbar-actions .btn-soft {
+        width: 100%;
+        justify-content: center;
+    }
+}

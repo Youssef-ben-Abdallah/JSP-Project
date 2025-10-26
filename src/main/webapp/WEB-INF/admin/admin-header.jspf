@@ -1,8 +1,30 @@
-<div class="d-flex justify-content-between align-items-center mb-3 admin-actions">
-    <h2>Administration</h2>
+<%
+    String adminPath = request.getServletPath();
+    if (adminPath == null) {
+        adminPath = "";
+    }
+%>
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-4 gap-3 admin-actions">
     <div>
-        <a class="btn btn-outline-secondary btn-sm" href="${pageContext.request.contextPath}/admin/products">Produits</a>
-        <a class="btn btn-outline-secondary btn-sm" href="${pageContext.request.contextPath}/admin/categories">Catégories</a>
-        <a class="btn btn-danger btn-sm" href="${pageContext.request.contextPath}/logout">Logout</a>
+        <h2 class="mb-0">Administration</h2>
+        <p class="text-muted mb-0">Gérez le catalogue, les catégories et leurs déclinaisons immersives.</p>
     </div>
+    <nav class="admin-nav">
+        <a class="admin-nav-link <%= adminPath.contains("/admin/products") ? "is-active" : "" %>" href="${pageContext.request.contextPath}/admin/products">
+            <span class="admin-nav-icon">📦</span>
+            Produits
+        </a>
+        <a class="admin-nav-link <%= adminPath.contains("/admin/categories") ? "is-active" : "" %>" href="${pageContext.request.contextPath}/admin/categories">
+            <span class="admin-nav-icon">🗂️</span>
+            Catégories
+        </a>
+        <a class="admin-nav-link <%= adminPath.contains("/admin/subcategories") ? "is-active" : "" %>" href="${pageContext.request.contextPath}/admin/subcategories">
+            <span class="admin-nav-icon">🧩</span>
+            Sous-catégories
+        </a>
+        <a class="admin-nav-link" href="${pageContext.request.contextPath}/logout">
+            <span class="admin-nav-icon">🚪</span>
+            Logout
+        </a>
+    </nav>
 </div>

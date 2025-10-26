@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="java.util.*,org.example.model.Product,org.example.model.Category" %>
+<%@ page import="java.util.*,org.example.model.Product,org.example.model.Category,org.example.model.SubCategory" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,6 +48,22 @@
                         %>
                     </select>
                 </div>
+                <div class="col-md-4">
+                    <label class="form-label">Sous-catégorie</label>
+                    <select class="form-select" name="subCategoryId">
+                        <option value="">-- Sous-catégorie (optionnel) --</option>
+                        <%
+                            List<SubCategory> subs2 = (List<SubCategory>) request.getAttribute("subCategories");
+                            if (subs2 != null) {
+                                for (SubCategory sc2 : subs2) {
+                        %>
+                        <option value="<%= sc2.getId() %>"><%= sc2.getCategoryName() %> • <%= sc2.getName() %></option>
+                        <%
+                                }
+                            }
+                        %>
+                    </select>
+                </div>
                 <div class="col-md-2">
                     <button class="btn-soft w-100 justify-content-center" type="submit">Ajouter</button>
                 </div>
@@ -72,6 +88,7 @@
                         <th>Nom</th>
                         <th>Prix</th>
                         <th>Catégorie</th>
+                        <th>Sous-catégorie</th>
                         <th>Ambiance</th>
                         <th></th>
                     </tr>
@@ -91,6 +108,7 @@
                         <td><%= p2.getName() %></td>
                         <td>$<%= p2.getPrice() %></td>
                         <td><%= p2.getCategoryName() %></td>
+                        <td><%= p2.getSubCategoryName() != null ? p2.getSubCategoryName() : "—" %></td>
                         <td style="width:120px;">
                             <div class="image-placeholder is-compact" role="img" aria-label="Ambiance décorative de <%= location %>">
                                 <span class="placeholder-label"><%= location.toUpperCase() %></span>
@@ -109,7 +127,7 @@
                         } else {
                     %>
                     <tr>
-                        <td colspan="6" class="text-center py-4 text-muted">Aucun produit enregistré pour le moment.</td>
+                        <td colspan="7" class="text-center py-4 text-muted">Aucun produit enregistré pour le moment.</td>
                     </tr>
                     <%
                         }

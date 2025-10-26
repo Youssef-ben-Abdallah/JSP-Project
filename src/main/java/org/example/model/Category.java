@@ -1,9 +1,13 @@
 package org.example.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Category {
     private int id;
     private String name;
     private String description;
+    private List<SubCategory> subCategories = new ArrayList<>();
 
     public Category() {
     }
@@ -36,5 +40,13 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<SubCategory> getSubCategories() {
+        return subCategories;
+    }
+
+    public void setSubCategories(List<SubCategory> subCategories) {
+        this.subCategories = subCategories != null ? subCategories : new ArrayList<>();
     }
 }
