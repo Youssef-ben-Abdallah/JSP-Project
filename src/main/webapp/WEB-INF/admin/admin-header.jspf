@@ -22,6 +22,10 @@
             <span class="admin-nav-icon">🧩</span>
             Sous-catégories
         </a>
+        <a class="admin-nav-link <%= adminPath.contains("/admin/promotions") ? "is-active" : "" %>" href="${pageContext.request.contextPath}/admin/promotions">
+            <span class="admin-nav-icon">🎉</span>
+            Promotions
+        </a>
         <a class="admin-nav-link" href="${pageContext.request.contextPath}/logout">
             <span class="admin-nav-icon">🚪</span>
             Logout

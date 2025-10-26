@@ -1,0 +1,48 @@
+<%
+    java.util.List<org.example.model.Promotion> activePromotions =
+            (java.util.List<org.example.model.Promotion>) request.getAttribute("activePromotions");
+    if (activePromotions != null && !activePromotions.isEmpty()) {
+        String variant = (String) request.getAttribute("promotionDisplayMode");
+        java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
+        java.text.DecimalFormat decimalFormat = new java.text.DecimalFormat("#.##");
+%>
+<section class="active-promotions-section <%= variant != null ? "active-promotions-section--" + variant : "" %>">
+    <div class="section-heading">
+        <h2>Promotions en cours</h2>
+        <p>Profitez de nos offres temporaires : elles expirent automatiquement à la fin du compte à rebours.</p>
+    </div>
+    <div class="promo-highlight-grid">
+        <%
+            for (org.example.model.Promotion promo : activePromotions) {
+                String isoEnd = promo.getEndTime() != null ? promo.getEndTime().toString() : "";
+                String isoStart = promo.getStartTime() != null ? promo.getStartTime().toString() : "";
+                String countdownId = "countdown-" + promo.getId();
+        %>
+        <article class="promo-highlight-card" data-end-time="<%= isoEnd %>" data-start-time="<%= isoStart %>">
+            <div class="promo-highlight-head">
+                <span class="promo-pill <%= promo.isPercentage() ? "is-percentage" : "is-fixed" %>">
+                    <%= promo.isPercentage() ? decimalFormat.format(promo.getDiscountValue()) + "%" : "-" + decimalFormat.format(promo.getDiscountValue()) + "€" %>
+                </span>
+                <span class="promo-countdown" id="<%= countdownId %>">
+                    <span class="countdown-segment">--</span>
+                    <span class="countdown-separator">:</span>
+                    <span class="countdown-segment">--</span>
+                    <span class="countdown-separator">:</span>
+                    <span class="countdown-segment">--</span>
+                </span>
+            </div>
+            <h3><%= promo.getTitle() %></h3>
+            <p class="promo-description"><%= promo.getDescription() %></p>
+            <div class="promo-dates">
+                <span>Démarre : <strong><%= promo.getStartTime().format(dateFormatter) %></strong></span>
+                <span>Fin : <strong><%= promo.getEndTime().format(dateFormatter) %></strong></span>
+            </div>
+        </article>
+        <%
+            }
+        %>
+    </div>
+</section>
+<%
+    }
+%>

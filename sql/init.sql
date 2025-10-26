@@ -54,3 +54,20 @@ INSERT INTO products(name,description,price,image_url,category_id,subcategory_id
 ('AirBeat Pro','Casque sans fil ANC','199.99','assets/img/headset1.jpg',2,3),
 ('Pixel Lens Kit','Objectif mobile grand angle','149.00','assets/img/lens.jpg',1,2),
 ('Aurora Smart Lamp','Lampe connectée multizone','89.00','assets/img/lamp.jpg',3,5);
+
+CREATE TABLE promotions (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(150) NOT NULL,
+    description TEXT,
+    discount_type VARCHAR(20) NOT NULL,
+    discount_value DECIMAL(10,2) NOT NULL DEFAULT 0,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO promotions(title, description, discount_type, discount_value, start_time, end_time) VALUES
+('Lancement Printemps', 'Réduction spéciale sur la collection printemps immersive.', 'PERCENTAGE', 20,
+ NOW() - INTERVAL 1 DAY, NOW() + INTERVAL 5 DAY),
+('Offre Fidélité', 'Remise immédiate sur les accessoires premium.', 'FIXED_AMOUNT', 30,
+ NOW() - INTERVAL 2 HOUR, NOW() + INTERVAL 2 DAY);

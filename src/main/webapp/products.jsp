@@ -97,9 +97,18 @@
                 }
             %>
         </div>
+        <hr class="feature-divider mt-5" />
+        <%
+            request.setAttribute("promotionDisplayMode", "secondary");
+        %>
+        <jsp:include page="/WEB-INF/fragments/active-promotions.jspf" />
+        <%
+            request.removeAttribute("promotionDisplayMode");
+        %>
     </div>
 </main>
 <jsp:include page="/WEB-INF/fragments/footer.jspf" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/promotions.js"></script>
 </body>
 </html>

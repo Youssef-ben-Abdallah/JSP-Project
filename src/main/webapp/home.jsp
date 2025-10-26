@@ -11,6 +11,14 @@
 <jsp:include page="/WEB-INF/fragments/navbar.jspf" />
 <main class="page-wrapper">
     <div class="container py-5">
+        <%
+            request.setAttribute("promotionDisplayMode", "hero");
+        %>
+        <jsp:include page="/WEB-INF/fragments/active-promotions.jspf" />
+        <%
+            request.removeAttribute("promotionDisplayMode");
+        %>
+
         <section class="hero-section mb-5 text-white">
             <div class="tagline-chip">Expérience immersive</div>
             <h1 class="mt-3">Votre boutique moderne au coeur des plus belles villes</h1>
@@ -19,30 +27,6 @@
                 <a class="btn-soft" href="${pageContext.request.contextPath}/products">Découvrir le catalogue</a>
                 <div class="placeholder-banner" role="img" aria-label="Réseau de showrooms - Paris, Lyon, Bordeaux">
                     3 showrooms éphémères : Paris, Lyon &amp; Bordeaux
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-5">
-            <div class="section-heading">
-                <h2>Promotions du moment 🔥</h2>
-                <p>Des offres exclusives inspirées de nos pop-up stores dans les plus belles avenues. Parfait pour imaginer la future mise en scène de vos produits.</p>
-            </div>
-            <div class="promo-deck">
-                <div class="promo-card" role="img" aria-label="Promotion - Rivoli Paris">
-                    <strong>Paris • Rivoli</strong>
-                    <span>-25% Collection Lumière</span>
-                    <small>Ambiance verrière &amp; néons suspendus</small>
-                </div>
-                <div class="promo-card" role="img" aria-label="Promotion - Lyon Bellecour">
-                    <strong>Lyon • Bellecour</strong>
-                    <span>-30% Signature Atelier</span>
-                    <small>Décor pierre blanche &amp; arches florales</small>
-                </div>
-                <div class="promo-card" role="img" aria-label="Promotion - Bordeaux Chartrons">
-                    <strong>Bordeaux • Chartrons</strong>
-                    <span>-20% Ligne Riviera</span>
-                    <small>Pergola bois clair &amp; lueurs dorées</small>
                 </div>
             </div>
         </section>
@@ -108,5 +92,6 @@
 </main>
 <jsp:include page="/WEB-INF/fragments/footer.jspf" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/promotions.js"></script>
 </body>
 </html>
