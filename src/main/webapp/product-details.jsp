@@ -30,7 +30,16 @@
                     </div>
                 </div>
                 <div class="col-md-7">
-                    <span class="badge-category"><%= p.getCategoryName() != null ? p.getCategoryName() : "Collection" %></span>
+                    <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+                        <span class="badge-category"><%= p.getCategoryName() != null ? p.getCategoryName() : "Collection" %></span>
+                        <%
+                            if (p.getSubCategoryName() != null) {
+                        %>
+                        <span class="badge-subcategory"><%= p.getSubCategoryName() %></span>
+                        <%
+                            }
+                        %>
+                    </div>
                     <h2><%= p.getName() %></h2>
                     <p><%= p.getDescription() %></p>
                     <div class="d-flex align-items-center gap-3 mt-3">

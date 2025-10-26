@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="java.util.*,org.example.model.Category" %>
+<%@ page import="java.util.*,org.example.model.Category,org.example.model.SubCategory" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,6 +48,7 @@
                             <th>Nom</th>
                             <th>Description</th>
                             <th>Ambiance associée</th>
+                            <th>Sous-catégories</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -60,6 +61,7 @@
                             for (Category c : cats) {
                                 String location = placeholderLocations[index % placeholderLocations.length];
                                 index++;
+                                List<SubCategory> subList = c.getSubCategories();
                     %>
                         <tr>
                             <td><%= c.getId() %></td>
@@ -68,6 +70,23 @@
                             <td style="width:140px;">
                                 <div class="image-placeholder is-compact" role="img" aria-label="Destination thématique <%= location %>">
                                     <span class="placeholder-label"><%= location.toUpperCase() %></span>
+                                </div>
+                            </td>
+                            <td style="min-width:180px;">
+                                <div class="d-flex flex-wrap gap-2">
+                                <%
+                                    if (subList != null && !subList.isEmpty()) {
+                                        for (SubCategory sub : subList) {
+                                %>
+                                    <span class="badge-subcategory"><%= sub.getName() %></span>
+                                <%
+                                        }
+                                    } else {
+                                %>
+                                    <span class="text-muted small">Aucune sous-catégorie</span>
+                                <%
+                                    }
+                                %>
                                 </div>
                             </td>
                             <td class="text-end">
@@ -83,7 +102,7 @@
                         } else {
                     %>
                         <tr>
-                            <td colspan="5" class="text-center py-4 text-muted">Ajoutez votre première catégorie pour lancer la scénographie.</td>
+                            <td colspan="6" class="text-center py-4 text-muted">Ajoutez votre première catégorie pour lancer la scénographie.</td>
                         </tr>
                     <%
                         }

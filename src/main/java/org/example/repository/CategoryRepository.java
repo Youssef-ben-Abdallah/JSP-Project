@@ -12,7 +12,7 @@ import java.util.List;
 public class CategoryRepository {
     public List<Category> findAll() {
         List<Category> list = new ArrayList<>();
-        String sql = "SELECT id, name, description FROM categories";
+        String sql = "SELECT id, name, description FROM categories ORDER BY name";
         try (Connection con = DBConnection.getConnection();
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
@@ -28,6 +28,25 @@ public class CategoryRepository {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public Category findById(int id) {
+        String sql = "SELECT id, name, description FROM categories WHERE id = ?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Category(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("description")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void create(Category c) {

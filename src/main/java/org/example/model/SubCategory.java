@@ -1,15 +1,11 @@
 package org.example.model;
 
-public class Product {
+public class SubCategory {
     private int id;
     private String name;
     private String description;
-    private double price;
-    private String imageUrl;
     private int categoryId;
-    private String categoryName; // convenience when JOINing
-    private Integer subCategoryId;
-    private String subCategoryName;
+    private String categoryName;
 
     public int getId() {
         return id;
@@ -35,22 +31,6 @@ public class Product {
         this.description = description;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public int getCategoryId() {
         return categoryId;
     }
@@ -65,21 +45,5 @@ public class Product {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-    public Integer getSubCategoryId() {
-        return subCategoryId;
-    }
-
-    public void setSubCategoryId(Integer subCategoryId) {
-        this.subCategoryId = subCategoryId;
-    }
-
-    public String getSubCategoryName() {
-        return subCategoryName;
-    }
-
-    public void setSubCategoryName(String subCategoryName) {
-        this.subCategoryName = subCategoryName;
     }
 }

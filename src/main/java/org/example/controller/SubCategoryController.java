@@ -6,18 +6,21 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.service.CategoryService;
+import org.example.service.SubCategoryService;
 
 import java.io.IOException;
 
-@WebServlet(name = "CategoryController", urlPatterns = {"/admin/categories"})
-public class CategoryController extends HttpServlet {
+@WebServlet(name = "SubCategoryController", urlPatterns = {"/admin/subcategories"})
+public class SubCategoryController extends HttpServlet {
+    private final SubCategoryService subCategoryService = new SubCategoryService();
     private final CategoryService categoryService = new CategoryService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.setAttribute("categories", categoryService.getCategoriesWithSubCategories());
-        req.getRequestDispatcher("/WEB-INF/admin/categories.jsp").forward(req, resp);
+        req.setAttribute("categories", categoryService.getAllCategories());
+        req.setAttribute("subcategories", subCategoryService.getAll());
+        req.getRequestDispatcher("/WEB-INF/admin/subcategories.jsp").forward(req, resp);
     }
 
     @Override
@@ -25,14 +28,15 @@ public class CategoryController extends HttpServlet {
             throws ServletException, IOException {
         String action = req.getParameter("action");
         if ("create".equals(action)) {
-            categoryService.addCategory(
+            subCategoryService.addSubCategory(
                     req.getParameter("name"),
-                    req.getParameter("description")
+                    req.getParameter("description"),
+                    Integer.parseInt(req.getParameter("categoryId"))
             );
         } else if ("delete".equals(action)) {
             int id = Integer.parseInt(req.getParameter("id"));
-            categoryService.deleteCategory(id);
+            subCategoryService.deleteSubCategory(id);
         }
-        resp.sendRedirect(req.getContextPath() + "/admin/categories");
+        resp.sendRedirect(req.getContextPath() + "/admin/subcategories");
     }
 }

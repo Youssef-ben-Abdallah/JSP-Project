@@ -1,3 +1,10 @@
+<%@ page import="java.util.*,org.example.model.Category,org.example.model.SubCategory" %>
+<%
+    List<Category> navCats = (List<Category>) request.getAttribute("navCategories");
+    if (navCats == null) {
+        navCats = Collections.emptyList();
+    }
+%>
 <nav class="navbar navbar-expand-lg navbar-dark glass-nav mb-4">
   <div class="container-fluid">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/home">MyShop</a>
@@ -5,10 +12,53 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarsExample">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/products">Produits</a></li>
-        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/login">Admin</a></li>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/home">Accueil</a></li>
+        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/products">Catalogue</a></li>
+        <li class="nav-item dropdown dropdown-mega">
+          <a class="nav-link dropdown-toggle" href="#" id="megaMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Univers &amp; catégories</a>
+          <div class="dropdown-menu mega-menu" aria-labelledby="megaMenu">
+            <div class="mega-menu-inner">
+              <%
+                if (navCats.isEmpty()) {
+              %>
+              <div class="mega-menu-empty text-muted">Créez vos catégories depuis l'espace administrateur pour alimenter ce menu.</div>
+              <%
+                } else {
+                    for (Category category : navCats) {
+                        List<SubCategory> subList = category.getSubCategories();
+              %>
+              <div class="mega-menu-column">
+                <a class="mega-menu-title" href="${pageContext.request.contextPath}/products?categoryId=<%= category.getId() %>"><%= category.getName() %></a>
+                <p class="mega-menu-desc"><%= category.getDescription() != null ? category.getDescription() : "Explorez cette collection immersive." %></p>
+                <ul class="mega-menu-list">
+                  <%
+                    if (subList != null && !subList.isEmpty()) {
+                        for (SubCategory sub : subList) {
+                  %>
+                  <li><a href="${pageContext.request.contextPath}/products?subCategoryId=<%= sub.getId() %>"><span><%= sub.getName() %></span></a></li>
+                  <%
+                        }
+                    } else {
+                  %>
+                  <li class="mega-menu-placeholder">Sous-catégories à venir</li>
+                  <%
+                    }
+                  %>
+                </ul>
+              </div>
+              <%
+                    }
+                }
+              %>
+            </div>
+          </div>
+        </li>
       </ul>
+      <div class="navbar-actions d-flex flex-column flex-lg-row align-items-lg-center gap-3">
+        <a class="nav-link text-white-50" href="${pageContext.request.contextPath}/login">Espace admin</a>
+        <a class="btn-soft btn-sm" href="${pageContext.request.contextPath}/products">Voir les nouveautés</a>
+      </div>
     </div>
   </div>
 </nav>
