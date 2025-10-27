@@ -37,6 +37,14 @@ public class CategoryService {
         categoryRepository.create(c);
     }
 
+    public void updateCategory(int id, String name, String description) {
+        Category category = new Category();
+        category.setId(id);
+        category.setName(name);
+        category.setDescription(description);
+        categoryRepository.update(category);
+    }
+
     public void deleteCategory(int id) {
         categoryRepository.deleteById(id);
     }

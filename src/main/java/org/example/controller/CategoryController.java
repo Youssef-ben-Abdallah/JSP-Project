@@ -29,6 +29,12 @@ public class CategoryController extends HttpServlet {
                     req.getParameter("name"),
                     req.getParameter("description")
             );
+        } else if ("update".equals(action)) {
+            categoryService.updateCategory(
+                    Integer.parseInt(req.getParameter("id")),
+                    req.getParameter("name"),
+                    req.getParameter("description")
+            );
         } else if ("delete".equals(action)) {
             int id = Integer.parseInt(req.getParameter("id"));
             categoryService.deleteCategory(id);

@@ -79,6 +79,10 @@
                         <td><%= sc.getDescription() != null ? sc.getDescription() : "—" %></td>
                         <td><span class="badge rounded-pill text-bg-light"><%= sc.getCategoryName() %></span></td>
                         <td class="text-end">
+                            <button class="btn btn-sm btn-outline-secondary me-2" type="button"
+                                    data-bs-toggle="modal" data-bs-target="#editSubCategoryModal<%= sc.getId() %>">
+                                Modifier
+                            </button>
                             <form method="post" action="${pageContext.request.contextPath}/admin/subcategories" class="d-inline">
                                 <input type="hidden" name="action" value="delete" />
                                 <input type="hidden" name="id" value="<%= sc.getId() %>" />
@@ -100,6 +104,59 @@
                 </table>
             </div>
         </div>
+        <%
+            if (subs != null && !subs.isEmpty()) {
+                for (SubCategory sc : subs) {
+        %>
+        <div class="modal fade" id="editSubCategoryModal<%= sc.getId() %>" tabindex="-1"
+             aria-labelledby="editSubCategoryLabel<%= sc.getId() %>" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content glass-card">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title" id="editSubCategoryLabel<%= sc.getId() %>">Modifier la sous-catégorie</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" action="${pageContext.request.contextPath}/admin/subcategories">
+                        <div class="modal-body">
+                            <input type="hidden" name="action" value="update" />
+                            <input type="hidden" name="id" value="<%= sc.getId() %>" />
+                            <div class="mb-3">
+                                <label class="form-label">Nom</label>
+                                <input class="form-control" type="text" name="name" value="<%= sc.getName() %>" required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <input class="form-control" type="text" name="description" value="<%= sc.getDescription() != null ? sc.getDescription() : "" %>" />
+                            </div>
+                            <div class="mb-0">
+                                <label class="form-label">Catégorie parente</label>
+                                <select class="form-select" name="categoryId" required>
+                                    <option value="">-- Catégorie --</option>
+                                    <%
+                                        if (cats != null) {
+                                            for (Category category : cats) {
+                                                boolean selected = category.getId() == sc.getCategoryId();
+                                    %>
+                                    <option value="<%= category.getId() %>" <%= selected ? "selected" : "" %>><%= category.getName() %></option>
+                                    <%
+                                            }
+                                        }
+                                    %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn-soft">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <%
+                }
+            }
+        %>
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

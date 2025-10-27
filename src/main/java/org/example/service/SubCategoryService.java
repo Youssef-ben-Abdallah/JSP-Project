@@ -34,6 +34,15 @@ public class SubCategoryService {
         subCategoryRepository.create(subCategory);
     }
 
+    public void updateSubCategory(int id, String name, String description, int categoryId) {
+        SubCategory subCategory = new SubCategory();
+        subCategory.setId(id);
+        subCategory.setName(name);
+        subCategory.setDescription(description);
+        subCategory.setCategoryId(categoryId);
+        subCategoryRepository.update(subCategory);
+    }
+
     public void deleteSubCategory(int id) {
         subCategoryRepository.deleteById(id);
     }

@@ -33,6 +33,21 @@ public class PromotionService {
         repository.create(promotion);
     }
 
+    public void update(int id, String title, String description, String discountType, String discountValue,
+                       String startTime, String endTime) {
+        Promotion promotion = new Promotion();
+        promotion.setId(id);
+        promotion.setTitle(title != null ? title.trim() : null);
+        promotion.setDescription(description != null ? description.trim() : null);
+        promotion.setDiscountType(normalizeType(discountType));
+        promotion.setDiscountValue(parseDouble(discountValue));
+        promotion.setStartTime(parseDate(startTime));
+        promotion.setEndTime(parseDate(endTime));
+        validateChronology(promotion.getStartTime(), promotion.getEndTime());
+        validateBusinessRules(promotion);
+        repository.update(promotion);
+    }
+
     public void delete(int id) {
         repository.delete(id);
     }

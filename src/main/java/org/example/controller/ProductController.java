@@ -69,6 +69,17 @@ public class ProductController extends HttpServlet {
                         Integer.parseInt(req.getParameter("categoryId")),
                         subCategoryId
                 );
+            } else if ("update".equals(action)) {
+                Integer subCategoryId = parseInteger(req.getParameter("subCategoryId"));
+                productService.updateProduct(
+                        Integer.parseInt(req.getParameter("id")),
+                        req.getParameter("name"),
+                        req.getParameter("description"),
+                        Double.parseDouble(req.getParameter("price")),
+                        req.getParameter("imageUrl"),
+                        Integer.parseInt(req.getParameter("categoryId")),
+                        subCategoryId
+                );
             } else if ("delete".equals(action)) {
                 int id = Integer.parseInt(req.getParameter("id"));
                 productService.deleteProduct(id);

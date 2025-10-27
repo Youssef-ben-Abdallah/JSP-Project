@@ -34,6 +34,16 @@ public class PromotionController extends HttpServlet {
                         req.getParameter("startTime"),
                         req.getParameter("endTime")
                 );
+            } else if ("update".equals(action)) {
+                promotionService.update(
+                        Integer.parseInt(req.getParameter("id")),
+                        req.getParameter("title"),
+                        req.getParameter("description"),
+                        req.getParameter("discountType"),
+                        req.getParameter("discountValue"),
+                        req.getParameter("startTime"),
+                        req.getParameter("endTime")
+                );
             } else if ("delete".equals(action)) {
                 int id = Integer.parseInt(req.getParameter("id"));
                 promotionService.delete(id);
