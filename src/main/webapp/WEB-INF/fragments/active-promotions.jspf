@@ -14,9 +14,13 @@
     <div class="promo-highlight-grid">
         <%
             for (org.example.model.Promotion promo : activePromotions) {
-                String isoEnd = promo.getEndTime() != null ? promo.getEndTime().toString() : "";
-                String isoStart = promo.getStartTime() != null ? promo.getStartTime().toString() : "";
+                java.time.LocalDateTime startTime = promo.getStartTime();
+                java.time.LocalDateTime endTime = promo.getEndTime();
+                String isoEnd = endTime != null ? endTime.toString() : "";
+                String isoStart = startTime != null ? startTime.toString() : "";
                 String countdownId = "countdown-" + promo.getId();
+                String startLabel = startTime != null ? startTime.format(dateFormatter) : "À venir";
+                String endLabel = endTime != null ? endTime.format(dateFormatter) : "À déterminer";
         %>
         <article class="promo-highlight-card" data-end-time="<%= isoEnd %>" data-start-time="<%= isoStart %>">
             <div class="promo-highlight-head">
@@ -34,8 +38,8 @@
             <h3><%= promo.getTitle() %></h3>
             <p class="promo-description"><%= promo.getDescription() %></p>
             <div class="promo-dates">
-                <span>Démarre : <strong><%= promo.getStartTime().format(dateFormatter) %></strong></span>
-                <span>Fin : <strong><%= promo.getEndTime().format(dateFormatter) %></strong></span>
+                <span>Démarre : <strong><%= startLabel %></strong></span>
+                <span>Fin : <strong><%= endLabel %></strong></span>
             </div>
         </article>
         <%
