@@ -13,7 +13,7 @@ import org.example.service.UserService;
 
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/admin/*"})
+@WebFilter(urlPatterns = {})
 public class AuthFilter implements Filter {
     private final UserService userService = new UserService();
 
