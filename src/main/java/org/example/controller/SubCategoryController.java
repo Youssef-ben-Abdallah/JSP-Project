@@ -33,6 +33,13 @@ public class SubCategoryController extends HttpServlet {
                     req.getParameter("description"),
                     Integer.parseInt(req.getParameter("categoryId"))
             );
+        } else if ("update".equals(action)) {
+            subCategoryService.updateSubCategory(
+                    Integer.parseInt(req.getParameter("id")),
+                    req.getParameter("name"),
+                    req.getParameter("description"),
+                    Integer.parseInt(req.getParameter("categoryId"))
+            );
         } else if ("delete".equals(action)) {
             int id = Integer.parseInt(req.getParameter("id"));
             subCategoryService.deleteSubCategory(id);

@@ -61,6 +61,19 @@ public class CategoryRepository {
         }
     }
 
+    public void update(Category category) {
+        String sql = "UPDATE categories SET name = ?, description = ? WHERE id = ?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, category.getName());
+            ps.setString(2, category.getDescription());
+            ps.setInt(3, category.getId());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteById(int id) {
         String sql = "DELETE FROM categories WHERE id=?";
         try (Connection con = DBConnection.getConnection();

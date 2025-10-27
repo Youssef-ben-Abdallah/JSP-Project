@@ -93,6 +93,20 @@ public class SubCategoryRepository {
         }
     }
 
+    public void update(SubCategory subCategory) {
+        String sql = "UPDATE subcategories SET name = ?, description = ?, category_id = ? WHERE id = ?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, subCategory.getName());
+            ps.setString(2, subCategory.getDescription());
+            ps.setInt(3, subCategory.getCategoryId());
+            ps.setInt(4, subCategory.getId());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteById(int id) {
         String sql = "DELETE FROM subcategories WHERE id = ?";
         try (Connection con = DBConnection.getConnection();

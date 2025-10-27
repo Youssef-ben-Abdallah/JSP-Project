@@ -59,6 +59,27 @@ public class ProductRepository {
         }
     }
 
+    public void update(Product product) {
+        String sql = "UPDATE products SET name = ?, description = ?, price = ?, image_url = ?, category_id = ?, subcategory_id = ? WHERE id = ?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, product.getName());
+            ps.setString(2, product.getDescription());
+            ps.setDouble(3, product.getPrice());
+            ps.setString(4, product.getImageUrl());
+            ps.setInt(5, product.getCategoryId());
+            if (product.getSubCategoryId() != null) {
+                ps.setInt(6, product.getSubCategoryId());
+            } else {
+                ps.setNull(6, Types.INTEGER);
+            }
+            ps.setInt(7, product.getId());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteById(int id) {
         String sql = "DELETE FROM products WHERE id=?";
         try (Connection con = DBConnection.getConnection();

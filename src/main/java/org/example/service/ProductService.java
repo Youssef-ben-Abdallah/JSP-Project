@@ -35,6 +35,18 @@ public class ProductService {
         productRepository.create(p);
     }
 
+    public void updateProduct(int id, String name, String desc, double price, String imageUrl, int categoryId, Integer subCategoryId) {
+        Product product = new Product();
+        product.setId(id);
+        product.setName(name);
+        product.setDescription(desc);
+        product.setPrice(price);
+        product.setImageUrl(imageUrl);
+        product.setCategoryId(categoryId);
+        product.setSubCategoryId(subCategoryId);
+        productRepository.update(product);
+    }
+
     public void deleteProduct(int id) {
         productRepository.deleteById(id);
     }

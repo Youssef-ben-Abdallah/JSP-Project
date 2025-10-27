@@ -41,6 +41,23 @@ public class PromotionRepository {
         }
     }
 
+    public void update(Promotion promotion) {
+        String sql = "UPDATE promotions SET title = ?, description = ?, discount_type = ?, discount_value = ?, start_time = ?, end_time = ? WHERE id = ?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, promotion.getTitle());
+            ps.setString(2, promotion.getDescription());
+            ps.setString(3, promotion.getDiscountType());
+            ps.setDouble(4, promotion.getDiscountValue());
+            ps.setTimestamp(5, Timestamp.valueOf(promotion.getStartTime()));
+            ps.setTimestamp(6, Timestamp.valueOf(promotion.getEndTime()));
+            ps.setInt(7, promotion.getId());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void delete(int id) {
         String sql = "DELETE FROM promotions WHERE id = ?";
         try (Connection con = DBConnection.getConnection();

@@ -90,6 +90,10 @@
                                 </div>
                             </td>
                             <td class="text-end">
+                                <button class="btn btn-sm btn-outline-secondary me-2" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#editCategoryModal<%= c.getId() %>">
+                                    Modifier
+                                </button>
                                 <form method="post" action="${pageContext.request.contextPath}/admin/categories" class="d-inline">
                                     <input type="hidden" name="action" value="delete" />
                                     <input type="hidden" name="id" value="<%= c.getId() %>" />
@@ -111,6 +115,43 @@
                 </table>
             </div>
         </div>
+        <%
+            if (cats != null && !cats.isEmpty()) {
+                for (Category c : cats) {
+        %>
+        <div class="modal fade" id="editCategoryModal<%= c.getId() %>" tabindex="-1"
+             aria-labelledby="editCategoryLabel<%= c.getId() %>" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content glass-card">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title" id="editCategoryLabel<%= c.getId() %>">Modifier la catégorie</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" action="${pageContext.request.contextPath}/admin/categories">
+                        <div class="modal-body">
+                            <input type="hidden" name="action" value="update" />
+                            <input type="hidden" name="id" value="<%= c.getId() %>" />
+                            <div class="mb-3">
+                                <label class="form-label">Nom</label>
+                                <input class="form-control" type="text" name="name" value="<%= c.getName() %>" required />
+                            </div>
+                            <div class="mb-0">
+                                <label class="form-label">Description</label>
+                                <input class="form-control" type="text" name="description" value="<%= c.getDescription() != null ? c.getDescription() : "" %>" />
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn-soft">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <%
+                }
+            }
+        %>
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

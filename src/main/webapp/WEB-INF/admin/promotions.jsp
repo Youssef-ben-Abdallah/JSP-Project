@@ -81,6 +81,7 @@
                                 List<Promotion> promos = (List<Promotion>) request.getAttribute("promotions");
                                 if (promos != null && !promos.isEmpty()) {
                                     java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
+                                    java.time.format.DateTimeFormatter isoFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
                                     java.text.DecimalFormat decimalFormat = new java.text.DecimalFormat("#.##");
                                     for (Promotion promo : promos) {
                             %>
@@ -99,11 +100,17 @@
                                     </span>
                                 </td>
                                 <td class="text-end">
-                                    <form method="post" onsubmit="return confirm('Supprimer cette promotion ?');">
-                                        <input type="hidden" name="action" value="delete" />
-                                        <input type="hidden" name="id" value="<%= promo.getId() %>" />
-                                        <button class="btn btn-sm btn-outline-light" type="submit">Supprimer</button>
-                                    </form>
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button class="btn btn-sm btn-outline-light" type="button"
+                                                data-bs-toggle="modal" data-bs-target="#editPromotionModal<%= promo.getId() %>">
+                                            Modifier
+                                        </button>
+                                        <form method="post" onsubmit="return confirm('Supprimer cette promotion ?');">
+                                            <input type="hidden" name="action" value="delete" />
+                                            <input type="hidden" name="id" value="<%= promo.getId() %>" />
+                                            <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             <%
@@ -124,6 +131,65 @@
         </div>
     </div>
 </main>
+<%
+    if (promos != null && !promos.isEmpty()) {
+        java.time.format.DateTimeFormatter isoFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        for (Promotion promo : promos) {
+%>
+<div class="modal fade" id="editPromotionModal<%= promo.getId() %>" tabindex="-1"
+     aria-labelledby="editPromotionLabel<%= promo.getId() %>" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content glass-card">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="editPromotionLabel<%= promo.getId() %>">Modifier la promotion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="update" />
+                    <input type="hidden" name="id" value="<%= promo.getId() %>" />
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Titre</label>
+                            <input class="form-control" type="text" name="title" value="<%= promo.getTitle() %>" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Type de remise</label>
+                            <select class="form-select" name="discountType">
+                                <option value="PERCENTAGE" <%= promo.isPercentage() ? "selected" : "" %>>Pourcentage</option>
+                                <option value="FIXED_AMOUNT" <%= promo.isPercentage() ? "" : "selected" %>>Montant fixe</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" name="description" rows="3" required><%= promo.getDescription() %></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Valeur</label>
+                            <input class="form-control" type="number" step="0.01" min="0" name="discountValue" value="<%= promo.getDiscountValue() %>" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Début</label>
+                            <input class="form-control" type="datetime-local" name="startTime" value="<%= promo.getStartTime() != null ? promo.getStartTime().format(isoFormatter) : "" %>" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Fin</label>
+                            <input class="form-control" type="datetime-local" name="endTime" value="<%= promo.getEndTime() != null ? promo.getEndTime().format(isoFormatter) : "" %>" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn-soft">Mettre à jour</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<%
+        }
+    }
+%>
 <jsp:include page="/WEB-INF/fragments/footer.jspf" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
