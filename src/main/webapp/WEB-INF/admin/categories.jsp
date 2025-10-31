@@ -12,6 +12,15 @@
     <div class="container py-5">
         <jsp:include page="/WEB-INF/admin/admin-header.jspf" />
 
+        <%
+            String categoryLoadError = (String) request.getAttribute("categoryLoadError");
+            if (categoryLoadError != null) {
+        %>
+        <div class="alert-soft mb-4"><%= categoryLoadError %></div>
+        <%
+            }
+        %>
+
         <div class="glass-card p-4 mb-4">
             <h5 class="mb-3">Ajouter une catégorie</h5>
             <form method="post" action="${pageContext.request.contextPath}/admin/categories" class="row g-3 align-items-end">

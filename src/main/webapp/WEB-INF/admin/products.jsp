@@ -12,6 +12,27 @@
     <div class="container py-5">
         <jsp:include page="/WEB-INF/admin/admin-header.jspf" />
 
+        <%
+            String catalogError = (String) request.getAttribute("catalogError");
+            String categoryLoadError = (String) request.getAttribute("categoryLoadError");
+            String subCategoryLoadError = (String) request.getAttribute("subCategoryLoadError");
+            if (catalogError != null) {
+        %>
+        <div class="alert-soft mb-4"><%= catalogError %></div>
+        <%
+            }
+            if (categoryLoadError != null) {
+        %>
+        <div class="alert-soft mb-4"><%= categoryLoadError %></div>
+        <%
+            }
+            if (subCategoryLoadError != null) {
+        %>
+        <div class="alert-soft mb-4"><%= subCategoryLoadError %></div>
+        <%
+            }
+        %>
+
         <div class="glass-card mb-4 p-4">
             <h5 class="mb-3">Ajouter un produit</h5>
             <form method="post" action="${pageContext.request.contextPath}/admin/products" class="row g-3 align-items-end">

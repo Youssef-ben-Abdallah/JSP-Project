@@ -5,9 +5,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.model.Promotion;
 import org.example.service.PromotionService;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 @WebServlet(name = "PromotionController", urlPatterns = {"/admin/promotions"})
 public class PromotionController extends HttpServlet {
@@ -16,7 +19,18 @@ public class PromotionController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.setAttribute("promotions", promotionService.getAll());
+        List<Promotion> promotions = Collections.emptyList();
+        String loadError = null;
+        try {
+            promotions = promotionService.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            loadError = "Impossible de charger les promotions.";
+        }
+        req.setAttribute("promotions", promotions);
+        if (loadError != null) {
+            req.setAttribute("promotionLoadError", loadError);
+        }
         req.getRequestDispatcher("/WEB-INF/admin/promotions.jsp").forward(req, resp);
     }
 

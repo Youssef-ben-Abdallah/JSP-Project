@@ -1,10 +1,16 @@
 <%
-    java.util.List<org.example.model.Promotion> activePromotions =
-            (java.util.List<org.example.model.Promotion>) request.getAttribute("activePromotions");
-    if (activePromotions != null && !activePromotions.isEmpty()) {
-        String variant = (String) request.getAttribute("promotionDisplayMode");
-        java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
-        java.text.DecimalFormat decimalFormat = new java.text.DecimalFormat("#.##");
+    String promotionLoadError = (String) request.getAttribute("promotionLoadError");
+    if (promotionLoadError != null) {
+%>
+<div class="glass-card p-4 alert-soft mb-4"><%= promotionLoadError %></div>
+<%
+    } else {
+        java.util.List<org.example.model.Promotion> activePromotions =
+                (java.util.List<org.example.model.Promotion>) request.getAttribute("activePromotions");
+        if (activePromotions != null && !activePromotions.isEmpty()) {
+            String variant = (String) request.getAttribute("promotionDisplayMode");
+            java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
+            java.text.DecimalFormat decimalFormat = new java.text.DecimalFormat("#.##");
 %>
 <section class="active-promotions-section <%= variant != null ? "active-promotions-section--" + variant : "" %>">
     <div class="section-heading">
@@ -48,5 +54,6 @@
     </div>
 </section>
 <%
+        }
     }
 %>
