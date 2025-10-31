@@ -12,6 +12,21 @@
     <div class="container py-5">
         <jsp:include page="/WEB-INF/admin/admin-header.jspf" />
 
+        <%
+            String categoryLoadError = (String) request.getAttribute("categoryLoadError");
+            String subCategoryLoadError = (String) request.getAttribute("subCategoryLoadError");
+            if (categoryLoadError != null) {
+        %>
+        <div class="alert-soft mb-4"><%= categoryLoadError %></div>
+        <%
+            }
+            if (subCategoryLoadError != null) {
+        %>
+        <div class="alert-soft mb-4"><%= subCategoryLoadError %></div>
+        <%
+            }
+        %>
+
         <div class="glass-card p-4 mb-4">
             <h5 class="mb-3">Créer une sous-catégorie</h5>
             <form method="post" action="${pageContext.request.contextPath}/admin/subcategories" class="row g-3 align-items-end">

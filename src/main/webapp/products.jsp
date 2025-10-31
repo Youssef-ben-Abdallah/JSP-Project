@@ -17,6 +17,15 @@
         </div>
 
         <%
+            String catalogError = (String) request.getAttribute("catalogError");
+            if (catalogError != null) {
+        %>
+        <div class="alert-soft mb-4"><%= catalogError %></div>
+        <%
+            }
+        %>
+
+        <%
             Category selectedCategory = (Category) request.getAttribute("selectedCategory");
             SubCategory selectedSubCategory = (SubCategory) request.getAttribute("selectedSubCategory");
             if (selectedCategory != null || selectedSubCategory != null) {

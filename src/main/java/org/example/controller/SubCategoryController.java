@@ -5,10 +5,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.model.Category;
+import org.example.model.SubCategory;
 import org.example.service.CategoryService;
 import org.example.service.SubCategoryService;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 @WebServlet(name = "SubCategoryController", urlPatterns = {"/admin/subcategories"})
 public class SubCategoryController extends HttpServlet {
@@ -18,8 +22,30 @@ public class SubCategoryController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.setAttribute("categories", categoryService.getAllCategories());
-        req.setAttribute("subcategories", subCategoryService.getAll());
+        List<Category> categories = Collections.emptyList();
+        List<SubCategory> subcategories = Collections.emptyList();
+        String categoryError = null;
+        String subCategoryError = null;
+        try {
+            categories = categoryService.getAllCategories();
+        } catch (Exception e) {
+            e.printStackTrace();
+            categoryError = "Impossible de charger les catégories.";
+        }
+        try {
+            subcategories = subCategoryService.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            subCategoryError = "Impossible de charger les sous-catégories.";
+        }
+        req.setAttribute("categories", categories);
+        req.setAttribute("subcategories", subcategories);
+        if (categoryError != null) {
+            req.setAttribute("categoryLoadError", categoryError);
+        }
+        if (subCategoryError != null) {
+            req.setAttribute("subCategoryLoadError", subCategoryError);
+        }
         req.getRequestDispatcher("/WEB-INF/admin/subcategories.jsp").forward(req, resp);
     }
 

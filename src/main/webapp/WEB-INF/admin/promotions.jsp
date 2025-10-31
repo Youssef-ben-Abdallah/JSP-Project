@@ -14,6 +14,15 @@
     <div class="container py-5">
         <jsp:include page="/WEB-INF/admin/admin-header.jspf" />
 
+        <%
+            String promotionLoadError = (String) request.getAttribute("promotionLoadError");
+            if (promotionLoadError != null) {
+        %>
+        <div class="alert-soft mb-4"><%= promotionLoadError %></div>
+        <%
+            }
+        %>
+
         <div class="row g-4">
             <div class="col-lg-5">
                 <div class="glass-card p-4 h-100">
@@ -84,6 +93,10 @@
                                     java.time.format.DateTimeFormatter isoFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
                                     java.text.DecimalFormat decimalFormat = new java.text.DecimalFormat("#.##");
                                     for (Promotion promo : promos) {
+                                        java.time.LocalDateTime startTime = promo.getStartTime();
+                                        java.time.LocalDateTime endTime = promo.getEndTime();
+                                        String startDisplay = startTime != null ? startTime.format(formatter) : "Non planifiée";
+                                        String endDisplay = endTime != null ? endTime.format(formatter) : "Non définie";
                             %>
                             <tr>
                                 <td>
@@ -91,8 +104,8 @@
                                     <div class="text-muted small"><%= promo.getDescription() %></div>
                                 </td>
                                 <td>
-                                    <div><%= promo.getStartTime().format(formatter) %></div>
-                                    <div class="text-muted small">→ <%= promo.getEndTime().format(formatter) %></div>
+                                    <div><%= startDisplay %></div>
+                                    <div class="text-muted small">→ <%= endDisplay %></div>
                                 </td>
                                 <td>
                                     <span class="badge <%= promo.isPercentage() ? "bg-primary" : "bg-warning text-dark" %>">

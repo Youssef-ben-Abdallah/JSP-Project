@@ -12,6 +12,14 @@
 <main class="page-wrapper">
     <div class="container py-5">
         <%
+            String catalogError = (String) request.getAttribute("catalogError");
+            if (catalogError != null) {
+        %>
+        <div class="alert-soft mb-4"><%= catalogError %></div>
+        <%
+            }
+        %>
+        <%
             request.setAttribute("promotionDisplayMode", "hero");
         %>
         <jsp:include page="/WEB-INF/fragments/active-promotions.jspf" />

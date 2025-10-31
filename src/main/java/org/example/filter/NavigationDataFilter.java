@@ -13,6 +13,7 @@ import org.example.service.CategoryService;
 import org.example.service.PromotionService;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @WebFilter("/*")
@@ -30,9 +31,24 @@ public class NavigationDataFilter implements Filter {
             chain.doFilter(request, response);
             return;
         }
-        List<Category> categories = categoryService.getCategoriesWithSubCategories();
+        List<Category> categories = Collections.emptyList();
+        try {
+            categories = categoryService.getCategoriesWithSubCategories();
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("navigationDataError",
+                    "Le menu des catégories est momentanément indisponible.");
+        }
         request.setAttribute("navCategories", categories);
-        List<Promotion> promotions = promotionService.getActive();
+
+        List<Promotion> promotions = Collections.emptyList();
+        try {
+            promotions = promotionService.getActive();
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("promotionLoadError",
+                    "Les promotions n'ont pas pu être chargées pour le moment.");
+        }
         request.setAttribute("activePromotions", promotions);
         chain.doFilter(request, response);
     }

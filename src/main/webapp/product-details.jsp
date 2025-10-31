@@ -12,6 +12,14 @@
 <main class="page-wrapper">
     <div class="container py-5" style="max-width: 960px;">
         <%
+            String productError = (String) request.getAttribute("productError");
+            if (productError != null) {
+        %>
+        <div class="alert-soft mb-4"><%= productError %></div>
+        <%
+            }
+        %>
+        <%
             Product p = (Product) request.getAttribute("product");
             if (p == null) {
         %>
