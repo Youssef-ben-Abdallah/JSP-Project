@@ -28,6 +28,12 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <!-- Serve static assets (CSS, JS, images) through the container default servlet -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/assets/*</url-pattern>
+    </servlet-mapping>
+
 <!--
     <error-page>
         <location>/error.jsp</location>

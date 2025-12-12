@@ -27,7 +27,7 @@ public class NavigationDataFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String uri = httpRequest.getRequestURI();
         String contextPath = httpRequest.getContextPath();
-        if (uri.startsWith(contextPath + "/assets/")) {
+        if (uri.startsWith(contextPath + "/assets/") || uri.equals(contextPath + "/favicon.ico")) {
             chain.doFilter(request, response);
             return;
         }
