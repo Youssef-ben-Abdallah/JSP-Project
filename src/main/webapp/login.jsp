@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Connexion Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
 <body>
@@ -14,7 +14,7 @@
             <h3 class="mt-3">Administration MyShop</h3>
             <p class="text-muted">Retrouvez vos vitrines virtuelles réparties entre nos studios de Paris, Lille et Bordeaux.</p>
         </div>
-        <form method="post" action="login" class="mb-3">
+        <form method="post" action="${pageContext.request.contextPath}/login" class="mb-3">
             <div class="mb-3">
                 <label class="form-label">Username</label>
                 <input class="form-control" type="text" name="username" required />
@@ -38,6 +38,6 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/bootstrap-lite.js"></script>
 </body>
 </html>

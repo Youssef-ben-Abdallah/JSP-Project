@@ -1,2 +1,2 @@
 <%@ page language="java" %>
-<jsp:forward page="home" />
+<jsp:forward page="/home" />

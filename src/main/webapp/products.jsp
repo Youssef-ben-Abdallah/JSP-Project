@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>Catalogue Produits</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
 <body>
@@ -87,7 +87,7 @@
                         <p class="card-text"><%= p.getDescription() %></p>
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <span class="price-tag">$<%= p.getPrice() %></span>
-                            <a class="btn btn-ghost btn-sm" href="product?id=<%= p.getId() %>">Détails immersifs</a>
+                            <a class="btn btn-ghost btn-sm" href="${pageContext.request.contextPath}/product?id=<%= p.getId() %>">Détails immersifs</a>
                         </div>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
     </div>
 </main>
 <jsp:include page="/WEB-INF/fragments/footer.jspf" />
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/bootstrap-lite.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/promotions.js"></script>
 </body>
 </html>

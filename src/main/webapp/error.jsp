@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Erreur</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
 <body>
@@ -15,7 +15,7 @@
         <div class="image-placeholder is-compact mx-auto mb-4" style="max-width:120px;" role="img" aria-label="Point de chute - Paris">
             <span class="placeholder-label">PARIS</span>
         </div>
-        <a class="btn-soft justify-content-center w-100" href="home">Retour à l'accueil</a>
+        <a class="btn-soft justify-content-center w-100" href="${pageContext.request.contextPath}/home">Retour à l'accueil</a>
     </div>
 </div>
 </body>
