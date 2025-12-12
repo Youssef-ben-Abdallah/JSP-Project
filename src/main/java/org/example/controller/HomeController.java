@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-@WebServlet(name = "HomeController", urlPatterns = {"/", "/home"})
+@WebServlet(name = "HomeController", urlPatterns = {"/home"})
 public class HomeController extends HttpServlet {
     private final ProductService productService = new ProductService();
 
