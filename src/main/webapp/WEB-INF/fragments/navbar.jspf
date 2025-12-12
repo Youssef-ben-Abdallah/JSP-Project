@@ -5,8 +5,12 @@
         navCats = Collections.emptyList();
     }
     String navigationDataError = (String) request.getAttribute("navigationDataError");
+    String currentPath = request.getRequestURI();
+    boolean isHome = currentPath.endsWith("/home") || currentPath.endsWith("/home.jsp") || "/".equals(currentPath);
+    boolean isProducts = currentPath.contains("/products") || currentPath.contains("/product");
+    boolean isLogin = currentPath.contains("/login");
 %>
-<nav class="navbar navbar-expand-lg navbar-dark glass-nav mb-4">
+<nav class="navbar navbar-expand-lg navbar-dark glass-nav nav-elevated sticky-top mb-4">
   <div class="container-fluid">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/home">MyShop</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-controls="navbarsExample" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,19 +18,19 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarsExample">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
-        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/home">Accueil</a></li>
-        <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/products">Catalogue</a></li>
+        <li class="nav-item"><a class="nav-link <%= isHome ? "active" : "" %>" href="${pageContext.request.contextPath}/home">Accueil</a></li>
+        <li class="nav-item"><a class="nav-link <%= isProducts ? "active" : "" %>" href="${pageContext.request.contextPath}/products">Catalogue</a></li>
         <%
             if (navigationDataError != null) {
         %>
-        <li class="nav-item">
-            <span class="nav-link text-warning small"><%= navigationDataError %></span>
+        <li class="nav-item nav-alert">
+            <span class="nav-chip nav-chip-warning"><%= navigationDataError %></span>
         </li>
         <%
             }
         %>
         <li class="nav-item dropdown dropdown-mega">
-          <a class="nav-link dropdown-toggle" href="#" id="megaMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Univers &amp; catégories</a>
+          <a class="nav-link dropdown-toggle <%= isProducts ? "active" : "" %>" href="#" id="megaMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Univers &amp; catégories</a>
           <div class="dropdown-menu mega-menu" aria-labelledby="megaMenu">
             <div class="mega-menu-inner">
               <%
@@ -61,13 +65,24 @@
                     }
                 }
               %>
+              <div class="mega-menu-column mega-menu-highlight">
+                <div class="mega-menu-cta">
+                  <p class="mega-menu-desc mb-1">Besoin d'un accompagnement personnalisé ?</p>
+                  <h6 class="mb-2">Parlez à un conseiller</h6>
+                  <a class="btn btn-ghost btn-sm" href="${pageContext.request.contextPath}/products">Découvrir les inspirations</a>
+                </div>
+              </div>
             </div>
           </div>
         </li>
       </ul>
       <div class="navbar-actions d-flex flex-column flex-lg-row align-items-lg-center gap-3">
-        <a class="nav-link text-white-50" href="${pageContext.request.contextPath}/login">Espace admin</a>
-        <a class="btn-soft btn-sm" href="${pageContext.request.contextPath}/products">Voir les nouveautés</a>
+        <div class="nav-meta">Livraison premium 48h • Showrooms immersifs en France</div>
+        <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+            <a class="nav-link text-white-50 <%= isLogin ? "active" : "" %>" href="${pageContext.request.contextPath}/login">Espace admin</a>
+            <span class="nav-separator" aria-hidden="true"></span>
+            <a class="btn-soft btn-sm" href="${pageContext.request.contextPath}/products">Voir les nouveautés</a>
+        </div>
       </div>
     </div>
   </div>
