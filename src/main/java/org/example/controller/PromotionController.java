@@ -7,6 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.model.Promotion;
 import org.example.service.PromotionService;
+import org.example.service.CategoryService;
+import org.example.service.SubCategoryService;
+import org.example.model.Category;
+import org.example.model.SubCategory;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -15,19 +19,27 @@ import java.util.List;
 @WebServlet(name = "PromotionController", urlPatterns = {"/admin/promotions"})
 public class PromotionController extends HttpServlet {
     private final PromotionService promotionService = new PromotionService();
+    private final CategoryService categoryService = new CategoryService();
+    private final SubCategoryService subCategoryService = new SubCategoryService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         List<Promotion> promotions = Collections.emptyList();
         String loadError = null;
+        List<Category> categories = Collections.emptyList();
+        List<SubCategory> subCategories = Collections.emptyList();
         try {
             promotions = promotionService.getAll();
+            categories = categoryService.getAllCategories();
+            subCategories = subCategoryService.getAll();
         } catch (Exception e) {
             e.printStackTrace();
             loadError = "Impossible de charger les promotions.";
         }
         req.setAttribute("promotions", promotions);
+        req.setAttribute("categories", categories);
+        req.setAttribute("subCategories", subCategories);
         if (loadError != null) {
             req.setAttribute("promotionLoadError", loadError);
         }
@@ -46,7 +58,9 @@ public class PromotionController extends HttpServlet {
                         req.getParameter("discountType"),
                         req.getParameter("discountValue"),
                         req.getParameter("startTime"),
-                        req.getParameter("endTime")
+                        req.getParameter("endTime"),
+                        req.getParameter("categoryId"),
+                        req.getParameter("subCategoryId")
                 );
             } else if ("update".equals(action)) {
                 promotionService.update(
@@ -56,7 +70,9 @@ public class PromotionController extends HttpServlet {
                         req.getParameter("discountType"),
                         req.getParameter("discountValue"),
                         req.getParameter("startTime"),
-                        req.getParameter("endTime")
+                        req.getParameter("endTime"),
+                        req.getParameter("categoryId"),
+                        req.getParameter("subCategoryId")
                 );
             } else if ("delete".equals(action)) {
                 int id = Integer.parseInt(req.getParameter("id"));

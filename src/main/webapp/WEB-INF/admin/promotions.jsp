@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.example.model.Promotion" %>
+<%@ page import="org.example.model.Category" %>
+<%@ page import="org.example.model.SubCategory" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,6 +25,10 @@
         %>
 
         <div class="row g-4">
+            <%
+                List<Category> categories = (List<Category>) request.getAttribute("categories");
+                List<SubCategory> subCategories = (List<SubCategory>) request.getAttribute("subCategories");
+            %>
             <div class="col-lg-5">
                 <div class="glass-card p-4 h-100">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
@@ -43,6 +49,40 @@
                             <tr>
                                 <th scope="row" class="text-muted">Description</th>
                                 <td><textarea class="form-control" name="description" rows="3" required></textarea></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Category scope</th>
+                                <td>
+                                    <select class="form-select select-btn" name="categoryId">
+                                        <option value="">All categories</option>
+                                        <%
+                                            if (categories != null) {
+                                                for (Category category : categories) {
+                                        %>
+                                        <option value="<%= category.getId() %>"><%= category.getName() %></option>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Sub-category scope</th>
+                                <td>
+                                    <select class="form-select select-btn" name="subCategoryId">
+                                        <option value="">All sub-categories</option>
+                                        <%
+                                            if (subCategories != null) {
+                                                for (SubCategory subCategory : subCategories) {
+                                        %>
+                                        <option value="<%= subCategory.getId() %>"><%= subCategory.getName() %> (<%= subCategory.getCategoryName() %>)</option>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <th scope="row" class="text-muted">Discount type</th>
@@ -100,18 +140,31 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table class="table align-middle text-white promo-table">
-                            <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Window</th>
-                                <th>Discount</th>
-                                <th></th>
-                            </tr>
-                            </thead>
+                            <table class="table align-middle text-white promo-table">
+                                <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Window</th>
+                                    <th>Discount</th>
+                                    <th>Scope</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
                             <tbody>
                             <%
                                 List<Promotion> promos = (List<Promotion>) request.getAttribute("promotions");
+                                java.util.Map<Integer, String> categoryNames = new java.util.HashMap<>();
+                                java.util.Map<Integer, String> subCategoryNames = new java.util.HashMap<>();
+                                if (categories != null) {
+                                    for (Category category : categories) {
+                                        categoryNames.put(category.getId(), category.getName());
+                                    }
+                                }
+                                if (subCategories != null) {
+                                    for (SubCategory subCategory : subCategories) {
+                                        subCategoryNames.put(subCategory.getId(), subCategory.getName());
+                                    }
+                                }
                                 if (promos != null && !promos.isEmpty()) {
                                     java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
                                     java.time.format.DateTimeFormatter isoFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
@@ -121,6 +174,16 @@
                                         java.time.LocalDateTime endTime = promo.getEndTime();
                                         String startDisplay = startTime != null ? startTime.format(formatter) : "Not scheduled";
                                         String endDisplay = endTime != null ? endTime.format(formatter) : "Not defined";
+                                        String startIso = startTime != null ? startTime.format(isoFormatter) : "";
+                                        String endIso = endTime != null ? endTime.format(isoFormatter) : "";
+                                        String scopeLabel = "All catalog";
+                                        if (promo.getSubCategoryId() != null) {
+                                            String name = subCategoryNames.getOrDefault(promo.getSubCategoryId(), "Sub-category #" + promo.getSubCategoryId());
+                                            scopeLabel = "Sub-category: " + name;
+                                        } else if (promo.getCategoryId() != null) {
+                                            String name = categoryNames.getOrDefault(promo.getCategoryId(), "Category #" + promo.getCategoryId());
+                                            scopeLabel = "Category: " + name;
+                                        }
                             %>
                             <tr>
                                 <td>
@@ -136,6 +199,9 @@
                                         <%= promo.isPercentage() ? decimalFormat.format(promo.getDiscountValue()) + "%" : "-" + decimalFormat.format(promo.getDiscountValue()) + " EUR" %>
                                     </span>
                                 </td>
+                                <td>
+                                    <span class="badge bg-secondary-subtle text-white-50"><%= scopeLabel %></span>
+                                </td>
                                 <td class="text-end">
                                     <div class="d-flex justify-content-end gap-2">
                                         <button class="btn btn-sm btn-outline-light" type="button"
@@ -145,8 +211,10 @@
                                                 data-promo-description="<%= promo.getDescription() %>"
                                                 data-promo-discount-type="<%= promo.isPercentage() ? "PERCENTAGE" : "FIXED_AMOUNT" %>"
                                                 data-promo-discount-value="<%= decimalFormat.format(promo.getDiscountValue()) %>"
-                                                data-promo-start="<%= startTime != null ? startTime.format(isoFormatter) : "" %>"
-                                                data-promo-end="<%= endTime != null ? endTime.format(isoFormatter) : "" %>">
+                                                data-promo-start="<%= startIso %>"
+                                                data-promo-end="<%= endIso %>"
+                                                data-promo-category-id="<%= promo.getCategoryId() != null ? promo.getCategoryId() : "" %>"
+                                                data-promo-subcategory-id="<%= promo.getSubCategoryId() != null ? promo.getSubCategoryId() : "" %>">
                                             Edit
                                         </button>
                                         <form method="post" onsubmit="return confirm('Delete this promotion?');">
@@ -162,7 +230,7 @@
                                 } else {
                             %>
                             <tr>
-                                <td colspan="4" class="text-center text-muted py-4">No promotions at the moment.</td>
+                                <td colspan="5" class="text-center text-muted py-4">No promotions at the moment.</td>
                             </tr>
                             <%
                                 }
@@ -200,6 +268,40 @@
                         <tr>
                             <th scope="row" class="text-muted">Title</th>
                             <td><input class="form-control" type="text" name="title" id="editPromotionTitle" required /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-muted">Category scope</th>
+                            <td>
+                                <select class="form-select select-btn" name="categoryId" id="editPromotionCategory">
+                                    <option value="">All categories</option>
+                                    <%
+                                        if (categories != null) {
+                                            for (Category category : categories) {
+                                    %>
+                                    <option value="<%= category.getId() %>"><%= category.getName() %></option>
+                                    <%
+                                            }
+                                        }
+                                    %>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-muted">Sub-category scope</th>
+                            <td>
+                                <select class="form-select select-btn" name="subCategoryId" id="editPromotionSubCategory">
+                                    <option value="">All sub-categories</option>
+                                    <%
+                                        if (subCategories != null) {
+                                            for (SubCategory subCategory : subCategories) {
+                                    %>
+                                    <option value="<%= subCategory.getId() %>"><%= subCategory.getName() %> (<%= subCategory.getCategoryName() %>)</option>
+                                    <%
+                                            }
+                                        }
+                                    %>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <th scope="row" class="text-muted">Discount type</th>
@@ -251,6 +353,8 @@
             document.getElementById('editPromotionValue').value = button.getAttribute('data-promo-discount-value') || '';
             document.getElementById('editPromotionStart').value = button.getAttribute('data-promo-start') || '';
             document.getElementById('editPromotionEnd').value = button.getAttribute('data-promo-end') || '';
+            document.getElementById('editPromotionCategory').value = button.getAttribute('data-promo-category-id') || '';
+            document.getElementById('editPromotionSubCategory').value = button.getAttribute('data-promo-subcategory-id') || '';
         });
     }
 </script>

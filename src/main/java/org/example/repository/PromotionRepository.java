@@ -7,26 +7,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PromotionRepository {
 
     public List<Promotion> findAll() {
-        String sql = "SELECT id, title, description, discount_type, discount_value, start_time, end_time " +
+        String sql = "SELECT id, title, description, discount_type, discount_value, start_time, end_time, category_id, subcategor"
+                + "y_id " +
                 "FROM promotions ORDER BY start_time DESC";
         return executeQuery(sql);
     }
 
     public List<Promotion> findActive() {
-        String sql = "SELECT id, title, description, discount_type, discount_value, start_time, end_time " +
+        String sql = "SELECT id, title, description, discount_type, discount_value, start_time, end_time, category_id, subcategor"
+                + "y_id " +
                 "FROM promotions WHERE start_time <= NOW() AND end_time >= NOW() ORDER BY end_time ASC";
         return executeQuery(sql);
     }
 
     public void create(Promotion promotion) {
-        String sql = "INSERT INTO promotions (title, description, discount_type, discount_value, start_time, end_time) " +
-                "VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO promotions (title, description, discount_type, discount_value, start_time, end_time, category_id, subcategory_id) " +
+                "VALUES (?,?,?,?,?,?,?,?)";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, promotion.getTitle());
@@ -35,6 +38,16 @@ public class PromotionRepository {
             ps.setDouble(4, promotion.getDiscountValue());
             ps.setTimestamp(5, Timestamp.valueOf(promotion.getStartTime()));
             ps.setTimestamp(6, Timestamp.valueOf(promotion.getEndTime()));
+            if (promotion.getCategoryId() != null) {
+                ps.setInt(7, promotion.getCategoryId());
+            } else {
+                ps.setNull(7, Types.INTEGER);
+            }
+            if (promotion.getSubCategoryId() != null) {
+                ps.setInt(8, promotion.getSubCategoryId());
+            } else {
+                ps.setNull(8, Types.INTEGER);
+            }
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,7 +55,7 @@ public class PromotionRepository {
     }
 
     public void update(Promotion promotion) {
-        String sql = "UPDATE promotions SET title = ?, description = ?, discount_type = ?, discount_value = ?, start_time = ?, end_time = ? WHERE id = ?";
+        String sql = "UPDATE promotions SET title = ?, description = ?, discount_type = ?, discount_value = ?, start_time = ?, end_time = ?, category_id = ?, subcategory_id = ? WHERE id = ?";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, promotion.getTitle());
@@ -51,7 +64,17 @@ public class PromotionRepository {
             ps.setDouble(4, promotion.getDiscountValue());
             ps.setTimestamp(5, Timestamp.valueOf(promotion.getStartTime()));
             ps.setTimestamp(6, Timestamp.valueOf(promotion.getEndTime()));
-            ps.setInt(7, promotion.getId());
+            if (promotion.getCategoryId() != null) {
+                ps.setInt(7, promotion.getCategoryId());
+            } else {
+                ps.setNull(7, Types.INTEGER);
+            }
+            if (promotion.getSubCategoryId() != null) {
+                ps.setInt(8, promotion.getSubCategoryId());
+            } else {
+                ps.setNull(8, Types.INTEGER);
+            }
+            ps.setInt(9, promotion.getId());
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,6 +117,14 @@ public class PromotionRepository {
         Timestamp end = rs.getTimestamp("end_time");
         promotion.setStartTime(start != null ? start.toLocalDateTime() : null);
         promotion.setEndTime(end != null ? end.toLocalDateTime() : null);
+        int categoryId = rs.getInt("category_id");
+        if (!rs.wasNull()) {
+            promotion.setCategoryId(categoryId);
+        }
+        int subCategoryId = rs.getInt("subcategory_id");
+        if (!rs.wasNull()) {
+            promotion.setSubCategoryId(subCategoryId);
+        }
         return promotion;
     }
 }

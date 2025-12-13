@@ -202,11 +202,13 @@ CREATE TABLE promotions (
                             discount_value DECIMAL(10,2) NOT NULL,
                             start_time DATETIME NOT NULL,
                             end_time DATETIME NOT NULL,
+                            category_id INT NULL,
+                            subcategory_id INT NULL,
                             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO promotions (title, description, discount_type, discount_value, start_time, end_time) VALUES
+INSERT INTO promotions (title, description, discount_type, discount_value, start_time, end_time, category_id, subcategory_id) VALUES
                                                                                                      ('Spring Launch','Seasonal launch discount','PERCENTAGE',20,
-                                                                                                      NOW() - INTERVAL 1 DAY, NOW() + INTERVAL 7 DAY),
+                                                                                                      NOW() - INTERVAL 1 DAY, NOW() + INTERVAL 7 DAY, NULL, NULL),
                                                                                                      ('Tech Week','Flat discount on accessories','FIXED_AMOUNT',25,
-                                                                                                      NOW() - INTERVAL 2 DAY, NOW() + INTERVAL 3 DAY);
+                                                                                                      NOW() - INTERVAL 2 DAY, NOW() + INTERVAL 3 DAY, 1, 2);
