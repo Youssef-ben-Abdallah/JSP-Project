@@ -89,7 +89,7 @@
                     boolean isAdmin = currentUser.getRole() != null && currentUser.getRole().equalsIgnoreCase("ADMIN");
                     if (isAdmin) {
                 %>
-                <a class="btn btn-outline-light <%= isDashboard ? "active" : "" %>" href="${pageContext.request.contextPath}/admin/orders">Orders</a>
+                <a class="btn btn-outline-light <%= isDashboard ? "active" : "" %>" href="${pageContext.request.contextPath}/admin/orders">Dashboard</a>
                 <%
                     }
                 %>
