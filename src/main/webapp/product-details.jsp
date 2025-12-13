@@ -1,10 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="org.example.model.Product" %>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Détails Produit</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
 <body>
@@ -15,7 +17,7 @@
             String productError = (String) request.getAttribute("productError");
             if (productError != null) {
         %>
-        <div class="alert-soft mb-4"><%= productError %></div>
+        <div class="alert alert-warning mb-4"><%= productError %></div>
         <%
             }
         %>
@@ -23,14 +25,14 @@
             Product p = (Product) request.getAttribute("product");
             if (p == null) {
         %>
-        <div class="glass-card p-4 alert-soft">Produit introuvable.</div>
+        <div class="alert alert-info">Produit introuvable.</div>
         <%
             } else {
                 String[] placeholderLocations = {"Paris", "Aix-en-Provence", "Lyon", "Bordeaux", "Deauville", "Cannes", "Colmar", "Avignon"};
                 int placeholderIndex = Math.abs((p.getName() != null ? p.getName() : "Nom").hashCode());
                 String location = placeholderLocations[placeholderIndex % placeholderLocations.length];
         %>
-            <div class="detail-card">
+        <div class="card detail-card p-4">
             <div class="row g-4 align-items-center">
                 <div class="col-md-5">
                     <%
@@ -50,40 +52,33 @@
                 </div>
                 <div class="col-md-7">
                     <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
-                        <span class="badge-category"><%= p.getCategoryName() != null ? p.getCategoryName() : "Collection" %></span>
+                        <span class="badge text-bg-light"><%= p.getCategoryName() != null ? p.getCategoryName() : "Collection" %></span>
                         <%
                             if (p.getSubCategoryName() != null) {
                         %>
-                        <span class="badge-subcategory"><%= p.getSubCategoryName() %></span>
+                        <span class="badge bg-primary-subtle text-primary fw-semibold"><%= p.getSubCategoryName() %></span>
                         <%
                             }
                         %>
                     </div>
-                    <h2><%= p.getName() %></h2>
-                    <p><%= p.getDescription() %></p>
+                    <h2 class="h4"><%= p.getName() %></h2>
+                    <p class="text-muted"><%= p.getDescription() %></p>
                     <div class="d-flex align-items-center gap-3 mt-3">
-                        <span class="price-tag">$<%= p.getPrice() %></span>
-                        <button class="btn-soft" type="button">Ajouter au panier</button>
+                        <span class="price-tag fs-4">$<%= p.getPrice() %></span>
+                        <button class="btn btn-primary" type="button">Ajouter au panier</button>
                     </div>
-                    <p class="mt-4 text-muted">Décor inspiré de <%= location %> : textures chaleureuses, lumière diffuse et mise en scène pensée pour vos corners éphémères.</p>
+                    <p class="mt-4 text-secondary">Décor inspiré de <%= location %> : textures chaleureuses, lumière diffuse et mise en scène pensée pour vos corners éphémères.</p>
                 </div>
             </div>
         </div>
         <%
             }
         %>
-        <hr class="feature-divider mt-5" />
-        <%
-            request.setAttribute("promotionDisplayMode", "secondary");
-        %>
         <jsp:include page="/WEB-INF/fragments/active-promotions.jspf" />
-        <%
-            request.removeAttribute("promotionDisplayMode");
-        %>
     </div>
 </main>
 <jsp:include page="/WEB-INF/fragments/footer.jspf" />
-<script src="${pageContext.request.contextPath}/assets/js/bootstrap-lite.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="${pageContext.request.contextPath}/assets/js/promotions.js"></script>
 </body>
 </html>

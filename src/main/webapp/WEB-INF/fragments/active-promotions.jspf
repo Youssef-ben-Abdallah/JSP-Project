@@ -2,7 +2,7 @@
     String promotionLoadError = (String) request.getAttribute("promotionLoadError");
     if (promotionLoadError != null) {
 %>
-<div class="glass-card p-4 alert-soft mb-4"><%= promotionLoadError %></div>
+<div class="alert alert-warning"><%= promotionLoadError %></div>
 <%
     } else {
         java.util.List<org.example.model.Promotion> activePromotions =
@@ -12,12 +12,12 @@
             java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
             java.text.DecimalFormat decimalFormat = new java.text.DecimalFormat("#.##");
 %>
-<section class="active-promotions-section <%= variant != null ? "active-promotions-section--" + variant : "" %>">
-    <div class="section-heading">
-        <h2>Promotions en cours</h2>
-        <p>Profitez de nos offres temporaires : elles expirent automatiquement à la fin du compte à rebours.</p>
+<section class="my-5 <%= variant != null ? "active-promotions-section--" + variant : "" %>">
+    <div class="section-heading mb-4">
+        <h2 class="h4">Promotions en cours</h2>
+        <p class="mb-0">Les offres s’arrêtent automatiquement à la fin du compte à rebours.</p>
     </div>
-    <div class="promo-highlight-grid">
+    <div class="row g-3">
         <%
             for (org.example.model.Promotion promo : activePromotions) {
                 java.time.LocalDateTime startTime = promo.getStartTime();
@@ -28,26 +28,26 @@
                 String startLabel = startTime != null ? startTime.format(dateFormatter) : "À venir";
                 String endLabel = endTime != null ? endTime.format(dateFormatter) : "À déterminer";
         %>
-        <article class="promo-highlight-card" data-end-time="<%= isoEnd %>" data-start-time="<%= isoStart %>">
-            <div class="promo-highlight-head">
-                <span class="promo-pill <%= promo.isPercentage() ? "is-percentage" : "is-fixed" %>">
-                    <%= promo.isPercentage() ? decimalFormat.format(promo.getDiscountValue()) + "%" : "-" + decimalFormat.format(promo.getDiscountValue()) + "€" %>
-                </span>
-                <span class="promo-countdown" id="<%= countdownId %>">
-                    <span class="countdown-segment">--</span>
-                    <span class="countdown-separator">:</span>
-                    <span class="countdown-segment">--</span>
-                    <span class="countdown-separator">:</span>
-                    <span class="countdown-segment">--</span>
-                </span>
-            </div>
-            <h3><%= promo.getTitle() %></h3>
-            <p class="promo-description"><%= promo.getDescription() %></p>
-            <div class="promo-dates">
-                <span>Démarre : <strong><%= startLabel %></strong></span>
-                <span>Fin : <strong><%= endLabel %></strong></span>
-            </div>
-        </article>
+        <div class="col-md-6 col-lg-4">
+            <article class="promo-highlight-card h-100" data-end-time="<%= isoEnd %>" data-start-time="<%= isoStart %>">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="promo-pill <%= promo.isPercentage() ? "is-percentage" : "" %>">
+                        <%= promo.isPercentage() ? decimalFormat.format(promo.getDiscountValue()) + "%" : "-" + decimalFormat.format(promo.getDiscountValue()) + "€" %>
+                    </span>
+                    <span class="promo-countdown" id="<%= countdownId %>">
+                        <span class="countdown-segment">--</span>
+                        <span class="countdown-separator">:</span>
+                        <span class="countdown-segment">--</span>
+                        <span class="countdown-separator">:</span>
+                        <span class="countdown-segment">--</span>
+                    </span>
+                </div>
+                <h3 class="h5 mb-2"><%= promo.getTitle() %></h3>
+                <p class="mb-3 text-muted"><%= promo.getDescription() %></p>
+                <p class="small text-muted mb-1">Démarre : <strong><%= startLabel %></strong></p>
+                <p class="small text-muted mb-0">Fin : <strong><%= endLabel %></strong></p>
+            </article>
+        </div>
         <%
             }
         %>
