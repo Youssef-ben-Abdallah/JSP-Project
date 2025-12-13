@@ -342,7 +342,7 @@ body {
 .promo-countdown {
     font-family: "Roboto Mono", "SFMono-Regular", monospace;
     font-weight: 700;
-    color: #dc3545;
+    color: #198754;
     display: inline-flex;
     gap: 0.25rem;
 }
@@ -350,6 +350,18 @@ body {
 .promo-countdown .countdown-segment {
     min-width: 1.6rem;
     text-align: center;
+}
+
+.promo-countdown.is-safe {
+    color: #198754;
+}
+
+.promo-countdown.is-warning {
+    color: #d39e00;
+}
+
+.promo-countdown.is-critical {
+    color: #dc3545;
 }
 
 .promo-countdown.is-expired {
