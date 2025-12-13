@@ -23,11 +23,15 @@
     DecimalFormat decimalFormat = new DecimalFormat("#.##");
 %>
 <% if (discount.isPresent()) { DiscountedPrice info = discount.get(); %>
-    <div class="d-flex align-items-center gap-2">
-        <span class="price-tag text-decoration-line-through text-muted">$<%= decimalFormat.format(info.getOriginalPrice()) %></span>
-        <span class="price-tag">$<%= decimalFormat.format(info.getFinalPrice()) %></span>
+    <div class="price-summary d-flex flex-column gap-1">
+        <div class="d-flex align-items-center flex-wrap gap-2">
+            <span class="price-tag text-decoration-line-through text-muted">$<%= decimalFormat.format(info.getOriginalPrice()) %></span>
+            <span class="price-tag">$<%= decimalFormat.format(info.getFinalPrice()) %></span>
+        </div>
+        <p class="mb-0 text-success small fw-semibold">Save $<%= decimalFormat.format(info.getSavings()) %> with "<%= info.getPromotion().getTitle() %>"</p>
     </div>
-    <p class="mb-0 text-success small">Save $<%= decimalFormat.format(info.getSavings()) %> with "<%= info.getPromotion().getTitle() %>"</p>
 <% } else { %>
-    <span class="price-tag">$<%= decimalFormat.format(price) %></span>
+    <div class="price-summary">
+        <span class="price-tag">$<%= decimalFormat.format(price) %></span>
+    </div>
 <% } %>
