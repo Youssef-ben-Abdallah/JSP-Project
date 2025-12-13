@@ -12,7 +12,7 @@
 <div class="container" style="max-width: 520px;">
     <div class="card shadow-sm p-4 text-center">
         <span class="badge bg-danger-subtle text-danger fw-semibold">Route interrupted</span>
-        <h2 class="mt-3">Oops 😬</h2>
+        <h2 class="mt-3">Oops</h2>
         <p class="text-muted">An error slipped into the journey. Head back home to restart your visit.</p>
         <div class="image-placeholder mx-auto mb-4" style="max-width:160px; height:160px;" role="img" aria-label="Landing point - New York">
             <span class="placeholder-label">NEW YORK</span>
