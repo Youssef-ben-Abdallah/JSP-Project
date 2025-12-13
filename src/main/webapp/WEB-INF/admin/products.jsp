@@ -35,7 +35,7 @@
 
         <div class="glass-card mb-4 p-4">
             <h5 class="mb-3">Ajouter un produit</h5>
-            <form method="post" action="${pageContext.request.contextPath}/admin/products" class="row g-3 align-items-end">
+            <form method="post" action="${pageContext.request.contextPath}/admin/products" class="row g-3 align-items-end" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="create" />
                 <div class="col-md-3">
                     <label class="form-label">Nom</label>
@@ -50,8 +50,9 @@
                     <input class="form-control" type="number" step="0.01" min="0" name="price" placeholder="0.00" required />
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Ambiance (optionnel)</label>
-                    <input class="form-control" type="text" name="imageUrl" placeholder="Ex: Paris, Rivoli" />
+                    <label class="form-label">Visuel produit</label>
+                    <input class="form-control" type="file" name="image" accept="image/*" />
+                    <small class="text-muted">PNG ou JPG, 5 Mo max.</small>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Catégorie</label>
@@ -130,10 +131,21 @@
                         <td>$<%= p2.getPrice() %></td>
                         <td><%= p2.getCategoryName() %></td>
                         <td><%= p2.getSubCategoryName() != null ? p2.getSubCategoryName() : "—" %></td>
-                        <td style="width:120px;">
+                        <td style="width:140px;">
+                            <%
+                                String imagePath = p2.getImageUrl();
+                                if (imagePath != null && !imagePath.isBlank()) {
+                            %>
+                            <img src="<%= request.getContextPath() + "/" + imagePath %>" alt="Visuel <%= p2.getName() %>" class="img-fluid rounded" style="max-height: 80px; object-fit: cover;" />
+                            <%
+                                } else {
+                            %>
                             <div class="image-placeholder is-compact" role="img" aria-label="Ambiance décorative de <%= location %>">
                                 <span class="placeholder-label"><%= location.toUpperCase() %></span>
                             </div>
+                            <%
+                                }
+                            %>
                         </td>
                         <td class="text-end">
                             <button class="btn btn-sm btn-outline-secondary me-2" type="button"
@@ -174,18 +186,20 @@
                         <h5 class="modal-title" id="editProductLabel<%= p2.getId() %>">Modifier le produit</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="post" action="${pageContext.request.contextPath}/admin/products">
+                    <form method="post" action="${pageContext.request.contextPath}/admin/products" enctype="multipart/form-data">
                         <div class="modal-body">
                             <input type="hidden" name="action" value="update" />
                             <input type="hidden" name="id" value="<%= p2.getId() %>" />
+                            <input type="hidden" name="existingImageUrl" value="<%= p2.getImageUrl() != null ? p2.getImageUrl() : "" %>" />
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Nom</label>
                                     <input class="form-control" type="text" name="name" value="<%= p2.getName() %>" required />
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Ambiance (optionnel)</label>
-                                    <input class="form-control" type="text" name="imageUrl" value="<%= p2.getImageUrl() != null ? p2.getImageUrl() : "" %>" />
+                                    <label class="form-label">Visuel produit</label>
+                                    <input class="form-control" type="file" name="image" accept="image/*" />
+                                    <small class="text-muted">Laisser vide pour conserver l'image actuelle.</small>
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Description</label>
