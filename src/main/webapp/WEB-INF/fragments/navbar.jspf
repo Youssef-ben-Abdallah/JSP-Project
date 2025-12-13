@@ -91,6 +91,11 @@
                 %>
                 <a class="btn btn-outline-light <%= isDashboard ? "active" : "" %>" href="${pageContext.request.contextPath}/admin/orders">Dashboard</a>
                 <%
+                    }else{
+                %>
+                <a class="btn btn-outline-light  href="${pageContext.request.contextPath}/dashboard">Orders</a>
+
+                <%
                     }
                 %>
                 <span class="text-light">Hello, <%= currentUser.getUsername() %></span>
