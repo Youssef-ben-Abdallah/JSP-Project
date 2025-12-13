@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="java.util.List,org.example.model.Order,org.example.model.OrderItem" %>
+<%@ page import="java.util.List,org.example.model.Order,org.example.model.OrderItem,org.example.service.OrderService" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,6 +23,28 @@
         <%
             } else {
                 for (Order order : orders) {
+                    String status = order.getStatus();
+                    if (status == null || status.isBlank()) {
+                        status = OrderService.STATUS_PENDING;
+                    }
+                    String statusLabel = status.replace("_", " ").toLowerCase();
+                    statusLabel = Character.toUpperCase(statusLabel.charAt(0)) + statusLabel.substring(1);
+
+                    String badgeClass;
+                    int progress;
+                    if (OrderService.STATUS_PENDING.equals(status)) {
+                        badgeClass = "bg-warning text-dark";
+                        progress = 25;
+                    } else if (OrderService.STATUS_DELIVERY.equals(status)) {
+                        badgeClass = "bg-info text-dark";
+                        progress = 65;
+                    } else if (OrderService.STATUS_DELIVERED.equals(status)) {
+                        badgeClass = "bg-success";
+                        progress = 100;
+                    } else {
+                        badgeClass = "bg-secondary";
+                        progress = 40;
+                    }
         %>
         <div class="card shadow-sm mb-3">
             <div class="card-body d-flex justify-content-between align-items-center">
@@ -30,7 +52,19 @@
                     <div class="fw-semibold">Order #<%= order.getId() %></div>
                     <div class="text-muted small">Placed on <%= order.getCreatedAt() != null ? order.getCreatedAt() : "" %></div>
                 </div>
-                <div class="fw-semibold">Total: $<%= String.format("%.2f", order.getTotalAmount()) %></div>
+                <div class="text-end">
+                    <div class="fw-semibold mb-1">Total: $<%= String.format("%.2f", order.getTotalAmount()) %></div>
+                    <span class="badge <%= badgeClass %>">Status: <%= statusLabel %></span>
+                </div>
+            </div>
+            <div class="px-3 pb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1 small text-muted">
+                    <span>Order progress</span>
+                    <span><%= progress %>%</span>
+                </div>
+                <div class="progress" role="progressbar" aria-valuenow="<%= progress %>" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar <%= badgeClass %>" style="width: <%= progress %>%"></div>
+                </div>
             </div>
             <div class="list-group list-group-flush">
                 <%
