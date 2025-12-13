@@ -56,6 +56,7 @@
       modal.dispatchEvent(showEvent);
       if (showEvent.defaultPrevented) return;
 
+      modal.style.display = 'block';
       modal.classList.add('show');
       modal.removeAttribute('aria-hidden');
       modal.setAttribute('aria-modal', 'true');
@@ -80,6 +81,7 @@
       modal.classList.remove('show');
       modal.setAttribute('aria-hidden', 'true');
       modal.removeAttribute('aria-modal');
+      modal.style.display = 'none';
       document.body.classList.remove('modal-open');
       document.body.style.overflow = '';
 
