@@ -261,41 +261,6 @@ body {
     background: #ffffff;
 }
 
-.form-table th {
-    width: 220px;
-    font-weight: 700;
-    color: #475569;
-}
-
-.form-table td {
-    padding: 0.35rem 0.25rem;
-}
-
-.form-table .form-control,
-.form-table .form-select {
-    width: 100%;
-}
-
-.form-table .btn-soft {
-    white-space: nowrap;
-}
-
-.select-btn {
-    padding: 0.55rem 0.9rem;
-    border-radius: 0.7rem;
-    background: linear-gradient(180deg, #ffffff, #f1f5ff);
-    border: 1px solid rgba(13, 110, 253, 0.28);
-    color: #0b5ed7;
-    font-weight: 700;
-}
-
-.select-btn:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.16);
-    background: #ffffff;
-    color: #0b5ed7;
-}
-
 .admin-shell .table .btn {
     border-radius: 0.65rem;
     font-weight: 600;
