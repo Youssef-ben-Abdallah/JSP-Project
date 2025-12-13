@@ -143,6 +143,7 @@
                     <%
                         List<Product> plist = (List<Product>) request.getAttribute("products");
                         String[] placeholderLocations = {"Paris", "Lyon", "Bordeaux", "Nantes", "Lille", "Nice", "Tours", "Grenoble"};
+                        java.util.Locale locale = java.util.Locale.US;
                         int adminIndex = 0;
                         if (plist != null && !plist.isEmpty()) {
                             for (Product p2 : plist) {
@@ -173,7 +174,14 @@
                         </td>
                         <td class="text-end">
                             <button class="btn btn-sm btn-outline-secondary me-2" type="button"
-                                    data-bs-toggle="modal" data-bs-target="#editProductModal<%= p2.getId() %>">
+                                    data-bs-toggle="modal" data-bs-target="#editProductModal"
+                                    data-product-id="<%= p2.getId() %>"
+                                    data-product-name="<%= p2.getName() %>"
+                                    data-product-description="<%= p2.getDescription() != null ? p2.getDescription() : "" %>"
+                                    data-product-price="<%= String.format(locale, "%.2f", p2.getPrice()) %>"
+                                    data-product-category="<%= p2.getCategoryId() %>"
+                                    data-product-subcategory="<%= p2.getSubCategoryId() != null ? p2.getSubCategoryId() : "" %>"
+                                    data-product-image="<%= p2.getImageUrl() != null ? p2.getImageUrl() : "" %>">
                                 Modifier
                             </button>
                             <form method="post" action="${pageContext.request.contextPath}/admin/products" class="d-inline">
@@ -197,28 +205,23 @@
                 </table>
             </div>
         </div>
-        <%
-            if (plist != null && !plist.isEmpty()) {
-                java.util.Locale locale = java.util.Locale.US;
-                for (Product p2 : plist) {
-        %>
-        <div class="modal fade" id="editProductModal<%= p2.getId() %>" tabindex="-1"
-             aria-labelledby="editProductLabel<%= p2.getId() %>" aria-hidden="true">
+        <div class="modal fade" id="editProductModal" tabindex="-1"
+             aria-labelledby="editProductLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content glass-card">
                     <div class="modal-header border-0">
-                        <h5 class="modal-title" id="editProductLabel<%= p2.getId() %>">Modifier le produit</h5>
+                        <h5 class="modal-title" id="editProductLabel">Modifier le produit</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="post" action="${pageContext.request.contextPath}/admin/products" enctype="multipart/form-data">
+                    <form id="editProductForm" method="post" action="${pageContext.request.contextPath}/admin/products" enctype="multipart/form-data">
                         <div class="modal-body">
                             <input type="hidden" name="action" value="update" />
-                            <input type="hidden" name="id" value="<%= p2.getId() %>" />
-                            <input type="hidden" name="existingImageUrl" value="<%= p2.getImageUrl() != null ? p2.getImageUrl() : "" %>" />
+                            <input type="hidden" name="id" id="editProductId" />
+                            <input type="hidden" name="existingImageUrl" id="editProductExistingImage" />
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Nom</label>
-                                    <input class="form-control" type="text" name="name" value="<%= p2.getName() %>" required />
+                                    <input class="form-control" type="text" name="name" id="editProductName" required />
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Visuel produit</label>
@@ -227,23 +230,21 @@
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Description</label>
-                                    <textarea class="form-control" name="description" rows="2"><%= p2.getDescription() != null ? p2.getDescription() : "" %></textarea>
+                                    <textarea class="form-control" name="description" id="editProductDescription" rows="2"></textarea>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Prix</label>
-                                    <input class="form-control" type="number" step="0.01" min="0" name="price"
-                                           value="<%= String.format(locale, "%.2f", p2.getPrice()) %>" required />
+                                    <input class="form-control" type="number" step="0.01" min="0" name="price" id="editProductPrice" required />
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Catégorie</label>
-                                    <select class="form-select" name="categoryId" required>
+                                    <select class="form-select" name="categoryId" id="editProductCategory" required>
                                         <option value="">-- Catégorie --</option>
                                         <%
                                             if (cats2 != null) {
                                                 for (Category c2 : cats2) {
-                                                    boolean selected = c2.getId() == p2.getCategoryId();
                                         %>
-                                        <option value="<%= c2.getId() %>" <%= selected ? "selected" : "" %>><%= c2.getName() %></option>
+                                        <option value="<%= c2.getId() %>"><%= c2.getName() %></option>
                                         <%
                                                 }
                                             }
@@ -252,14 +253,13 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Sous-catégorie</label>
-                                    <select class="form-select" name="subCategoryId">
+                                    <select class="form-select" name="subCategoryId" id="editProductSubCategory">
                                         <option value="">-- Aucune --</option>
                                         <%
                                             if (subs2 != null) {
                                                 for (SubCategory sc2 : subs2) {
-                                                    boolean selected = sc2.getId() == (p2.getSubCategoryId() != null ? p2.getSubCategoryId() : -1);
                                         %>
-                                        <option value="<%= sc2.getId() %>" <%= selected ? "selected" : "" %>><%= sc2.getCategoryName() %> • <%= sc2.getName() %></option>
+                                        <option value="<%= sc2.getId() %>"><%= sc2.getCategoryName() %> • <%= sc2.getName() %></option>
                                         <%
                                                 }
                                             }
@@ -276,12 +276,25 @@
                 </div>
             </div>
         </div>
-        <%
-                }
-            }
-        %>
     </div>
 </main>
+<script>
+    const editProductModal = document.getElementById('editProductModal');
+    if (editProductModal) {
+        editProductModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            if (!button) return;
+
+            document.getElementById('editProductId').value = button.getAttribute('data-product-id');
+            document.getElementById('editProductExistingImage').value = button.getAttribute('data-product-image') || '';
+            document.getElementById('editProductName').value = button.getAttribute('data-product-name') || '';
+            document.getElementById('editProductDescription').value = button.getAttribute('data-product-description') || '';
+            document.getElementById('editProductPrice').value = button.getAttribute('data-product-price') || '';
+            document.getElementById('editProductCategory').value = button.getAttribute('data-product-category') || '';
+            document.getElementById('editProductSubCategory').value = button.getAttribute('data-product-subcategory') || '';
+        });
+    }
+</script>
 <script src="${pageContext.request.contextPath}/assets/js/bootstrap-lite.js"></script>
 </body>
 </html>

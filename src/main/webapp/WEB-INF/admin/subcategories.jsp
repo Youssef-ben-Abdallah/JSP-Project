@@ -118,7 +118,11 @@
                         <td><span class="badge rounded-pill text-bg-light"><%= sc.getCategoryName() %></span></td>
                         <td class="text-end">
                             <button class="btn btn-sm btn-outline-secondary me-2" type="button"
-                                    data-bs-toggle="modal" data-bs-target="#editSubCategoryModal<%= sc.getId() %>">
+                                    data-bs-toggle="modal" data-bs-target="#editSubCategoryModal"
+                                    data-subcategory-id="<%= sc.getId() %>"
+                                    data-subcategory-name="<%= sc.getName() %>"
+                                    data-subcategory-description="<%= sc.getDescription() != null ? sc.getDescription() : "" %>"
+                                    data-subcategory-category-id="<%= sc.getCategoryId() %>">
                                 Modifier
                             </button>
                             <form method="post" action="${pageContext.request.contextPath}/admin/subcategories" class="d-inline">
@@ -142,40 +146,35 @@
                 </table>
             </div>
         </div>
-        <%
-            if (subs != null && !subs.isEmpty()) {
-                for (SubCategory sc : subs) {
-        %>
-        <div class="modal fade" id="editSubCategoryModal<%= sc.getId() %>" tabindex="-1"
-             aria-labelledby="editSubCategoryLabel<%= sc.getId() %>" aria-hidden="true">
+        <div class="modal fade" id="editSubCategoryModal" tabindex="-1"
+             aria-labelledby="editSubCategoryLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content glass-card">
                     <div class="modal-header border-0">
-                        <h5 class="modal-title" id="editSubCategoryLabel<%= sc.getId() %>">Modifier la sous-catégorie</h5>
+                        <h5 class="modal-title" id="editSubCategoryLabel">Modifier la sous-catégorie</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="post" action="${pageContext.request.contextPath}/admin/subcategories">
+                    <form id="editSubCategoryForm" method="post" action="${pageContext.request.contextPath}/admin/subcategories">
                         <div class="modal-body">
                             <input type="hidden" name="action" value="update" />
-                            <input type="hidden" name="id" value="<%= sc.getId() %>" />
+                            <input type="hidden" name="id" id="editSubCategoryId" />
                             <div class="mb-3">
                                 <label class="form-label">Nom</label>
-                                <input class="form-control" type="text" name="name" value="<%= sc.getName() %>" required />
+                                <input class="form-control" type="text" name="name" id="editSubCategoryName" required />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Description</label>
-                                <input class="form-control" type="text" name="description" value="<%= sc.getDescription() != null ? sc.getDescription() : "" %>" />
+                                <input class="form-control" type="text" name="description" id="editSubCategoryDescription" />
                             </div>
                             <div class="mb-0">
                                 <label class="form-label">Catégorie parente</label>
-                                <select class="form-select" name="categoryId" required>
+                                <select class="form-select" name="categoryId" id="editSubCategoryCategory" required>
                                     <option value="">-- Catégorie --</option>
                                     <%
                                         if (cats != null) {
                                             for (Category category : cats) {
-                                                boolean selected = category.getId() == sc.getCategoryId();
                                     %>
-                                    <option value="<%= category.getId() %>" <%= selected ? "selected" : "" %>><%= category.getName() %></option>
+                                    <option value="<%= category.getId() %>"><%= category.getName() %></option>
                                     <%
                                             }
                                         }
@@ -191,12 +190,22 @@
                 </div>
             </div>
         </div>
-        <%
-                }
-            }
-        %>
     </div>
 </main>
+<script>
+    const editSubCategoryModal = document.getElementById('editSubCategoryModal');
+    if (editSubCategoryModal) {
+        editSubCategoryModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            if (!button) return;
+
+            document.getElementById('editSubCategoryId').value = button.getAttribute('data-subcategory-id');
+            document.getElementById('editSubCategoryName').value = button.getAttribute('data-subcategory-name');
+            document.getElementById('editSubCategoryDescription').value = button.getAttribute('data-subcategory-description') || '';
+            document.getElementById('editSubCategoryCategory').value = button.getAttribute('data-subcategory-category-id') || '';
+        });
+    }
+</script>
 <script src="${pageContext.request.contextPath}/assets/js/bootstrap-lite.js"></script>
 </body>
 </html>
