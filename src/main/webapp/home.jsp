@@ -1,10 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.*,org.example.model.Product" %>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Accueil - MyShop</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
 <body>
@@ -15,59 +17,32 @@
             String catalogError = (String) request.getAttribute("catalogError");
             if (catalogError != null) {
         %>
-        <div class="alert-soft mb-4"><%= catalogError %></div>
+        <div class="alert alert-warning mb-4"><%= catalogError %></div>
         <%
             }
         %>
-        <%
-            request.setAttribute("promotionDisplayMode", "hero");
-        %>
-        <jsp:include page="/WEB-INF/fragments/active-promotions.jspf" />
-        <%
-            request.removeAttribute("promotionDisplayMode");
-        %>
 
-        <section class="hero-section mb-5">
-            <div class="hero-grid">
-                <div>
-                    <div class="hero-badges">
-                        <span class="tagline-chip">Flagship MyShop</span>
-                        <span class="hero-badge">Concept stores &bull; Paris, Lyon, Bordeaux</span>
-                    </div>
-                    <h1 class="hero-title">Une vitrine chaleureuse pour vos collections premium</h1>
-                    <p class="hero-lead">Nous combinons merchandising, scénographie et services express pour transformer chaque produit en expérience mémorable.</p>
-                    <div class="hero-actions">
-                        <a class="btn-soft" href="${pageContext.request.contextPath}/products">Parcourir le catalogue</a>
-                        <a class="btn-ghost" href="${pageContext.request.contextPath}/products?categoryId=1">Voir les nouveautés</a>
+        <section class="hero-banner mb-5">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <span class="hero-badge">Flagship MyShop • Concept stores français</span>
+                    <h1 class="display-5 fw-bold mt-3">Une vitrine claire pour vos collections</h1>
+                    <p class="lead text-secondary">Utilisez MyShop pour présenter rapidement vos nouveautés, suivre vos promotions et guider vos clients vers les produits phares.</p>
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/products">Parcourir le catalogue</a>
+                        <a class="btn btn-outline-primary btn-lg" href="${pageContext.request.contextPath}/products?categoryId=1">Voir les nouveautés</a>
                     </div>
                 </div>
-                <div class="hero-panel">
-                    <strong>Parcours immersif</strong>
-                    <p class="text-muted mb-2">Nos équipes créent des ambiances inspirées des quartiers français pour mettre vos articles en avant.</p>
-                    <div class="stat-grid">
-                        <div class="stat-pill">
-                            <div class="stat-label">Showrooms activés</div>
-                            <div class="stat-value">12 villes</div>
-                        </div>
-                        <div class="stat-pill">
-                            <div class="stat-label">Satisfaction</div>
-                            <div class="stat-value">4.9 / 5</div>
-                        </div>
-                        <div class="stat-pill">
-                            <div class="stat-label">Livraison premium</div>
-                            <div class="stat-value">48h</div>
-                        </div>
-                    </div>
+                <div class="col-lg-5">
+                    <div class="placeholder-tile">Parcours immersif • 12 villes • Livraison 48h</div>
                 </div>
             </div>
         </section>
 
-        <hr class="feature-divider" />
-
-        <section>
-            <div class="section-heading">
-                <h2>Produits populaires</h2>
-                <p>Un aperçu de vos meilleures ventes prêtes à illuminer nos vitrines conceptuelles. Chaque carte s’anime comme un décor miniature inspiré d’un quartier emblématique.</p>
+        <section class="mb-5">
+            <div class="section-heading mb-4">
+                <h2 class="h4">Produits populaires</h2>
+                <p class="mb-0">Un aperçu des best-sellers prêts à être mis en avant dans vos vitrines.</p>
             </div>
             <div class="row g-4">
                 <%
@@ -80,26 +55,26 @@
                             locationIndex++;
                 %>
                 <div class="col-md-6 col-lg-4 col-xl-3">
-                    <div class="card glass-card h-100 p-2">
+                    <div class="card h-100 lifted">
                         <div class="image-placeholder" role="img" aria-label="Mise en scène lumineuse de <%= location %>">
                             <span class="placeholder-label"><%= location.toUpperCase() %></span>
                         </div>
                         <div class="card-body">
-                            <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
-                                <span class="badge-category"><%= p.getCategoryName() != null ? p.getCategoryName() : "Collection" %></span>
+                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                <span class="badge text-bg-light"><%= p.getCategoryName() != null ? p.getCategoryName() : "Collection" %></span>
                                 <%
                                     if (p.getSubCategoryName() != null) {
                                 %>
-                                <span class="badge-subcategory"><%= p.getSubCategoryName() %></span>
+                                <span class="badge bg-primary-subtle text-primary fw-semibold"><%= p.getSubCategoryName() %></span>
                                 <%
                                     }
                                 %>
                             </div>
-                            <h5 class="card-title"><%= p.getName() %></h5>
-                            <p class="card-text"><%= p.getDescription() %></p>
+                            <h5 class="card-title mb-1"><%= p.getName() %></h5>
+                            <p class="card-text text-muted"><%= p.getDescription() %></p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="price-tag">$<%= p.getPrice() %></span>
-                                <a class="btn btn-ghost btn-sm" href="${pageContext.request.contextPath}/product?id=<%= p.getId() %>">Voir la scénographie</a>
+                                <a class="btn btn-outline-primary btn-sm" href="${pageContext.request.contextPath}/product?id=<%= p.getId() %>">Voir le produit</a>
                             </div>
                         </div>
                     </div>
@@ -109,20 +84,19 @@
                     } else {
                 %>
                 <div class="col-12">
-                    <div class="glass-card p-5 text-center">
-                        <h5>Le catalogue arrive bientôt ✨</h5>
-                        <p class="mb-0 text-muted">Ajoutez vos premiers produits depuis l'espace administrateur pour révéler ici vos collections.</p>
-                    </div>
+                    <div class="alert alert-info mb-0">Ajoutez vos premiers produits depuis l'espace administrateur pour alimenter cette section.</div>
                 </div>
                 <%
                     }
                 %>
             </div>
         </section>
+
+        <jsp:include page="/WEB-INF/fragments/active-promotions.jspf" />
     </div>
 </main>
 <jsp:include page="/WEB-INF/fragments/footer.jspf" />
-<script src="${pageContext.request.contextPath}/assets/js/bootstrap-lite.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="${pageContext.request.contextPath}/assets/js/promotions.js"></script>
 </body>
 </html>

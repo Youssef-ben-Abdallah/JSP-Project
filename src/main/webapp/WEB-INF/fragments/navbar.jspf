@@ -10,91 +10,70 @@
     boolean isProducts = currentPath.contains("/products") || currentPath.contains("/product");
     boolean isLogin = currentPath.contains("/login");
 %>
-<nav class="navbar navbar-expand-lg navbar-dark glass-nav nav-elevated nav-floating">
-  <div class="container-xl nav-shell">
-    <div class="nav-brand-wrap">
-      <a class="navbar-brand" href="${pageContext.request.contextPath}/home">
-        MyShop
-        <span class="brand-pill">Flagship</span>
-      </a>
-      <div class="nav-tagline d-none d-lg-flex">Concept stores &amp; design chaleureux</div>
-    </div>
-
-    <button class="navbar-toggler nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-controls="navbarsExample" aria-expanded="false" aria-label="Ouvrir le menu">
-      <span class="toggler-bar"></span>
-      <span class="toggler-bar"></span>
-      <span class="toggler-bar"></span>
-    </button>
-
-    <div class="collapse navbar-collapse nav-content" id="navbarsExample">
-      <ul class="navbar-nav nav-links align-items-lg-center">
-        <li class="nav-item"><a class="nav-link <%= isHome ? "active" : "" %>" href="${pageContext.request.contextPath}/home">Accueil</a></li>
-        <li class="nav-item"><a class="nav-link <%= isProducts ? "active" : "" %>" href="${pageContext.request.contextPath}/products">Catalogue</a></li>
-        <%
-            if (navigationDataError != null) {
-        %>
-        <li class="nav-item nav-alert">
-            <span class="nav-chip nav-chip-warning"><%= navigationDataError %></span>
-        </li>
-        <%
-            }
-        %>
-        <li class="nav-item dropdown dropdown-mega">
-          <a class="nav-link dropdown-toggle <%= isProducts ? "active" : "" %>" href="#" id="megaMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Univers &amp; catégories</a>
-          <div class="dropdown-menu mega-menu" aria-labelledby="megaMenu">
-            <div class="mega-menu-inner">
-              <%
-                if (navCats.isEmpty()) {
-              %>
-              <div class="mega-menu-empty text-muted">Créez vos catégories depuis l'espace administrateur pour alimenter ce menu.</div>
-              <%
-                } else {
-                    for (Category category : navCats) {
-                        List<SubCategory> subList = category.getSubCategories();
-              %>
-              <div class="mega-menu-column">
-                <a class="mega-menu-title" href="${pageContext.request.contextPath}/products?categoryId=<%= category.getId() %>"><%= category.getName() %></a>
-                <p class="mega-menu-desc"><%= category.getDescription() != null ? category.getDescription() : "Explorez cette collection immersive." %></p>
-                <ul class="mega-menu-list">
-                  <%
-                    if (subList != null && !subList.isEmpty()) {
-                        for (SubCategory sub : subList) {
-                  %>
-                  <li><a href="${pageContext.request.contextPath}/products?subCategoryId=<%= sub.getId() %>"><span><%= sub.getName() %></span></a></li>
-                  <%
-                        }
-                    } else {
-                  %>
-                  <li class="mega-menu-placeholder">Sous-catégories à venir</li>
-                  <%
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">MyShop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Basculer la navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link <%= isHome ? "active" : "" %>" href="${pageContext.request.contextPath}/home">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <%= isProducts ? "active" : "" %>" href="${pageContext.request.contextPath}/products">Catalogue</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle <%= isProducts ? "active" : "" %>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Univers &amp; catégories
+                    </a>
+                    <div class="dropdown-menu p-3 shadow-lg border-0" style="min-width: 320px;">
+                        <%
+                            if (navCats.isEmpty()) {
+                        %>
+                        <span class="dropdown-item text-muted">Créez vos catégories pour alimenter le menu.</span>
+                        <%
+                            } else {
+                                for (Category category : navCats) {
+                                    List<SubCategory> subList = category.getSubCategories();
+                        %>
+                        <div class="mb-3">
+                            <a class="dropdown-item fw-semibold" href="${pageContext.request.contextPath}/products?categoryId=<%= category.getId() %>"><%= category.getName() %></a>
+                            <p class="small text-muted mb-2"><%= category.getDescription() != null ? category.getDescription() : "Découvrez la sélection." %></p>
+                            <div class="d-flex flex-wrap gap-1">
+                                <%
+                                    if (subList != null && !subList.isEmpty()) {
+                                        for (SubCategory sub : subList) {
+                                %>
+                                <a class="badge bg-light text-dark text-decoration-none" href="${pageContext.request.contextPath}/products?subCategoryId=<%= sub.getId() %>"><%= sub.getName() %></a>
+                                <%
+                                        }
+                                    } else {
+                                %>
+                                <span class="badge bg-secondary-subtle text-secondary">Sous-catégories à venir</span>
+                                <%
+                                    }
+                                %>
+                            </div>
+                        </div>
+                        <%
+                                }
+                            }
+                        %>
+                    </div>
+                </li>
+            </ul>
+            <div class="d-flex align-items-lg-center gap-2 flex-wrap">
+                <%
+                    if (navigationDataError != null) {
+                %>
+                <span class="badge text-bg-warning">Navigation: <%= navigationDataError %></span>
+                <%
                     }
-                  %>
-                </ul>
-              </div>
-              <%
-                    }
-                }
-              %>
-              <div class="mega-menu-column mega-menu-highlight">
-                <div class="mega-menu-cta">
-                  <p class="mega-menu-desc mb-1">Besoin d'un accompagnement personnalisé ?</p>
-                  <h6 class="mb-2">Parlez à un conseiller</h6>
-                  <a class="btn btn-ghost btn-sm" href="${pageContext.request.contextPath}/products">Découvrir les inspirations</a>
-                </div>
-              </div>
+                %>
+                <a class="btn btn-outline-light btn-sm <%= isLogin ? "active" : "" %>" href="${pageContext.request.contextPath}/login">Espace admin</a>
             </div>
-          </div>
-        </li>
-      </ul>
-
-      <div class="navbar-actions">
-        <div class="nav-meta">Livraison premium 48h • Scénographie par nos équipes locales</div>
-        <div class="nav-actions-row">
-            <a class="nav-link text-white-50 <%= isLogin ? "active" : "" %>" href="${pageContext.request.contextPath}/login">Espace admin</a>
-            <span class="nav-separator" aria-hidden="true"></span>
-            <a class="btn-soft btn-sm" href="${pageContext.request.contextPath}/products">Voir les nouveautés</a>
         </div>
-      </div>
     </div>
-  </div>
 </nav>
