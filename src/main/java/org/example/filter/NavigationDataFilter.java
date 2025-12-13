@@ -7,14 +7,18 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.example.model.Category;
+import org.example.model.CartItem;
 import org.example.model.Promotion;
+import org.example.model.User;
 import org.example.service.CategoryService;
 import org.example.service.PromotionService;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @WebFilter("/*")
 public class NavigationDataFilter implements Filter {
@@ -31,6 +35,7 @@ public class NavigationDataFilter implements Filter {
             chain.doFilter(request, response);
             return;
         }
+        HttpSession session = httpRequest.getSession(false);
         List<Category> categories = Collections.emptyList();
         try {
             categories = categoryService.getCategoriesWithSubCategories();
@@ -50,6 +55,22 @@ public class NavigationDataFilter implements Filter {
                     "Les promotions n'ont pas pu être chargées pour le moment.");
         }
         request.setAttribute("activePromotions", promotions);
+
+        if (session != null) {
+            Object cartObj = session.getAttribute("cart");
+            if (cartObj instanceof java.util.Map<?, ?> cartMap) {
+                int count = ((Map<?, ?>) cartMap).values().stream()
+                        .filter(CartItem.class::isInstance)
+                        .map(CartItem.class::cast)
+                        .mapToInt(CartItem::getQuantity)
+                        .sum();
+                request.setAttribute("cartCount", count);
+            }
+            User user = (User) session.getAttribute("user");
+            if (user != null) {
+                request.setAttribute("currentUser", user);
+            }
+        }
         chain.doFilter(request, response);
     }
 }

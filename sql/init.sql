@@ -188,7 +188,35 @@ INSERT INTO products (name, description, price, image_url, category_id, subcateg
                                                                                             ('Range Extender','WiFi extender',89.99,'img/p32.jpg',9,45),
                                                                                             ('Office Printer','Laser printer',249.99,'img/p33.jpg',10,46),
                                                                                             ('4K Monitor','Office monitor',399.99,'img/p34.jpg',10,48),
-                                                                                            ('Mechanical Keyboard','Office keyboard',129.99,'img/p35.jpg',10,49);
+                                                                                             ('Mechanical Keyboard','Office keyboard',129.99,'img/p35.jpg',10,49);
+
+
+/* =========================================================
+   ORDERS
+   ========================================================= */
+CREATE TABLE orders (
+                        id INT PRIMARY KEY AUTO_INCREMENT,
+                        user_id INT NOT NULL,
+                        total_amount DECIMAL(10,2) NOT NULL,
+                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        CONSTRAINT fk_order_user FOREIGN KEY (user_id)
+                            REFERENCES users(id)
+                            ON DELETE CASCADE
+);
+
+CREATE TABLE order_items (
+                             id INT PRIMARY KEY AUTO_INCREMENT,
+                             order_id INT NOT NULL,
+                             product_id INT NOT NULL,
+                             quantity INT NOT NULL,
+                             unit_price DECIMAL(10,2) NOT NULL,
+                             CONSTRAINT fk_order_item_order FOREIGN KEY (order_id)
+                                 REFERENCES orders(id)
+                                 ON DELETE CASCADE,
+                             CONSTRAINT fk_order_item_product FOREIGN KEY (product_id)
+                                 REFERENCES products(id)
+                                 ON DELETE CASCADE
+);
 
 
 /* =========================================================

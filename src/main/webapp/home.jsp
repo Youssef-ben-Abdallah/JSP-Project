@@ -81,7 +81,14 @@
                                     <jsp:param name="categoryId" value="<%= String.valueOf(p.getCategoryId()) %>" />
                                     <jsp:param name="subCategoryId" value="<%= subCategoryId %>" />
                                 </jsp:include>
-                                <a class="btn btn-outline-primary btn-sm" href="${pageContext.request.contextPath}/product?id=<%= p.getId() %>">View product</a>
+                                <div class="d-flex gap-2">
+                                    <form method="post" action="${pageContext.request.contextPath}/cart" class="d-inline">
+                                        <input type="hidden" name="productId" value="<%= p.getId() %>" />
+                                        <input type="hidden" name="quantity" value="1" />
+                                        <button type="submit" class="btn btn-primary btn-sm">Add to cart</button>
+                                    </form>
+                                    <a class="btn btn-outline-primary btn-sm" href="${pageContext.request.contextPath}/product?id=<%= p.getId() %>">View</a>
+                                </div>
                             </div>
                         </div>
                     </div>

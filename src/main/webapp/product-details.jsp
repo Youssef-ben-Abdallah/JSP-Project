@@ -72,7 +72,11 @@
                             <jsp:param name="categoryId" value="<%= String.valueOf(p.getCategoryId()) %>" />
                             <jsp:param name="subCategoryId" value="<%= subCategoryId %>" />
                         </jsp:include>
-                        <button class="btn btn-primary" type="button">Add to cart</button>
+                        <form method="post" action="${pageContext.request.contextPath}/cart" class="d-flex align-items-center gap-2">
+                            <input type="hidden" name="productId" value="<%= p.getId() %>" />
+                            <input type="number" class="form-control" name="quantity" value="1" min="1" style="width: 100px;" />
+                            <button class="btn btn-primary" type="submit">Add to cart</button>
+                        </form>
                     </div>
                     <p class="mt-4 text-secondary">Decor inspired by <%= location %>: warm textures, soft lighting, and a layout tailored for feature displays.</p>
                 </div>
