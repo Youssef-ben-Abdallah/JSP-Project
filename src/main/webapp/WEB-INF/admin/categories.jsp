@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin - Catégories</title>
+    <title>Admin - Categories</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
@@ -26,34 +26,34 @@
                 <div class="glass-card p-4 h-100">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
                         <div>
-                            <h5 class="mb-1">Ajouter une catégorie</h5>
-                            <p class="text-muted mb-0">Créez un univers en quelques clics avant de le décliner en sous-collections.</p>
+                            <h5 class="mb-1">Add a category</h5>
+                            <p class="text-muted mb-0">Create a universe in a few clicks before expanding it into sub-collections.</p>
                         </div>
-                        <span class="badge-subcategory">Flux en temps réel</span>
+                        <span class="badge-subcategory">Real-time flow</span>
                     </div>
                     <form method="post" action="${pageContext.request.contextPath}/admin/categories" class="row g-3 align-items-end">
                         <input type="hidden" name="action" value="create" />
                         <div class="col-md-4">
-                            <label class="form-label">Nom</label>
-                            <input class="form-control" type="text" name="name" placeholder="Nom" required />
+                            <label class="form-label">Name</label>
+                            <input class="form-control" type="text" name="name" placeholder="Name" required />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Description</label>
                             <input class="form-control" type="text" name="description" placeholder="Description" />
                         </div>
                         <div class="col-md-2">
-                            <button class="btn-soft w-100 justify-content-center" type="submit">Ajouter</button>
+                            <button class="btn-soft w-100 justify-content-center" type="submit">Add</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="glass-card p-4 h-100">
-                    <h6 class="mb-2">Conseils rapides</h6>
+                    <h6 class="mb-2">Quick tips</h6>
                     <ul class="mb-0 text-muted small ps-3">
-                        <li>Utilisez des descriptions évocatrices pour guider la navigation.</li>
-                        <li>Le bouton "Modifier" ouvre désormais une fenêtre dédiée pour limiter les erreurs.</li>
-                        <li>Gardez moins de 8 catégories pour une expérience fluide.</li>
+                        <li>Use evocative descriptions to guide navigation.</li>
+                        <li>The "Edit" button now opens a dedicated window to reduce mistakes.</li>
+                        <li>Keep fewer than 8 categories for a smooth experience.</li>
                     </ul>
                 </div>
             </div>
@@ -62,14 +62,14 @@
         <div class="glass-card p-0">
             <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div>
-                    <h5 class="mb-1">Liste des catégories</h5>
-                    <p class="mb-0 text-muted">Un résumé clair avec modification en modal pour rester concentré sur le catalogue.</p>
+                    <h5 class="mb-1">Category list</h5>
+                    <p class="mb-0 text-muted">A clear summary with modal editing so you can stay focused on the catalog.</p>
                 </div>
                 <div class="admin-toolbar">
-                    <div class="placeholder-banner mb-0" role="img" aria-label="Cartographie créative - Metz, Pau, Ajaccio">
-                        Modifications en un clic
+                    <div class="placeholder-banner mb-0" role="img" aria-label="Creative mapping - Metz, Pau, Ajaccio">
+                        One-click edits
                     </div>
-                    <span class="badge-subcategory">Sauvegarde instantanée</span>
+                    <span class="badge-subcategory">Instant save</span>
                 </div>
             </div>
             <div class="table-responsive">
@@ -77,10 +77,10 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nom</th>
+                            <th>Name</th>
                             <th>Description</th>
-                            <th>Ambiance associée</th>
-                            <th>Sous-catégories</th>
+                            <th>Associated mood</th>
+                            <th>Sub-categories</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -100,7 +100,7 @@
                             <td><%= c.getName() %></td>
                             <td><%= c.getDescription() %></td>
                             <td style="width:140px;">
-                                <div class="image-placeholder is-compact" role="img" aria-label="Destination thématique <%= location %>">
+                                <div class="image-placeholder is-compact" role="img" aria-label="Thematic destination <%= location %>">
                                     <span class="placeholder-label"><%= location.toUpperCase() %></span>
                                 </div>
                             </td>
@@ -115,7 +115,7 @@
                                         }
                                     } else {
                                 %>
-                                    <span class="text-muted small">Aucune sous-catégorie</span>
+                                    <span class="text-muted small">No sub-categories</span>
                                 <%
                                     }
                                 %>
@@ -124,12 +124,12 @@
                             <td class="text-end">
                                 <button class="btn btn-sm btn-outline-secondary me-2" type="button"
                                         data-bs-toggle="modal" data-bs-target="#editCategoryModal<%= c.getId() %>">
-                                    Modifier
+                                    Edit
                                 </button>
                                 <form method="post" action="${pageContext.request.contextPath}/admin/categories" class="d-inline">
                                     <input type="hidden" name="action" value="delete" />
                                     <input type="hidden" name="id" value="<%= c.getId() %>" />
-                                    <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                                    <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
                                 </form>
                             </td>
                         </tr>
@@ -138,7 +138,7 @@
                         } else {
                     %>
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">Ajoutez votre première catégorie pour lancer la scénographie.</td>
+                            <td colspan="6" class="text-center py-4 text-muted">Add your first category to kick off the story.</td>
                         </tr>
                     <%
                         }
@@ -156,7 +156,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content glass-card">
                     <div class="modal-header border-0">
-                        <h5 class="modal-title" id="editCategoryLabel<%= c.getId() %>">Modifier la catégorie</h5>
+                        <h5 class="modal-title" id="editCategoryLabel<%= c.getId() %>">Edit category</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form method="post" action="${pageContext.request.contextPath}/admin/categories">
@@ -164,7 +164,7 @@
                             <input type="hidden" name="action" value="update" />
                             <input type="hidden" name="id" value="<%= c.getId() %>" />
                             <div class="mb-3">
-                                <label class="form-label">Nom</label>
+                                <label class="form-label">Name</label>
                                 <input class="form-control" type="text" name="name" value="<%= c.getName() %>" required />
                             </div>
                             <div class="mb-0">
@@ -173,8 +173,8 @@
                             </div>
                         </div>
                         <div class="modal-footer border-0">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn-soft">Enregistrer</button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn-soft">Save</button>
                         </div>
                     </form>
                 </div>

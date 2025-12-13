@@ -1,11 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.*,org.example.model.Product,org.example.model.Category,org.example.model.SubCategory" %>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Catalogue Produits</title>
+    <title>Product Catalog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
@@ -14,8 +14,8 @@
 <main class="page-wrapper">
     <div class="container py-5">
         <div class="section-heading mb-4">
-            <h1 class="h3">Catalogue immersif</h1>
-            <p class="mb-0">Découvrez des sélections prêtes à exposer : mobilier, luminaires et accessoires pensés pour vos espaces.</p>
+            <h1 class="h3">Immersive catalog</h1>
+            <p class="mb-0">Discover ready-to-showcase selections: furniture, lighting, and accessories tailored for your spaces.</p>
         </div>
 
         <%
@@ -34,7 +34,7 @@
         %>
         <div class="alert alert-primary d-flex flex-wrap align-items-center justify-content-between gap-2" role="status">
             <div class="d-flex flex-wrap align-items-center gap-2">
-                <span class="fw-semibold">Filtre actif</span>
+                <span class="fw-semibold">Active filter</span>
                 <%
                     if (selectedCategory != null) {
                 %>
@@ -48,7 +48,7 @@
                     }
                 %>
             </div>
-            <a class="btn btn-outline-primary btn-sm" href="${pageContext.request.contextPath}/products">Réinitialiser</a>
+            <a class="btn btn-outline-primary btn-sm" href="${pageContext.request.contextPath}/products">Reset</a>
         </div>
         <%
             }
@@ -57,8 +57,8 @@
         <div class="card lifted p-4 mb-4">
             <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2">
                 <div>
-                    <strong>Parcours inspiration</strong>
-                    <p class="mb-0 text-secondary">Une ligne directrice claire pour vos showrooms : lumière douce, matériaux naturels et focus produit.</p>
+                    <strong>Inspiration route</strong>
+                    <p class="mb-0 text-secondary">A clear direction for your showrooms: soft light, natural materials, and a product spotlight.</p>
                 </div>
                 <span class="badge bg-secondary-subtle text-secondary">Nice • Lille • Montpellier</span>
             </div>
@@ -84,7 +84,7 @@
                     <%
                         } else {
                     %>
-                    <div class="image-placeholder" role="img" aria-label="Décor conceptuel de <%= location %>">
+                    <div class="image-placeholder" role="img" aria-label="Concept decor in <%= location %>">
                         <span class="placeholder-label"><%= location.toUpperCase() %></span>
                     </div>
                     <%
@@ -105,7 +105,7 @@
                         <p class="card-text text-muted"><%= p.getDescription() %></p>
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <span class="price-tag">$<%= p.getPrice() %></span>
-                            <a class="btn btn-outline-primary btn-sm" href="${pageContext.request.contextPath}/product?id=<%= p.getId() %>">Détails</a>
+                            <a class="btn btn-outline-primary btn-sm" href="${pageContext.request.contextPath}/product?id=<%= p.getId() %>">Details</a>
                         </div>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                 } else {
             %>
             <div class="col-12">
-                <div class="alert alert-info">Catalogue en préparation. Ajoutez vos produits pour révéler de nouvelles destinations décoratives.</div>
+                <div class="alert alert-info">Catalog in progress. Add your products to reveal new decorative destinations.</div>
             </div>
             <%
                 }

@@ -5,14 +5,14 @@
 
     function updateCountdown(element, endTime) {
         if (!endTime) {
-            element.textContent = 'Expirée';
+            element.textContent = 'Expired';
             element.classList.add('is-expired');
             return;
         }
         var now = new Date().getTime();
         var distance = endTime - now;
         if (distance <= 0) {
-            element.textContent = 'Expirée';
+            element.textContent = 'Expired';
             element.classList.add('is-expired');
             return;
         }
