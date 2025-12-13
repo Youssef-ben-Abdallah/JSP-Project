@@ -1,11 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.*,org.example.model.Product" %>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Accueil - MyShop</title>
+    <title>Home - MyShop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
@@ -25,28 +25,28 @@
         <section class="hero-banner mb-5">
             <div class="row align-items-center g-4">
                 <div class="col-lg-7">
-                    <span class="hero-badge">Flagship MyShop • Concept stores français</span>
-                    <h1 class="display-5 fw-bold mt-3">Une vitrine claire pour vos collections</h1>
-                    <p class="lead text-secondary">Utilisez MyShop pour présenter rapidement vos nouveautés, suivre vos promotions et guider vos clients vers les produits phares.</p>
+                    <span class="hero-badge">Flagship MyShop • Signature concept stores</span>
+                    <h1 class="display-5 fw-bold mt-3">A clear showcase for every collection</h1>
+                    <p class="lead text-secondary">Use MyShop to surface new arrivals, track promotions, and guide shoppers toward your standout products.</p>
                     <div class="d-flex flex-wrap gap-2 mt-3">
-                        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/products">Parcourir le catalogue</a>
-                        <a class="btn btn-outline-primary btn-lg" href="${pageContext.request.contextPath}/products?categoryId=1">Voir les nouveautés</a>
+                        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/products">Browse the catalog</a>
+                        <a class="btn btn-outline-primary btn-lg" href="${pageContext.request.contextPath}/products?categoryId=1">See what's new</a>
                     </div>
                 </div>
                 <div class="col-lg-5">
-                    <div class="placeholder-tile">Parcours immersif • 12 villes • Livraison 48h</div>
+                    <div class="placeholder-tile">Immersive journey • 12 cities • 48h delivery</div>
                 </div>
             </div>
         </section>
 
         <section class="mb-5">
             <div class="section-heading mb-4">
-                <h2 class="h4">Produits populaires</h2>
-                <p class="mb-0">Un aperçu des best-sellers prêts à être mis en avant dans vos vitrines.</p>
+                <h2 class="h4">Popular products</h2>
+                <p class="mb-0">A snapshot of best-sellers ready to feature in your storefronts.</p>
             </div>
             <div class="row g-4">
                 <%
-                    String[] placeholderLocations = {"Paris", "Lyon", "Marseille", "Bordeaux", "Nice", "Toulouse", "Nantes", "Strasbourg"};
+                    String[] placeholderLocations = {"New York", "Chicago", "Seattle", "Austin", "Denver", "Portland", "Los Angeles", "Atlanta"};
                     int locationIndex = 0;
                     List<Product> prods = (List<Product>) request.getAttribute("products");
                     if (prods != null && !prods.isEmpty()) {
@@ -56,7 +56,7 @@
                 %>
                 <div class="col-md-6 col-lg-4 col-xl-3">
                     <div class="card h-100 lifted">
-                        <div class="image-placeholder" role="img" aria-label="Mise en scène lumineuse de <%= location %>">
+                        <div class="image-placeholder" role="img" aria-label="Bright showcase inspired by <%= location %>">
                             <span class="placeholder-label"><%= location.toUpperCase() %></span>
                         </div>
                         <div class="card-body">
@@ -74,7 +74,7 @@
                             <p class="card-text text-muted"><%= p.getDescription() %></p>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <span class="price-tag">$<%= p.getPrice() %></span>
-                                <a class="btn btn-outline-primary btn-sm" href="${pageContext.request.contextPath}/product?id=<%= p.getId() %>">Voir le produit</a>
+                                <a class="btn btn-outline-primary btn-sm" href="${pageContext.request.contextPath}/product?id=<%= p.getId() %>">View product</a>
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                     } else {
                 %>
                 <div class="col-12">
-                    <div class="alert alert-info mb-0">Ajoutez vos premiers produits depuis l'espace administrateur pour alimenter cette section.</div>
+                    <div class="alert alert-info mb-0">Add your first products from the admin area to populate this section.</div>
                 </div>
                 <%
                     }

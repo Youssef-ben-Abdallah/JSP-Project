@@ -1,11 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="org.example.model.Product" %>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Détails Produit</title>
+    <title>Product Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
@@ -25,10 +25,10 @@
             Product p = (Product) request.getAttribute("product");
             if (p == null) {
         %>
-        <div class="alert alert-info">Produit introuvable.</div>
+        <div class="alert alert-info">Product not found.</div>
         <%
             } else {
-                String[] placeholderLocations = {"Paris", "Aix-en-Provence", "Lyon", "Bordeaux", "Deauville", "Cannes", "Colmar", "Avignon"};
+                String[] placeholderLocations = {"New York", "Chicago", "Seattle", "Austin", "Denver", "Portland", "Los Angeles", "Atlanta"};
                 int placeholderIndex = Math.abs((p.getName() != null ? p.getName() : "Nom").hashCode());
                 String location = placeholderLocations[placeholderIndex % placeholderLocations.length];
         %>
@@ -43,7 +43,7 @@
                     <%
                         } else {
                     %>
-                    <div class="image-placeholder" role="img" aria-label="Ambiance immersive de <%= location %>">
+                    <div class="image-placeholder" role="img" aria-label="Immersive atmosphere inspired by <%= location %>">
                         <span class="placeholder-label"><%= location.toUpperCase() %></span>
                     </div>
                     <%
@@ -65,9 +65,9 @@
                     <p class="text-muted"><%= p.getDescription() %></p>
                     <div class="d-flex align-items-center gap-3 mt-3">
                         <span class="price-tag fs-4">$<%= p.getPrice() %></span>
-                        <button class="btn btn-primary" type="button">Ajouter au panier</button>
+                        <button class="btn btn-primary" type="button">Add to cart</button>
                     </div>
-                    <p class="mt-4 text-secondary">Décor inspiré de <%= location %> : textures chaleureuses, lumière diffuse et mise en scène pensée pour vos corners éphémères.</p>
+                    <p class="mt-4 text-secondary">Decor inspired by <%= location %>: warm textures, soft lighting, and a layout tailored for feature displays.</p>
                 </div>
             </div>
         </div>
