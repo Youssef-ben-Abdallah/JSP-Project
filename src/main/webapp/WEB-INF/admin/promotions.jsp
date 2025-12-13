@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gestion des promotions</title>
+    <title>Promotion management</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
@@ -28,15 +28,15 @@
                 <div class="glass-card p-4 h-100">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
                         <div>
-                            <h3 class="mb-1">Créer une promotion</h3>
-                            <p class="text-muted mb-0">Proposez une offre limitée. Chaque modification ultérieure s'effectue dans un modal dédié.</p>
+                            <h3 class="mb-1">Create a promotion</h3>
+                            <p class="text-muted mb-0">Set up a limited offer. Every future edit happens inside a dedicated modal.</p>
                         </div>
-                        <span class="badge-subcategory">Planification guidée</span>
+                        <span class="badge-subcategory">Guided scheduling</span>
                     </div>
                     <form method="post" class="promo-form">
                         <input type="hidden" name="action" value="create" />
                         <div class="mb-3">
-                            <label class="form-label">Titre</label>
+                            <label class="form-label">Title</label>
                             <input class="form-control" type="text" name="title" required />
                         </div>
                         <div class="mb-3">
@@ -44,25 +44,25 @@
                             <textarea class="form-control" name="description" rows="3" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Type de remise</label>
+                            <label class="form-label">Discount type</label>
                             <select class="form-select" name="discountType">
-                                <option value="PERCENTAGE">Pourcentage</option>
-                                <option value="FIXED_AMOUNT">Montant fixe</option>
+                                <option value="PERCENTAGE">Percentage</option>
+                                <option value="FIXED_AMOUNT">Fixed amount</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Valeur</label>
+                            <label class="form-label">Value</label>
                             <input class="form-control" type="number" step="0.01" min="0" name="discountValue" required />
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Début</label>
+                            <label class="form-label">Start</label>
                             <input class="form-control" type="datetime-local" name="startTime" required />
                         </div>
                         <div class="mb-4">
-                            <label class="form-label">Fin</label>
+                            <label class="form-label">End</label>
                             <input class="form-control" type="datetime-local" name="endTime" required />
                         </div>
-                        <button class="btn-soft w-100" type="submit">Publier la promotion</button>
+                        <button class="btn-soft w-100" type="submit">Publish promotion</button>
                     </form>
                     <%
                         String error = (String) session.getAttribute("promotionError");
@@ -81,23 +81,23 @@
                 <div class="glass-card p-4 h-100">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
                         <div>
-                            <h3 class="mb-1">Promotions programmées</h3>
-                            <p class="text-muted mb-0">Editions en modal : conservez le contexte tout en ajustant les périodes.</p>
+                            <h3 class="mb-1">Scheduled promotions</h3>
+                            <p class="text-muted mb-0">Modal edits keep the context while you adjust the time windows.</p>
                         </div>
                         <div class="admin-toolbar">
-                            <div class="placeholder-banner mb-0" role="img" aria-label="Planning des promotions">
-                                Ajustements instantanés
+                            <div class="placeholder-banner mb-0" role="img" aria-label="Promotion planning">
+                                Instant adjustments
                             </div>
-                            <span class="badge-subcategory">Vue calendrier</span>
+                            <span class="badge-subcategory">Calendar view</span>
                         </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table align-middle text-white promo-table">
                             <thead>
                             <tr>
-                                <th>Titre</th>
-                                <th>Période</th>
-                                <th>Remise</th>
+                                <th>Title</th>
+                                <th>Window</th>
+                                <th>Discount</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -111,8 +111,8 @@
                                     for (Promotion promo : promos) {
                                         java.time.LocalDateTime startTime = promo.getStartTime();
                                         java.time.LocalDateTime endTime = promo.getEndTime();
-                                        String startDisplay = startTime != null ? startTime.format(formatter) : "Non planifiée";
-                                        String endDisplay = endTime != null ? endTime.format(formatter) : "Non définie";
+                                        String startDisplay = startTime != null ? startTime.format(formatter) : "Not scheduled";
+                                        String endDisplay = endTime != null ? endTime.format(formatter) : "Not defined";
                             %>
                             <tr>
                                 <td>
@@ -139,12 +139,12 @@
                                                 data-promo-discount-value="<%= decimalFormat.format(promo.getDiscountValue()) %>"
                                                 data-promo-start="<%= startTime != null ? startTime.format(isoFormatter) : "" %>"
                                                 data-promo-end="<%= endTime != null ? endTime.format(isoFormatter) : "" %>">
-                                            Modifier
+                                            Edit
                                         </button>
-                                        <form method="post" onsubmit="return confirm('Supprimer cette promotion ?');">
+                                        <form method="post" onsubmit="return confirm('Delete this promotion?');">
                                             <input type="hidden" name="action" value="delete" />
                                             <input type="hidden" name="id" value="<%= promo.getId() %>" />
-                                            <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                                            <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
                                         </form>
                                     </div>
                                 </td>
@@ -154,7 +154,7 @@
                                 } else {
                             %>
                             <tr>
-                                <td colspan="4" class="text-center text-muted py-4">Aucune promotion pour le moment.</td>
+                                <td colspan="4" class="text-center text-muted py-4">No promotions at the moment.</td>
                             </tr>
                             <%
                                 }
@@ -172,7 +172,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content glass-card">
             <div class="modal-header border-0">
-                <h5 class="modal-title" id="editPromotionLabel">Modifier la promotion</h5>
+                <h5 class="modal-title" id="editPromotionLabel">Edit promotion</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="editPromotionForm" method="post">
@@ -181,14 +181,14 @@
                     <input type="hidden" name="id" id="editPromotionId" />
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label">Titre</label>
+                            <label class="form-label">Title</label>
                             <input class="form-control" type="text" name="title" id="editPromotionTitle" required />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Type de remise</label>
+                            <label class="form-label">Discount type</label>
                             <select class="form-select" name="discountType" id="editPromotionDiscountType">
-                                <option value="PERCENTAGE">Pourcentage</option>
-                                <option value="FIXED_AMOUNT">Montant fixe</option>
+                                <option value="PERCENTAGE">Percentage</option>
+                                <option value="FIXED_AMOUNT">Fixed amount</option>
                             </select>
                         </div>
                         <div class="col-12">
@@ -196,22 +196,22 @@
                             <textarea class="form-control" name="description" id="editPromotionDescription" rows="3" required></textarea>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Valeur</label>
+                            <label class="form-label">Value</label>
                             <input class="form-control" type="number" step="0.01" min="0" name="discountValue" id="editPromotionValue" required />
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Début</label>
+                            <label class="form-label">Start</label>
                             <input class="form-control" type="datetime-local" name="startTime" id="editPromotionStart" required />
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Fin</label>
+                            <label class="form-label">End</label>
                             <input class="form-control" type="datetime-local" name="endTime" id="editPromotionEnd" required />
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn-soft">Mettre à jour</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn-soft">Update</button>
                 </div>
             </form>
         </div>

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin - Sous-catégories</title>
+    <title>Admin - Sub-categories</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
@@ -32,25 +32,25 @@
                 <div class="glass-card p-4 h-100">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
                         <div>
-                            <h5 class="mb-1">Créer une sous-catégorie</h5>
-                            <p class="text-muted mb-0">Affinez votre hiérarchie : chaque modification reste dans un modal dédié.</p>
+                            <h5 class="mb-1">Create a sub-category</h5>
+                            <p class="text-muted mb-0">Refine your hierarchy: every adjustment stays inside a dedicated modal.</p>
                         </div>
-                        <span class="badge-subcategory">Navigation fluide</span>
+                        <span class="badge-subcategory">Smooth navigation</span>
                     </div>
                     <form method="post" action="${pageContext.request.contextPath}/admin/subcategories" class="row g-3 align-items-end">
                         <input type="hidden" name="action" value="create" />
                         <div class="col-md-3">
-                            <label class="form-label">Nom</label>
-                            <input class="form-control" type="text" name="name" placeholder="Nom" required />
+                            <label class="form-label">Name</label>
+                            <input class="form-control" type="text" name="name" placeholder="Name" required />
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Description</label>
                             <input class="form-control" type="text" name="description" placeholder="Description" />
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Catégorie parente</label>
+                            <label class="form-label">Parent category</label>
                             <select class="form-select" name="categoryId" required>
-                                <option value="">-- Catégorie --</option>
+                                <option value="">-- Category --</option>
                                 <%
                                     List<Category> cats = (List<Category>) request.getAttribute("categories");
                                     if (cats != null) {
@@ -64,18 +64,18 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn-soft w-100 justify-content-center" type="submit">Ajouter</button>
+                            <button class="btn-soft w-100 justify-content-center" type="submit">Add</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="glass-card p-4 h-100">
-                    <h6 class="mb-2">Micro-optimisations</h6>
+                    <h6 class="mb-2">Micro-optimizations</h6>
                     <ul class="text-muted small ps-3 mb-0">
-                        <li>Les champs sont pré-remplis dans le modal de modification.</li>
-                        <li>Gardez des intitulés courts pour un meilleur rendu en badge.</li>
-                        <li>La suppression reste accessible mais séparée pour éviter les erreurs.</li>
+                        <li>Fields are pre-filled in the edit modal.</li>
+                        <li>Keep labels short for a better badge layout.</li>
+                        <li>Deletion stays separate to avoid mistakes.</li>
                     </ul>
                 </div>
             </div>
@@ -84,14 +84,14 @@
         <div class="glass-card p-0">
             <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div>
-                    <h5 class="mb-1">Sous-catégories configurées</h5>
-                    <p class="mb-0 text-muted">Organisez vos gammes par univers précis et modifiez-les sans quitter le tableau.</p>
+                    <h5 class="mb-1">Configured sub-categories</h5>
+                    <p class="mb-0 text-muted">Organize your ranges by specific worlds and edit them without leaving the dashboard.</p>
                 </div>
                 <div class="admin-toolbar">
-                    <div class="placeholder-banner mb-0" role="img" aria-label="Palette matières - Metz, Pau, Ajaccio">
-                        Modals prêts à l'emploi
+                    <div class="placeholder-banner mb-0" role="img" aria-label="Material palette - Brooklyn, Austin, Seattle">
+                        Ready-to-use modals
                     </div>
-                    <span class="badge-subcategory">Edition sécurisée</span>
+                    <span class="badge-subcategory">Secure editing</span>
                 </div>
             </div>
             <div class="table-responsive">
@@ -99,9 +99,9 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nom</th>
+                        <th>Name</th>
                         <th>Description</th>
-                        <th>Catégorie</th>
+                        <th>Category</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -123,12 +123,12 @@
                                     data-subcategory-name="<%= sc.getName() %>"
                                     data-subcategory-description="<%= sc.getDescription() != null ? sc.getDescription() : "" %>"
                                     data-subcategory-category-id="<%= sc.getCategoryId() %>">
-                                Modifier
+                                Edit
                             </button>
                             <form method="post" action="${pageContext.request.contextPath}/admin/subcategories" class="d-inline">
                                 <input type="hidden" name="action" value="delete" />
                                 <input type="hidden" name="id" value="<%= sc.getId() %>" />
-                                <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -137,7 +137,7 @@
                         } else {
                     %>
                     <tr>
-                        <td colspan="5" class="text-center py-4 text-muted">Créez vos premières sous-catégories pour enrichir le méga-menu.</td>
+                        <td colspan="5" class="text-center py-4 text-muted">Create your first sub-categories to enrich the mega-menu.</td>
                     </tr>
                     <%
                         }
@@ -151,7 +151,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content glass-card">
                     <div class="modal-header border-0">
-                        <h5 class="modal-title" id="editSubCategoryLabel">Modifier la sous-catégorie</h5>
+                        <h5 class="modal-title" id="editSubCategoryLabel">Edit sub-category</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form id="editSubCategoryForm" method="post" action="${pageContext.request.contextPath}/admin/subcategories">
@@ -159,7 +159,7 @@
                             <input type="hidden" name="action" value="update" />
                             <input type="hidden" name="id" id="editSubCategoryId" />
                             <div class="mb-3">
-                                <label class="form-label">Nom</label>
+                                <label class="form-label">Name</label>
                                 <input class="form-control" type="text" name="name" id="editSubCategoryName" required />
                             </div>
                             <div class="mb-3">
@@ -167,9 +167,9 @@
                                 <input class="form-control" type="text" name="description" id="editSubCategoryDescription" />
                             </div>
                             <div class="mb-0">
-                                <label class="form-label">Catégorie parente</label>
+                                <label class="form-label">Parent category</label>
                                 <select class="form-select" name="categoryId" id="editSubCategoryCategory" required>
-                                    <option value="">-- Catégorie --</option>
+                                    <option value="">-- Category --</option>
                                     <%
                                         if (cats != null) {
                                             for (Category category : cats) {

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin - Produits</title>
+    <title>Admin - Products</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
@@ -38,34 +38,34 @@
                 <div class="glass-card mb-0 p-4 h-100">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
                         <div>
-                            <h5 class="mb-1">Ajouter un produit</h5>
-                            <p class="text-muted mb-0">Renseignez l'essentiel, les champs restent accessibles en modification via un modal dédié.</p>
+                            <h5 class="mb-1">Add a product</h5>
+                            <p class="text-muted mb-0">Capture the essentials—fields remain editable later through a dedicated modal.</p>
                         </div>
-                        <span class="badge-subcategory">Workflow guidé</span>
+                        <span class="badge-subcategory">Guided workflow</span>
                     </div>
                     <form method="post" action="${pageContext.request.contextPath}/admin/products" class="row g-3 align-items-end" enctype="multipart/form-data">
                         <input type="hidden" name="action" value="create" />
                         <div class="col-md-3">
-                            <label class="form-label">Nom</label>
-                            <input class="form-control" type="text" name="name" placeholder="Nom" required />
+                            <label class="form-label">Name</label>
+                            <input class="form-control" type="text" name="name" placeholder="Name" required />
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Description</label>
                             <input class="form-control" type="text" name="description" placeholder="Description" />
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label">Prix</label>
+                            <label class="form-label">Price</label>
                             <input class="form-control" type="number" step="0.01" min="0" name="price" placeholder="0.00" required />
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Visuel produit</label>
+                            <label class="form-label">Product image</label>
                             <input class="form-control" type="file" name="image" accept="image/*" />
                             <small class="text-muted">PNG ou JPG, 5 Mo max.</small>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Catégorie</label>
+                            <label class="form-label">Category</label>
                             <select class="form-select" name="categoryId" required>
-                                <option value="">-- Catégorie --</option>
+                                <option value="">-- Category --</option>
                                 <%
                                     List<Category> cats2 = (List<Category>) request.getAttribute("categories");
                                     if (cats2 != null) {
@@ -79,9 +79,9 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Sous-catégorie</label>
+                            <label class="form-label">Sub-category</label>
                             <select class="form-select" name="subCategoryId">
-                                <option value="">-- Sous-catégorie (optionnel) --</option>
+                                <option value="">-- Sub-category (optional) --</option>
                                 <%
                                     List<SubCategory> subs2 = (List<SubCategory>) request.getAttribute("subCategories");
                                     if (subs2 != null) {
@@ -95,19 +95,19 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn-soft w-100 justify-content-center" type="submit">Ajouter</button>
+                            <button class="btn-soft w-100 justify-content-center" type="submit">Add</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="glass-card p-4 h-100">
-                    <h6 class="mb-2">Sécurité des modifications</h6>
-                    <p class="text-muted small mb-2">Chaque clic sur "Modifier" ouvre un modal contextuel : aucune navigation perdue, données préremplies.</p>
+                    <h6 class="mb-2">Edit safety</h6>
+                    <p class="text-muted small mb-2">Each click on "Edit" opens a contextual modal: no lost navigation, with prefilled data.</p>
                     <ul class="text-muted small ps-3 mb-0">
-                        <li>Prévisualisez l'image existante avant de la remplacer.</li>
-                        <li>Utilisez les catégories pour harmoniser vos collections.</li>
-                        <li>Définissez les prix avec le format décimal guidé.</li>
+                        <li>Preview the existing image before replacing it.</li>
+                        <li>Use categories to keep your collections cohesive.</li>
+                        <li>Set prices with the guided decimal format.</li>
                     </ul>
                 </div>
             </div>
@@ -116,14 +116,14 @@
         <div class="glass-card p-0">
             <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div>
-                    <h5 class="mb-1">Liste des produits</h5>
-                    <p class="mb-0 text-muted">Visualisez vos collections, ajustez les détails via des modals fluides et restez focus sur la lecture.</p>
+                    <h5 class="mb-1">Product list</h5>
+                    <p class="mb-0 text-muted">View your collections, adjust details through smooth modals, and stay focused on the overview.</p>
                 </div>
                 <div class="admin-toolbar">
-                    <div class="placeholder-banner mb-0" role="img" aria-label="Réseau d'ateliers - Rouen, Nancy, Brest">
-                        Interface sans rechargement
+                    <div class="placeholder-banner mb-0" role="img" aria-label="Workshop network - Brooklyn, Austin, Seattle">
+                        Reload-free interface
                     </div>
-                    <span class="badge-subcategory">Edition contextualisée</span>
+                    <span class="badge-subcategory">Contextual editing</span>
                 </div>
             </div>
             <div class="table-responsive">
@@ -131,18 +131,18 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nom</th>
-                        <th>Prix</th>
-                        <th>Catégorie</th>
-                        <th>Sous-catégorie</th>
-                        <th>Ambiance</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Sub-category</th>
+                        <th>Mood</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <%
                         List<Product> plist = (List<Product>) request.getAttribute("products");
-                        String[] placeholderLocations = {"Paris", "Lyon", "Bordeaux", "Nantes", "Lille", "Nice", "Tours", "Grenoble"};
+                        String[] placeholderLocations = {"New York", "Chicago", "Seattle", "Austin", "Denver", "Portland", "Los Angeles", "Atlanta"};
                         java.util.Locale locale = java.util.Locale.US;
                         int adminIndex = 0;
                         if (plist != null && !plist.isEmpty()) {
@@ -165,7 +165,7 @@
                             <%
                                 } else {
                             %>
-                            <div class="image-placeholder is-compact" role="img" aria-label="Ambiance décorative de <%= location %>">
+                            <div class="image-placeholder is-compact" role="img" aria-label="Decor mood inspired by <%= location %>">
                                 <span class="placeholder-label"><%= location.toUpperCase() %></span>
                             </div>
                             <%
@@ -182,12 +182,12 @@
                                     data-product-category="<%= p2.getCategoryId() %>"
                                     data-product-subcategory="<%= p2.getSubCategoryId() != null ? p2.getSubCategoryId() : "" %>"
                                     data-product-image="<%= p2.getImageUrl() != null ? p2.getImageUrl() : "" %>">
-                                Modifier
+                                Edit
                             </button>
                             <form method="post" action="${pageContext.request.contextPath}/admin/products" class="d-inline">
                                 <input type="hidden" name="action" value="delete" />
                                 <input type="hidden" name="id" value="<%= p2.getId() %>" />
-                                <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -196,7 +196,7 @@
                         } else {
                     %>
                     <tr>
-                        <td colspan="7" class="text-center py-4 text-muted">Aucun produit enregistré pour le moment.</td>
+                        <td colspan="7" class="text-center py-4 text-muted">No products have been recorded yet.</td>
                     </tr>
                     <%
                         }
@@ -210,7 +210,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content glass-card">
                     <div class="modal-header border-0">
-                        <h5 class="modal-title" id="editProductLabel">Modifier le produit</h5>
+                        <h5 class="modal-title" id="editProductLabel">Edit product</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form id="editProductForm" method="post" action="${pageContext.request.contextPath}/admin/products" enctype="multipart/form-data">
@@ -220,26 +220,26 @@
                             <input type="hidden" name="existingImageUrl" id="editProductExistingImage" />
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label class="form-label">Nom</label>
+                                    <label class="form-label">Name</label>
                                     <input class="form-control" type="text" name="name" id="editProductName" required />
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Visuel produit</label>
+                                    <label class="form-label">Product image</label>
                                     <input class="form-control" type="file" name="image" accept="image/*" />
-                                    <small class="text-muted">Laisser vide pour conserver l'image actuelle.</small>
+                                    <small class="text-muted">Leave empty to keep the current image.</small>
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Description</label>
                                     <textarea class="form-control" name="description" id="editProductDescription" rows="2"></textarea>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">Prix</label>
+                                    <label class="form-label">Price</label>
                                     <input class="form-control" type="number" step="0.01" min="0" name="price" id="editProductPrice" required />
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">Catégorie</label>
+                                    <label class="form-label">Category</label>
                                     <select class="form-select" name="categoryId" id="editProductCategory" required>
-                                        <option value="">-- Catégorie --</option>
+                                        <option value="">-- Category --</option>
                                         <%
                                             if (cats2 != null) {
                                                 for (Category c2 : cats2) {
@@ -252,9 +252,9 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">Sous-catégorie</label>
+                                    <label class="form-label">Sub-category</label>
                                     <select class="form-select" name="subCategoryId" id="editProductSubCategory">
-                                        <option value="">-- Aucune --</option>
+                                        <option value="">-- None --</option>
                                         <%
                                             if (subs2 != null) {
                                                 for (SubCategory sc2 : subs2) {
@@ -269,8 +269,8 @@
                             </div>
                         </div>
                         <div class="modal-footer border-0">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn-soft">Enregistrer</button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn-soft">Save</button>
                         </div>
                     </form>
                 </div>

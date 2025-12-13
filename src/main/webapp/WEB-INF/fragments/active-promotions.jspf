@@ -9,13 +9,13 @@
                 (java.util.List<org.example.model.Promotion>) request.getAttribute("activePromotions");
         if (activePromotions != null && !activePromotions.isEmpty()) {
             String variant = (String) request.getAttribute("promotionDisplayMode");
-            java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
+    java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
             java.text.DecimalFormat decimalFormat = new java.text.DecimalFormat("#.##");
 %>
 <section class="my-5 <%= variant != null ? "active-promotions-section--" + variant : "" %>">
     <div class="section-heading mb-4">
-        <h2 class="h4">Promotions en cours</h2>
-        <p class="mb-0">Les offres s’arrêtent automatiquement à la fin du compte à rebours.</p>
+        <h2 class="h4">Active promotions</h2>
+        <p class="mb-0">Offers end automatically when the countdown reaches zero.</p>
     </div>
     <div class="row g-3">
         <%
@@ -25,8 +25,8 @@
                 String isoEnd = endTime != null ? endTime.toString() : "";
                 String isoStart = startTime != null ? startTime.toString() : "";
                 String countdownId = "countdown-" + promo.getId();
-                String startLabel = startTime != null ? startTime.format(dateFormatter) : "À venir";
-                String endLabel = endTime != null ? endTime.format(dateFormatter) : "À déterminer";
+                String startLabel = startTime != null ? startTime.format(dateFormatter) : "Upcoming";
+                String endLabel = endTime != null ? endTime.format(dateFormatter) : "To be determined";
         %>
         <div class="col-md-6 col-lg-4">
             <article class="promo-highlight-card h-100" data-end-time="<%= isoEnd %>" data-start-time="<%= isoStart %>">
@@ -44,8 +44,8 @@
                 </div>
                 <h3 class="h5 mb-2"><%= promo.getTitle() %></h3>
                 <p class="mb-3 text-muted"><%= promo.getDescription() %></p>
-                <p class="small text-muted mb-1">Démarre : <strong><%= startLabel %></strong></p>
-                <p class="small text-muted mb-0">Fin : <strong><%= endLabel %></strong></p>
+                <p class="small text-muted mb-1">Starts: <strong><%= startLabel %></strong></p>
+                <p class="small text-muted mb-0">Ends: <strong><%= endLabel %></strong></p>
             </article>
         </div>
         <%
