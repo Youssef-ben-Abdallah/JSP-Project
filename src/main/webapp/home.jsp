@@ -59,7 +59,7 @@
                         <div class="image-placeholder" role="img" aria-label="Bright showcase inspired by <%= location %>">
                             <span class="placeholder-label"><%= location.toUpperCase() %></span>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column">
                             <div class="d-flex flex-wrap gap-2 mb-2">
                                 <span class="badge text-bg-light"><%= p.getCategoryName() != null ? p.getCategoryName() : "Collection" %></span>
                                 <%
@@ -72,7 +72,7 @@
                             </div>
                             <h5 class="card-title mb-1"><%= p.getName() %></h5>
                             <p class="card-text text-muted"><%= p.getDescription() %></p>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="d-flex justify-content-between align-items-start gap-3 mt-auto pt-2">
                                 <%
                                     String subCategoryId = p.getSubCategoryId() != null ? p.getSubCategoryId().toString() : "";
                                 %>
@@ -81,7 +81,7 @@
                                     <jsp:param name="categoryId" value="<%= String.valueOf(p.getCategoryId()) %>" />
                                     <jsp:param name="subCategoryId" value="<%= subCategoryId %>" />
                                 </jsp:include>
-                                <div class="d-flex gap-2">
+                                <div class="d-flex gap-2 align-items-stretch">
                                     <form method="post" action="${pageContext.request.contextPath}/cart" class="d-inline">
                                         <input type="hidden" name="productId" value="<%= p.getId() %>" />
                                         <input type="hidden" name="quantity" value="1" />
