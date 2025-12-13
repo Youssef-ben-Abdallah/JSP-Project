@@ -3,19 +3,37 @@
         return value.toString().padStart(2, '0');
     }
 
-    function updateCountdown(element, endTime) {
+    var ONE_DAY_MS = 24 * 60 * 60 * 1000;
+    var THREE_DAYS_MS = ONE_DAY_MS * 3;
+
+    function setCountdownState(element, state) {
+        element.classList.remove('is-warning', 'is-safe', 'is-critical', 'is-expired');
+        if (state) {
+            element.classList.add(state);
+        }
+    }
+
+    function updateCountdown(card, element, endTime, intervalId) {
         if (!endTime) {
             element.textContent = 'Expired';
-            element.classList.add('is-expired');
-            return;
+            setCountdownState(element, 'is-expired');
+            return true;
         }
         var now = new Date().getTime();
         var distance = endTime - now;
+
+        if (distance <= -ONE_DAY_MS) {
+            clearInterval(intervalId);
+            card.remove();
+            return false;
+        }
+
         if (distance <= 0) {
             element.textContent = 'Expired';
-            element.classList.add('is-expired');
-            return;
+            setCountdownState(element, 'is-expired');
+            return true;
         }
+
         var hours = Math.floor(distance / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -27,6 +45,16 @@
         } else {
             element.textContent = pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
         }
+
+        if (distance <= ONE_DAY_MS) {
+            setCountdownState(element, 'is-critical');
+        } else if (distance <= THREE_DAYS_MS) {
+            setCountdownState(element, 'is-warning');
+        } else {
+            setCountdownState(element, 'is-safe');
+        }
+
+        return true;
     }
 
     function initialisePromotions() {
@@ -41,10 +69,14 @@
                 return;
             }
             var endDate = new Date(endIso.replace(' ', 'T'));
-            updateCountdown(countdown, endDate.getTime());
-            setInterval(function () {
-                updateCountdown(countdown, endDate.getTime());
-            }, 1000);
+            var intervalId = null;
+            var tick = function () {
+                if (!updateCountdown(card, countdown, endDate.getTime(), intervalId)) {
+                    return;
+                }
+            };
+            tick();
+            intervalId = setInterval(tick, 1000);
         });
     }
 

@@ -32,7 +32,7 @@
             <article class="promo-highlight-card h-100" data-end-time="<%= isoEnd %>" data-start-time="<%= isoStart %>">
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     <span class="promo-pill <%= promo.isPercentage() ? "is-percentage" : "" %>">
-                        <%= promo.isPercentage() ? decimalFormat.format(promo.getDiscountValue()) + "%" : "-" + decimalFormat.format(promo.getDiscountValue()) + "€" %>
+                        <%= promo.isPercentage() ? decimalFormat.format(promo.getDiscountValue()) + "%" : "-" + decimalFormat.format(promo.getDiscountValue()) + " EUR" %>
                     </span>
                     <span class="promo-countdown" id="<%= countdownId %>">
                         <span class="countdown-segment">--</span>
