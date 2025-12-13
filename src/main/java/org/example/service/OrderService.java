@@ -11,6 +11,9 @@ import java.util.Map;
 
 public class OrderService {
     private final OrderRepository orderRepository = new OrderRepository();
+    public static final String STATUS_PENDING = "PENDING_CONFIRMATION";
+    public static final String STATUS_DELIVERY = "IN_DELIVERY";
+    public static final String STATUS_DELIVERED = "DELIVERED";
 
     public int placeOrder(int userId, Map<Integer, CartItem> cartItems) throws Exception {
         List<OrderItem> items = new ArrayList<>();
@@ -23,7 +26,7 @@ public class OrderService {
             total += cartItem.getQuantity() * cartItem.getProduct().getPrice();
             items.add(orderItem);
         }
-        return orderRepository.createOrder(userId, total, items);
+        return orderRepository.createOrder(userId, total, items, STATUS_PENDING);
     }
 
     public List<Order> getOrdersForUser(int userId) {
@@ -32,6 +35,29 @@ public class OrderService {
         } catch (Exception e) {
             e.printStackTrace();
             return List.of();
+        }
+    }
+
+    public List<Order> getAllOrders() {
+        try {
+            return orderRepository.findAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    public void updateOrderStatus(int orderId, String status) {
+        if (status == null || status.isBlank()) {
+            throw new IllegalArgumentException("Status must be provided");
+        }
+        if (!(STATUS_PENDING.equals(status) || STATUS_DELIVERY.equals(status) || STATUS_DELIVERED.equals(status))) {
+            throw new IllegalArgumentException("Unsupported status value");
+        }
+        try {
+            orderRepository.updateStatus(orderId, status);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to update order status", e);
         }
     }
 }

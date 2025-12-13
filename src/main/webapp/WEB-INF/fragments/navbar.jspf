@@ -11,7 +11,7 @@
     boolean isLogin = currentPath.contains("/login");
     boolean isRegister = currentPath.contains("/register");
     boolean isCart = currentPath.contains("/cart");
-    boolean isDashboard = currentPath.contains("/dashboard");
+    boolean isDashboard = currentPath.contains("/admin/orders");
     Integer cartCount = (Integer) request.getAttribute("cartCount");
     if (cartCount == null) cartCount = 0;
     User currentUser = (User) request.getAttribute("currentUser");
@@ -85,7 +85,14 @@
                 <%
                     if (currentUser != null) {
                 %>
-                <a class="btn btn-outline-light <%= isDashboard ? "active" : "" %>" href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
+                <%
+                    boolean isAdmin = currentUser.getRole() != null && currentUser.getRole().equalsIgnoreCase("ADMIN");
+                    if (isAdmin) {
+                %>
+                <a class="btn btn-outline-light <%= isDashboard ? "active" : "" %>" href="${pageContext.request.contextPath}/admin/orders">Orders</a>
+                <%
+                    }
+                %>
                 <span class="text-light">Hello, <%= currentUser.getUsername() %></span>
                 <a class="btn btn-light btn-sm" href="${pageContext.request.contextPath}/logout">Logout</a>
                 <%

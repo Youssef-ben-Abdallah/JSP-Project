@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 public class OrderRepository {
-    public int createOrder(int userId, double totalAmount, List<OrderItem> items) throws Exception {
-        String orderSql = "INSERT INTO orders (user_id, total_amount, created_at) VALUES (?, ?, NOW())";
+    public int createOrder(int userId, double totalAmount, List<OrderItem> items, String status) throws Exception {
+        String orderSql = "INSERT INTO orders (user_id, total_amount, status, created_at) VALUES (?, ?, ?, NOW())";
         String itemSql = "INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES (?, ?, ?, ?)";
 
         try (Connection con = DBConnection.getConnection()) {
@@ -25,6 +25,7 @@ public class OrderRepository {
             try (PreparedStatement orderStmt = con.prepareStatement(orderSql, Statement.RETURN_GENERATED_KEYS)) {
                 orderStmt.setInt(1, userId);
                 orderStmt.setDouble(2, totalAmount);
+                orderStmt.setString(3, status);
                 orderStmt.executeUpdate();
                 try (ResultSet rs = orderStmt.getGeneratedKeys()) {
                     if (rs.next()) {
@@ -51,7 +52,7 @@ public class OrderRepository {
     }
 
     public List<Order> findByUserId(int userId) throws Exception {
-        String sql = "SELECT o.id, o.user_id, o.total_amount, o.created_at, u.username, " +
+        String sql = "SELECT o.id, o.user_id, o.total_amount, o.status, o.created_at, u.username, " +
                 "oi.product_id, oi.quantity, oi.unit_price, p.name AS product_name " +
                 "FROM orders o " +
                 "JOIN users u ON o.user_id = u.id " +
@@ -66,11 +67,57 @@ public class OrderRepository {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     int orderId = rs.getInt("id");
+                        Order order = orders.computeIfAbsent(orderId, id -> {
+                            Order o = new Order();
+                            o.setId(id);
+                            o.setUserId(rsGetIntSafe(rs, "user_id"));
+                            o.setUsername(rsGetStringSafe(rs, "username"));
+                            o.setStatus(rsGetStringSafe(rs, "status"));
+                            o.setTotalAmount(rsGetDoubleSafe(rs, "total_amount"));
+                        Timestamp ts = rsGetTimestampSafe(rs, "created_at");
+                        if (ts != null) {
+                            o.setCreatedAt(ts.toLocalDateTime());
+                        } else {
+                            o.setCreatedAt(LocalDateTime.now());
+                        }
+                        return o;
+                    });
+                    int productId = rs.getInt("product_id");
+                    if (productId > 0) {
+                        OrderItem item = new OrderItem();
+                        item.setOrderId(orderId);
+                        item.setProductId(productId);
+                        item.setQuantity(rsGetIntSafe(rs, "quantity"));
+                        item.setUnitPrice(rsGetDoubleSafe(rs, "unit_price"));
+                        item.setProductName(rsGetStringSafe(rs, "product_name"));
+                        order.getItems().add(item);
+                    }
+                }
+            }
+        }
+        return new ArrayList<>(orders.values());
+    }
+
+    public List<Order> findAll() throws Exception {
+        String sql = "SELECT o.id, o.user_id, o.total_amount, o.status, o.created_at, u.username, " +
+                "oi.product_id, oi.quantity, oi.unit_price, p.name AS product_name " +
+                "FROM orders o " +
+                "JOIN users u ON o.user_id = u.id " +
+                "LEFT JOIN order_items oi ON o.id = oi.order_id " +
+                "LEFT JOIN products p ON oi.product_id = p.id " +
+                "ORDER BY o.created_at DESC, o.id DESC";
+        Map<Integer, Order> orders = new LinkedHashMap<>();
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int orderId = rs.getInt("id");
                     Order order = orders.computeIfAbsent(orderId, id -> {
                         Order o = new Order();
                         o.setId(id);
                         o.setUserId(rsGetIntSafe(rs, "user_id"));
                         o.setUsername(rsGetStringSafe(rs, "username"));
+                        o.setStatus(rsGetStringSafe(rs, "status"));
                         o.setTotalAmount(rsGetDoubleSafe(rs, "total_amount"));
                         Timestamp ts = rsGetTimestampSafe(rs, "created_at");
                         if (ts != null) {
@@ -94,6 +141,16 @@ public class OrderRepository {
             }
         }
         return new ArrayList<>(orders.values());
+    }
+
+    public void updateStatus(int orderId, String status) throws Exception {
+        String sql = "UPDATE orders SET status = ? WHERE id = ?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+        }
     }
 
     private Integer rsGetIntSafe(ResultSet rs, String column) {
