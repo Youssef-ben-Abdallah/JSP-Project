@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
-<body>
+<body class="admin-shell">
 <main class="page-wrapper">
     <div class="container py-5">
         <jsp:include page="/WEB-INF/admin/admin-header.jspf" />
@@ -27,48 +27,71 @@
             }
         %>
 
-        <div class="glass-card p-4 mb-4">
-            <h5 class="mb-3">Créer une sous-catégorie</h5>
-            <form method="post" action="${pageContext.request.contextPath}/admin/subcategories" class="row g-3 align-items-end">
-                <input type="hidden" name="action" value="create" />
-                <div class="col-md-3">
-                    <label class="form-label">Nom</label>
-                    <input class="form-control" type="text" name="name" placeholder="Nom" required />
+        <div class="row g-4 mb-4">
+            <div class="col-lg-8">
+                <div class="glass-card p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                        <div>
+                            <h5 class="mb-1">Créer une sous-catégorie</h5>
+                            <p class="text-muted mb-0">Affinez votre hiérarchie : chaque modification reste dans un modal dédié.</p>
+                        </div>
+                        <span class="badge-subcategory">Navigation fluide</span>
+                    </div>
+                    <form method="post" action="${pageContext.request.contextPath}/admin/subcategories" class="row g-3 align-items-end">
+                        <input type="hidden" name="action" value="create" />
+                        <div class="col-md-3">
+                            <label class="form-label">Nom</label>
+                            <input class="form-control" type="text" name="name" placeholder="Nom" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Description</label>
+                            <input class="form-control" type="text" name="description" placeholder="Description" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Catégorie parente</label>
+                            <select class="form-select" name="categoryId" required>
+                                <option value="">-- Catégorie --</option>
+                                <%
+                                    List<Category> cats = (List<Category>) request.getAttribute("categories");
+                                    if (cats != null) {
+                                        for (Category c : cats) {
+                                %>
+                                <option value="<%= c.getId() %>"><%= c.getName() %></option>
+                                <%
+                                        }
+                                    }
+                                %>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn-soft w-100 justify-content-center" type="submit">Ajouter</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label">Description</label>
-                    <input class="form-control" type="text" name="description" placeholder="Description" />
+            </div>
+            <div class="col-lg-4">
+                <div class="glass-card p-4 h-100">
+                    <h6 class="mb-2">Micro-optimisations</h6>
+                    <ul class="text-muted small ps-3 mb-0">
+                        <li>Les champs sont pré-remplis dans le modal de modification.</li>
+                        <li>Gardez des intitulés courts pour un meilleur rendu en badge.</li>
+                        <li>La suppression reste accessible mais séparée pour éviter les erreurs.</li>
+                    </ul>
                 </div>
-                <div class="col-md-3">
-                    <label class="form-label">Catégorie parente</label>
-                    <select class="form-select" name="categoryId" required>
-                        <option value="">-- Catégorie --</option>
-                        <%
-                            List<Category> cats = (List<Category>) request.getAttribute("categories");
-                            if (cats != null) {
-                                for (Category c : cats) {
-                        %>
-                        <option value="<%= c.getId() %>"><%= c.getName() %></option>
-                        <%
-                                }
-                            }
-                        %>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <button class="btn-soft w-100 justify-content-center" type="submit">Ajouter</button>
-                </div>
-            </form>
+            </div>
         </div>
 
         <div class="glass-card p-0">
             <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div>
                     <h5 class="mb-1">Sous-catégories configurées</h5>
-                    <p class="mb-0 text-muted">Organisez vos gammes par univers précis pour simplifier la navigation côté client.</p>
+                    <p class="mb-0 text-muted">Organisez vos gammes par univers précis et modifiez-les sans quitter le tableau.</p>
                 </div>
-                <div class="placeholder-banner mb-0" role="img" aria-label="Palette matières - Metz, Pau, Ajaccio">
-                    Palette matières : Metz, Pau &amp; Ajaccio
+                <div class="admin-toolbar">
+                    <div class="placeholder-banner mb-0" role="img" aria-label="Palette matières - Metz, Pau, Ajaccio">
+                        Modals prêts à l'emploi
+                    </div>
+                    <span class="badge-subcategory">Edition sécurisée</span>
                 </div>
             </div>
             <div class="table-responsive">
