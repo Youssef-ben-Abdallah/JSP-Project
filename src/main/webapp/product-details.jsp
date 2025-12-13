@@ -30,12 +30,23 @@
                 int placeholderIndex = Math.abs((p.getName() != null ? p.getName() : "Nom").hashCode());
                 String location = placeholderLocations[placeholderIndex % placeholderLocations.length];
         %>
-        <div class="detail-card">
+            <div class="detail-card">
             <div class="row g-4 align-items-center">
                 <div class="col-md-5">
+                    <%
+                        String imagePath = p.getImageUrl();
+                        if (imagePath != null && !imagePath.isBlank()) {
+                    %>
+                    <img src="<%= pageContext.getRequest().getContextPath() + "/" + imagePath %>" alt="Visuel <%= p.getName() %>" class="img-fluid rounded" style="max-height: 280px; object-fit: cover;" />
+                    <%
+                        } else {
+                    %>
                     <div class="image-placeholder" role="img" aria-label="Ambiance immersive de <%= location %>">
                         <span class="placeholder-label"><%= location.toUpperCase() %></span>
                     </div>
+                    <%
+                        }
+                    %>
                 </div>
                 <div class="col-md-7">
                     <div class="d-flex flex-wrap gap-2 align-items-center mb-2">

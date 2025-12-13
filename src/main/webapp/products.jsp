@@ -69,9 +69,20 @@
             %>
             <div class="col-md-6 col-lg-4 col-xl-3">
                 <div class="card glass-card h-100 p-2">
+                    <%
+                        String imagePath = p.getImageUrl();
+                        if (imagePath != null && !imagePath.isBlank()) {
+                    %>
+                    <img src="<%= pageContext.getRequest().getContextPath() + "/" + imagePath %>" alt="Visuel <%= p.getName() %>" class="card-img-top rounded" style="height: 180px; object-fit: cover;" />
+                    <%
+                        } else {
+                    %>
                     <div class="image-placeholder" role="img" aria-label="Décor conceptuel de <%= location %>">
                         <span class="placeholder-label"><%= location.toUpperCase() %></span>
                     </div>
+                    <%
+                        }
+                    %>
                     <div class="card-body">
                         <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
                             <span class="badge-category"><%= p.getCategoryName() != null ? p.getCategoryName() : "Collection" %></span>

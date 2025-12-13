@@ -1,10 +1,12 @@
 package org.example.controller;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import org.example.model.Category;
 import org.example.model.Product;
 import org.example.model.SubCategory;
@@ -13,10 +15,16 @@ import org.example.service.ProductService;
 import org.example.service.SubCategoryService;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.List;
 
 @WebServlet(name = "ProductController", urlPatterns = {"/products", "/product", "/admin/products"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024)
 public class ProductController extends HttpServlet {
     private final ProductService productService = new ProductService();
     private final CategoryService categoryService = new CategoryService();
@@ -133,22 +141,25 @@ public class ProductController extends HttpServlet {
             String action = req.getParameter("action");
             if ("create".equals(action)) {
                 Integer subCategoryId = parseInteger(req.getParameter("subCategoryId"));
+                String imageUrl = handleImageUpload(req, null);
                 productService.addProduct(
                         req.getParameter("name"),
                         req.getParameter("description"),
                         Double.parseDouble(req.getParameter("price")),
-                        req.getParameter("imageUrl"),
+                        imageUrl,
                         Integer.parseInt(req.getParameter("categoryId")),
                         subCategoryId
                 );
             } else if ("update".equals(action)) {
                 Integer subCategoryId = parseInteger(req.getParameter("subCategoryId"));
+                String existingImage = req.getParameter("existingImageUrl");
+                String imageUrl = handleImageUpload(req, existingImage);
                 productService.updateProduct(
                         Integer.parseInt(req.getParameter("id")),
                         req.getParameter("name"),
                         req.getParameter("description"),
                         Double.parseDouble(req.getParameter("price")),
-                        req.getParameter("imageUrl"),
+                        imageUrl,
                         Integer.parseInt(req.getParameter("categoryId")),
                         subCategoryId
                 );
@@ -158,6 +169,27 @@ public class ProductController extends HttpServlet {
             }
             resp.sendRedirect(req.getContextPath() + "/admin/products");
         }
+    }
+
+    private String handleImageUpload(HttpServletRequest req, String fallbackPath)
+            throws IOException, ServletException {
+        Part imagePart = req.getPart("image");
+        if (imagePart != null && imagePart.getSize() > 0) {
+            String submittedName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+            if (!submittedName.isBlank()) {
+                String uploadDir = req.getServletContext().getRealPath("/assets/img/products");
+                Path uploadPath = Paths.get(uploadDir);
+                Files.createDirectories(uploadPath);
+
+                String uniqueName = System.currentTimeMillis() + "_" + submittedName;
+                Path destination = uploadPath.resolve(uniqueName);
+                try (InputStream inputStream = imagePart.getInputStream()) {
+                    Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING);
+                }
+                return "assets/img/products/" + uniqueName;
+            }
+        }
+        return fallbackPath != null && !fallbackPath.isBlank() ? fallbackPath : null;
     }
 
     private Integer parseInteger(String value) {
