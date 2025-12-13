@@ -11,7 +11,7 @@
     <div class="login-card text-center">
         <div class="tagline-chip">Itinéraire interrompu</div>
         <h2 class="mt-3">Oups 😬</h2>
-        <p class="text-muted">Une erreur est survenue pendant la visite de nos showrooms numériques.</p>
+        <p class="text-muted">Une erreur s'est glissée dans le parcours. Revenez sur l'accueil pour relancer la visite.</p>
         <div class="image-placeholder is-compact mx-auto mb-4" style="max-width:120px;" role="img" aria-label="Point de chute - Paris">
             <span class="placeholder-label">PARIS</span>
         </div>

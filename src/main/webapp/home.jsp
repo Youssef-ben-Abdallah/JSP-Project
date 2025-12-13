@@ -27,14 +27,37 @@
             request.removeAttribute("promotionDisplayMode");
         %>
 
-        <section class="hero-section mb-5 text-white">
-            <div class="tagline-chip">Expérience immersive</div>
-            <h1 class="mt-3">Votre boutique moderne au coeur des plus belles villes</h1>
-            <p class="mt-3">Découvrez des collections raffinées, une expérience fluide et des services pensés pour vous accompagner dans chacun de vos projets.</p>
-            <div class="hero-actions">
-                <a class="btn-soft" href="${pageContext.request.contextPath}/products">Découvrir le catalogue</a>
-                <div class="placeholder-banner" role="img" aria-label="Réseau de showrooms - Paris, Lyon, Bordeaux">
-                    3 showrooms éphémères : Paris, Lyon &amp; Bordeaux
+        <section class="hero-section mb-5">
+            <div class="hero-grid">
+                <div>
+                    <div class="hero-badges">
+                        <span class="tagline-chip">Flagship MyShop</span>
+                        <span class="hero-badge">Concept stores &bull; Paris, Lyon, Bordeaux</span>
+                    </div>
+                    <h1 class="hero-title">Une vitrine chaleureuse pour vos collections premium</h1>
+                    <p class="hero-lead">Nous combinons merchandising, scénographie et services express pour transformer chaque produit en expérience mémorable.</p>
+                    <div class="hero-actions">
+                        <a class="btn-soft" href="${pageContext.request.contextPath}/products">Parcourir le catalogue</a>
+                        <a class="btn-ghost" href="${pageContext.request.contextPath}/products?categoryId=1">Voir les nouveautés</a>
+                    </div>
+                </div>
+                <div class="hero-panel">
+                    <strong>Parcours immersif</strong>
+                    <p class="text-muted mb-2">Nos équipes créent des ambiances inspirées des quartiers français pour mettre vos articles en avant.</p>
+                    <div class="stat-grid">
+                        <div class="stat-pill">
+                            <div class="stat-label">Showrooms activés</div>
+                            <div class="stat-value">12 villes</div>
+                        </div>
+                        <div class="stat-pill">
+                            <div class="stat-label">Satisfaction</div>
+                            <div class="stat-value">4.9 / 5</div>
+                        </div>
+                        <div class="stat-pill">
+                            <div class="stat-label">Livraison premium</div>
+                            <div class="stat-value">48h</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

@@ -12,7 +12,7 @@
         <div class="text-center mb-4">
             <div class="tagline-chip">Espace sécurisé</div>
             <h3 class="mt-3">Administration MyShop</h3>
-            <p class="text-muted">Retrouvez vos vitrines virtuelles réparties entre nos studios de Paris, Lille et Bordeaux.</p>
+            <p class="text-muted">Pilotez vos catégories, promotions et collections depuis un tableau de bord raffiné.</p>
         </div>
         <form method="post" action="${pageContext.request.contextPath}/login" class="mb-3">
             <div class="mb-3">
@@ -34,7 +34,7 @@
             }
         %>
         <div class="placeholder-banner mt-4" role="img" aria-label="Studios créatifs - Paris, Lille, Bordeaux">
-            Accès réservé aux curateurs de nos studios : Paris, Lille &amp; Bordeaux.
+            Accès réservé à l'équipe merchandising : Paris, Lille &amp; Bordeaux.
         </div>
     </div>
 </div>
