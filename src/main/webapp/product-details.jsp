@@ -64,7 +64,11 @@
                     <h2 class="h4"><%= p.getName() %></h2>
                     <p class="text-muted"><%= p.getDescription() %></p>
                     <div class="d-flex align-items-center gap-3 mt-3">
-                        <span class="price-tag fs-4">$<%= p.getPrice() %></span>
+                        <jsp:include page="/WEB-INF/fragments/product-price.jspf">
+                            <jsp:param name="price" value="<%= String.valueOf(p.getPrice()) %>" />
+                            <jsp:param name="categoryId" value="<%= String.valueOf(p.getCategoryId()) %>" />
+                            <jsp:param name="subCategoryId" value="<%= p.getSubCategoryId() != null ? p.getSubCategoryId().toString() : "" %>" />
+                        </jsp:include>
                         <button class="btn btn-primary" type="button">Add to cart</button>
                     </div>
                     <p class="mt-4 text-secondary">Decor inspired by <%= location %>: warm textures, soft lighting, and a layout tailored for feature displays.</p>

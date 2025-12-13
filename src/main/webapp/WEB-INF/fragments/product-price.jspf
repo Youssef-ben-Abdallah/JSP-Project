@@ -1,0 +1,29 @@
+<%@ page import="org.example.model.DiscountedPrice" %>
+<%@ page import="org.example.service.PromotionDiscountCalculator" %>
+<%@ page import="org.example.model.Promotion" %>
+<%@ page import="java.text.DecimalFormat" %>
+<%
+    double price = Double.parseDouble(request.getParameter("price"));
+    String categoryParam = request.getParameter("categoryId");
+    String subCategoryParam = request.getParameter("subCategoryId");
+    Integer categoryId = null;
+    Integer subCategoryId = null;
+    if (categoryParam != null && !categoryParam.isBlank()) {
+        try { categoryId = Integer.parseInt(categoryParam); } catch (NumberFormatException ignored) {}
+    }
+    if (subCategoryParam != null && !subCategoryParam.isBlank()) {
+        try { subCategoryId = Integer.parseInt(subCategoryParam); } catch (NumberFormatException ignored) {}
+    }
+    java.util.List<Promotion> activePromotions = (java.util.List<Promotion>) request.getAttribute("activePromotions");
+    java.util.Optional<DiscountedPrice> discount = PromotionDiscountCalculator.calculate(price, categoryId, subCategoryId, activePromotions);
+    DecimalFormat decimalFormat = new DecimalFormat("#.##");
+%>
+<% if (discount.isPresent()) { DiscountedPrice info = discount.get(); %>
+    <div class="d-flex align-items-center gap-2">
+        <span class="price-tag text-decoration-line-through text-muted">$<%= decimalFormat.format(info.getOriginalPrice()) %></span>
+        <span class="price-tag">$<%= decimalFormat.format(info.getFinalPrice()) %></span>
+    </div>
+    <p class="mb-0 text-success small">Save $<%= decimalFormat.format(info.getSavings()) %> with "<%= info.getPromotion().getTitle() %>"</p>
+<% } else { %>
+    <span class="price-tag">$<%= decimalFormat.format(price) %></span>
+<% } %>

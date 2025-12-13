@@ -20,7 +20,7 @@ public class PromotionService {
     }
 
     public void create(String title, String description, String discountType, String discountValue,
-                       String startTime, String endTime) {
+                       String startTime, String endTime, String categoryId, String subCategoryId) {
         Promotion promotion = new Promotion();
         promotion.setTitle(title != null ? title.trim() : null);
         promotion.setDescription(description != null ? description.trim() : null);
@@ -28,13 +28,15 @@ public class PromotionService {
         promotion.setDiscountValue(parseDouble(discountValue));
         promotion.setStartTime(parseDate(startTime));
         promotion.setEndTime(parseDate(endTime));
+        promotion.setCategoryId(parseOptionalInt(categoryId));
+        promotion.setSubCategoryId(parseOptionalInt(subCategoryId));
         validateChronology(promotion.getStartTime(), promotion.getEndTime());
         validateBusinessRules(promotion);
         repository.create(promotion);
     }
 
     public void update(int id, String title, String description, String discountType, String discountValue,
-                       String startTime, String endTime) {
+                       String startTime, String endTime, String categoryId, String subCategoryId) {
         Promotion promotion = new Promotion();
         promotion.setId(id);
         promotion.setTitle(title != null ? title.trim() : null);
@@ -43,6 +45,8 @@ public class PromotionService {
         promotion.setDiscountValue(parseDouble(discountValue));
         promotion.setStartTime(parseDate(startTime));
         promotion.setEndTime(parseDate(endTime));
+        promotion.setCategoryId(parseOptionalInt(categoryId));
+        promotion.setSubCategoryId(parseOptionalInt(subCategoryId));
         validateChronology(promotion.getStartTime(), promotion.getEndTime());
         validateBusinessRules(promotion);
         repository.update(promotion);
@@ -97,6 +101,17 @@ public class PromotionService {
         }
         if (promotion.getDiscountValue() <= 0) {
             throw new IllegalArgumentException("La valeur de la remise doit être positive");
+        }
+    }
+
+    private Integer parseOptionalInt(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return null;
         }
     }
 }

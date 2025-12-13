@@ -10,6 +10,8 @@ public class Promotion {
     private double discountValue;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private Integer categoryId;
+    private Integer subCategoryId;
 
     public int getId() {
         return id;
@@ -65,6 +67,22 @@ public class Promotion {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Integer getSubCategoryId() {
+        return subCategoryId;
+    }
+
+    public void setSubCategoryId(Integer subCategoryId) {
+        this.subCategoryId = subCategoryId;
     }
 
     public boolean isPercentage() {
