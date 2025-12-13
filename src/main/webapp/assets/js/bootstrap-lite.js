@@ -39,5 +39,60 @@
         }
       });
     });
+
+    // Lightweight modal handling
+    var activeBackdrop = null;
+
+    function showModal(modal) {
+      if (!modal) return;
+      modal.classList.add('show');
+      modal.removeAttribute('aria-hidden');
+      modal.setAttribute('aria-modal', 'true');
+      document.body.style.overflow = 'hidden';
+
+      activeBackdrop = document.createElement('div');
+      activeBackdrop.className = 'modal-backdrop';
+      document.body.appendChild(activeBackdrop);
+    }
+
+    function hideModal(modal) {
+      if (!modal) return;
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true');
+      modal.removeAttribute('aria-modal');
+      document.body.style.overflow = '';
+
+      if (activeBackdrop) {
+        activeBackdrop.remove();
+        activeBackdrop = null;
+      }
+    }
+
+    document.querySelectorAll('[data-bs-toggle="modal"]').forEach(function(trigger) {
+      var targetSelector = trigger.getAttribute('data-bs-target');
+      var modal = targetSelector ? document.querySelector(targetSelector) : null;
+      if (!modal) return;
+
+      trigger.addEventListener('click', function(event) {
+        event.preventDefault();
+        showModal(modal);
+      });
+    });
+
+    document.querySelectorAll('[data-bs-dismiss="modal"]').forEach(function(closeBtn) {
+      closeBtn.addEventListener('click', function(event) {
+        event.preventDefault();
+        var modal = closeBtn.closest('.modal');
+        hideModal(modal);
+      });
+    });
+
+    document.querySelectorAll('.modal').forEach(function(modal) {
+      modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+          hideModal(modal);
+        }
+      });
+    });
   });
 })();
