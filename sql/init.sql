@@ -198,6 +198,7 @@ CREATE TABLE orders (
                         id INT PRIMARY KEY AUTO_INCREMENT,
                         user_id INT NOT NULL,
                         total_amount DECIMAL(10,2) NOT NULL,
+                        status VARCHAR(50) NOT NULL DEFAULT 'PENDING_CONFIRMATION',
                         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                         CONSTRAINT fk_order_user FOREIGN KEY (user_id)
                             REFERENCES users(id)

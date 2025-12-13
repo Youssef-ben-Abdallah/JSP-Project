@@ -32,6 +32,9 @@
         <a class="admin-nav-link <%= adminPath.contains("/admin/promotions") ? "is-active" : "" %>" href="${pageContext.request.contextPath}/admin/promotions">
             Promotions
         </a>
+        <a class="admin-nav-link <%= adminPath.contains("/admin/orders") ? "is-active" : "" %>" href="${pageContext.request.contextPath}/admin/orders">
+            Orders
+        </a>
         <a class="admin-nav-link" href="${pageContext.request.contextPath}/logout">
             Logout
         </a>

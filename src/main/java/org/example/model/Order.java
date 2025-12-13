@@ -8,6 +8,7 @@ public class Order {
     private int id;
     private int userId;
     private String username;
+    private String status;
     private double totalAmount;
     private LocalDateTime createdAt;
     private List<OrderItem> items = new ArrayList<>();
@@ -34,6 +35,14 @@ public class Order {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public double getTotalAmount() {
