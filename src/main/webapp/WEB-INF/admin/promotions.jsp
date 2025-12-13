@@ -217,11 +217,15 @@
                                                 data-promo-subcategory-id="<%= promo.getSubCategoryId() != null ? promo.getSubCategoryId() : "" %>">
                                             Edit
                                         </button>
-                                        <form method="post" onsubmit="return confirm('Delete this promotion?');">
-                                            <input type="hidden" name="action" value="delete" />
-                                            <input type="hidden" name="id" value="<%= promo.getId() %>" />
-                                            <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
-                                        </form>
+                                        <button
+                                                class="btn btn-sm btn-outline-danger"
+                                                type="button"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deletePromotionModal"
+                                                data-promo-id="<%= promo.getId() %>"
+                                                data-promo-title="<%= promo.getTitle() %>">
+                                            Delete
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -339,6 +343,35 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="deletePromotionModal" tabindex="-1" aria-labelledby="deletePromotionLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-card">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="deletePromotionLabel">Delete promotion</h5>
+                <button
+                        type="button"
+                        class="btn btn-sm btn-outline-light modal-close-btn rounded-circle"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="delete" />
+                    <input type="hidden" name="id" id="deletePromotionId" />
+                    <p class="mb-0">Are you sure you want to delete <strong id="deletePromotionName"></strong>?</p>
+                    <p class="text-muted small mb-0">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn-soft">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
     const editPromotionModal = document.getElementById('editPromotionModal');
     if (editPromotionModal) {
@@ -355,6 +388,18 @@
             document.getElementById('editPromotionEnd').value = button.getAttribute('data-promo-end') || '';
             document.getElementById('editPromotionCategory').value = button.getAttribute('data-promo-category-id') || '';
             document.getElementById('editPromotionSubCategory').value = button.getAttribute('data-promo-subcategory-id') || '';
+        });
+    }
+
+    const deletePromotionModal = document.getElementById('deletePromotionModal');
+    if (deletePromotionModal) {
+        deletePromotionModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            if (!button) return;
+
+            const promoTitle = button.getAttribute('data-promo-title') || 'this promotion';
+            document.getElementById('deletePromotionId').value = button.getAttribute('data-promo-id');
+            document.getElementById('deletePromotionName').textContent = promoTitle;
         });
     }
 </script>
