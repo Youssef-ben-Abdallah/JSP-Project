@@ -133,7 +133,7 @@
                                 </td>
                                 <td>
                                     <span class="badge <%= promo.isPercentage() ? "bg-primary" : "bg-warning text-dark" %>">
-                                        <%= promo.isPercentage() ? decimalFormat.format(promo.getDiscountValue()) + "%" : "-" + decimalFormat.format(promo.getDiscountValue()) + "€" %>
+                                        <%= promo.isPercentage() ? decimalFormat.format(promo.getDiscountValue()) + "%" : "-" + decimalFormat.format(promo.getDiscountValue()) + " EUR" %>
                                     </span>
                                 </td>
                                 <td class="text-end">
