@@ -21,23 +21,18 @@
     </div>
     <nav class="admin-nav mt-3">
         <a class="admin-nav-link <%= adminPath.contains("/admin/products") ? "is-active" : "" %>" href="${pageContext.request.contextPath}/admin/products">
-            <span class="admin-nav-icon">📦</span>
             Products
         </a>
         <a class="admin-nav-link <%= adminPath.contains("/admin/categories") ? "is-active" : "" %>" href="${pageContext.request.contextPath}/admin/categories">
-            <span class="admin-nav-icon">🗂️</span>
             Categories
         </a>
         <a class="admin-nav-link <%= adminPath.contains("/admin/subcategories") ? "is-active" : "" %>" href="${pageContext.request.contextPath}/admin/subcategories">
-            <span class="admin-nav-icon">🧩</span>
             Sub-categories
         </a>
         <a class="admin-nav-link <%= adminPath.contains("/admin/promotions") ? "is-active" : "" %>" href="${pageContext.request.contextPath}/admin/promotions">
-            <span class="admin-nav-icon">🎉</span>
             Promotions
         </a>
         <a class="admin-nav-link" href="${pageContext.request.contextPath}/logout">
-            <span class="admin-nav-icon">🚪</span>
             Logout
         </a>
     </nav>

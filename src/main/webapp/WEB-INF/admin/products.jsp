@@ -43,60 +43,68 @@
                         </div>
                         <span class="badge-subcategory">Guided workflow</span>
                     </div>
-                    <form method="post" action="${pageContext.request.contextPath}/admin/products" class="row g-3 align-items-end" enctype="multipart/form-data">
+                    <form method="post" action="${pageContext.request.contextPath}/admin/products" enctype="multipart/form-data">
                         <input type="hidden" name="action" value="create" />
-                        <div class="col-md-3">
-                            <label class="form-label">Name</label>
-                            <input class="form-control" type="text" name="name" placeholder="Name" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Description</label>
-                            <input class="form-control" type="text" name="description" placeholder="Description" />
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">Price</label>
-                            <input class="form-control" type="number" step="0.01" min="0" name="price" placeholder="0.00" required />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Product image</label>
-                            <input class="form-control" type="file" name="image" accept="image/*" />
-                            <small class="text-muted">PNG ou JPG, 5 Mo max.</small>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Category</label>
-                            <select class="form-select" name="categoryId" required>
-                                <option value="">-- Category --</option>
-                                <%
-                                    List<Category> cats2 = (List<Category>) request.getAttribute("categories");
-                                    if (cats2 != null) {
-                                        for (Category c2 : cats2) {
-                                %>
-                                <option value="<%= c2.getId() %>"><%= c2.getName() %></option>
-                                <%
-                                        }
-                                    }
-                                %>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Sub-category</label>
-                            <select class="form-select" name="subCategoryId">
-                                <option value="">-- Sub-category (optional) --</option>
-                                <%
-                                    List<SubCategory> subs2 = (List<SubCategory>) request.getAttribute("subCategories");
-                                    if (subs2 != null) {
-                                        for (SubCategory sc2 : subs2) {
-                                %>
-                                <option value="<%= sc2.getId() %>"><%= sc2.getCategoryName() %> • <%= sc2.getName() %></option>
-                                <%
-                                        }
-                                    }
-                                %>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn-soft w-100 justify-content-center" type="submit">Add</button>
-                        </div>
+                        <table class="table table-borderless align-middle form-table mb-0">
+                            <tbody>
+                            <tr>
+                                <th scope="row" class="text-muted">Name</th>
+                                <td><input class="form-control" type="text" name="name" placeholder="Name" required /></td>
+                                <td class="text-end" rowspan="6" style="width: 1%;"><button class="btn-soft" type="submit">Add</button></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Description</th>
+                                <td><input class="form-control" type="text" name="description" placeholder="Description" /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Price</th>
+                                <td><input class="form-control" type="number" step="0.01" min="0" name="price" placeholder="0.00" required /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Product image</th>
+                                <td>
+                                    <input class="form-control" type="file" name="image" accept="image/*" />
+                                    <small class="text-muted">PNG ou JPG, 5 Mo max.</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Category</th>
+                                <td>
+                                    <select class="form-select select-btn" name="categoryId" required>
+                                        <option value="">-- Category --</option>
+                                        <%
+                                            List<Category> cats2 = (List<Category>) request.getAttribute("categories");
+                                            if (cats2 != null) {
+                                                for (Category c2 : cats2) {
+                                        %>
+                                        <option value="<%= c2.getId() %>"><%= c2.getName() %></option>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Sub-category</th>
+                                <td>
+                                    <select class="form-select select-btn" name="subCategoryId">
+                                        <option value="">-- Sub-category (optional) --</option>
+                                        <%
+                                            List<SubCategory> subs2 = (List<SubCategory>) request.getAttribute("subCategories");
+                                            if (subs2 != null) {
+                                                for (SubCategory sc2 : subs2) {
+                                        %>
+                                        <option value="<%= sc2.getId() %>"><%= sc2.getCategoryName() %> • <%= sc2.getName() %></option>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </form>
                 </div>
             </div>
@@ -218,55 +226,63 @@
                             <input type="hidden" name="action" value="update" />
                             <input type="hidden" name="id" id="editProductId" />
                             <input type="hidden" name="existingImageUrl" id="editProductExistingImage" />
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Name</label>
-                                    <input class="form-control" type="text" name="name" id="editProductName" required />
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Product image</label>
-                                    <input class="form-control" type="file" name="image" accept="image/*" />
-                                    <small class="text-muted">Leave empty to keep the current image.</small>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label">Description</label>
-                                    <textarea class="form-control" name="description" id="editProductDescription" rows="2"></textarea>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Price</label>
-                                    <input class="form-control" type="number" step="0.01" min="0" name="price" id="editProductPrice" required />
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Category</label>
-                                    <select class="form-select" name="categoryId" id="editProductCategory" required>
-                                        <option value="">-- Category --</option>
-                                        <%
-                                            if (cats2 != null) {
-                                                for (Category c2 : cats2) {
-                                        %>
-                                        <option value="<%= c2.getId() %>"><%= c2.getName() %></option>
-                                        <%
+                            <table class="table table-borderless align-middle form-table mb-0">
+                                <tbody>
+                                <tr>
+                                    <th scope="row" class="text-muted">Name</th>
+                                    <td><input class="form-control" type="text" name="name" id="editProductName" required /></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="text-muted">Product image</th>
+                                    <td>
+                                        <input class="form-control" type="file" name="image" accept="image/*" />
+                                        <small class="text-muted">Leave empty to keep the current image.</small>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="text-muted">Description</th>
+                                    <td><textarea class="form-control" name="description" id="editProductDescription" rows="2"></textarea></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="text-muted">Price</th>
+                                    <td><input class="form-control" type="number" step="0.01" min="0" name="price" id="editProductPrice" required /></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="text-muted">Category</th>
+                                    <td>
+                                        <select class="form-select select-btn" name="categoryId" id="editProductCategory" required>
+                                            <option value="">-- Category --</option>
+                                            <%
+                                                if (cats2 != null) {
+                                                    for (Category c2 : cats2) {
+                                            %>
+                                            <option value="<%= c2.getId() %>"><%= c2.getName() %></option>
+                                            <%
+                                                    }
                                                 }
-                                            }
-                                        %>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Sub-category</label>
-                                    <select class="form-select" name="subCategoryId" id="editProductSubCategory">
-                                        <option value="">-- None --</option>
-                                        <%
-                                            if (subs2 != null) {
-                                                for (SubCategory sc2 : subs2) {
-                                        %>
-                                        <option value="<%= sc2.getId() %>"><%= sc2.getCategoryName() %> • <%= sc2.getName() %></option>
-                                        <%
+                                            %>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="text-muted">Sub-category</th>
+                                    <td>
+                                        <select class="form-select select-btn" name="subCategoryId" id="editProductSubCategory">
+                                            <option value="">-- None --</option>
+                                            <%
+                                                if (subs2 != null) {
+                                                    for (SubCategory sc2 : subs2) {
+                                            %>
+                                            <option value="<%= sc2.getId() %>"><%= sc2.getCategoryName() %> • <%= sc2.getName() %></option>
+                                            <%
+                                                    }
                                                 }
-                                            }
-                                        %>
-                                    </select>
-                                </div>
-                            </div>
+                                            %>
+                                        </select>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="modal-footer border-0">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
