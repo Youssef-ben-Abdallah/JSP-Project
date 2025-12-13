@@ -13,6 +13,7 @@ import org.example.model.Product;
 import org.example.model.Promotion;
 import org.example.model.SubCategory;
 import org.example.service.CategoryService;
+import org.example.service.ImageStorageService;
 import org.example.service.PromotionDiscountCalculator;
 import org.example.service.PromotionService;
 import org.example.service.ProductService;
@@ -197,16 +198,13 @@ public class ProductController extends HttpServlet {
         if (imagePart != null && imagePart.getSize() > 0) {
             String submittedName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
             if (!submittedName.isBlank()) {
-                String uploadDir = req.getServletContext().getRealPath("/assets/img/products");
-                Path uploadPath = Paths.get(uploadDir);
-                Files.createDirectories(uploadPath);
-
+                Path uploadPath = ImageStorageService.resolveProductUploadDir();
                 String uniqueName = System.currentTimeMillis() + "_" + submittedName;
                 Path destination = uploadPath.resolve(uniqueName);
                 try (InputStream inputStream = imagePart.getInputStream()) {
                     Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING);
                 }
-                return "assets/img/products/" + uniqueName;
+                return "product-images/" + uniqueName;
             }
         }
         return fallbackPath != null && !fallbackPath.isBlank() ? fallbackPath : null;
