@@ -80,7 +80,7 @@
                         String imagePath = p.getImageUrl();
                         if (imagePath != null && !imagePath.isBlank()) {
                     %>
-                    <img src="<%= pageContext.getRequest().getContextPath() + "/" + imagePath %>" alt="Visuel <%= p.getName() %>" class="card-img-top" style="height: 180px; object-fit: cover;" />
+                    <img src="<%= request.getContextPath() + "/" + imagePath %>" alt="Visuel <%= p.getName() %>" class="card-img-top" style="height: 180px; object-fit: cover;" />
                     <%
                         } else {
                     %>
