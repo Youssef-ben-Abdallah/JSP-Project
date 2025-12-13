@@ -37,35 +37,39 @@
                         </div>
                         <span class="badge-subcategory">Smooth navigation</span>
                     </div>
-                    <form method="post" action="${pageContext.request.contextPath}/admin/subcategories" class="row g-3 align-items-end">
+                    <form method="post" action="${pageContext.request.contextPath}/admin/subcategories">
                         <input type="hidden" name="action" value="create" />
-                        <div class="col-md-3">
-                            <label class="form-label">Name</label>
-                            <input class="form-control" type="text" name="name" placeholder="Name" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Description</label>
-                            <input class="form-control" type="text" name="description" placeholder="Description" />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Parent category</label>
-                            <select class="form-select" name="categoryId" required>
-                                <option value="">-- Category --</option>
-                                <%
-                                    List<Category> cats = (List<Category>) request.getAttribute("categories");
-                                    if (cats != null) {
-                                        for (Category c : cats) {
-                                %>
-                                <option value="<%= c.getId() %>"><%= c.getName() %></option>
-                                <%
-                                        }
-                                    }
-                                %>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn-soft w-100 justify-content-center" type="submit">Add</button>
-                        </div>
+                        <table class="table table-borderless align-middle form-table mb-0">
+                            <tbody>
+                            <tr>
+                                <th scope="row" class="text-muted">Name</th>
+                                <td><input class="form-control" type="text" name="name" placeholder="Name" required /></td>
+                                <td class="text-end" rowspan="3" style="width: 1%;"><button class="btn-soft" type="submit">Add</button></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Description</th>
+                                <td><input class="form-control" type="text" name="description" placeholder="Description" /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Parent category</th>
+                                <td>
+                                    <select class="form-select select-btn" name="categoryId" required>
+                                        <option value="">-- Category --</option>
+                                        <%
+                                            List<Category> cats = (List<Category>) request.getAttribute("categories");
+                                            if (cats != null) {
+                                                for (Category c : cats) {
+                                        %>
+                                        <option value="<%= c.getId() %>"><%= c.getName() %></option>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </form>
                 </div>
             </div>
@@ -158,29 +162,35 @@
                         <div class="modal-body">
                             <input type="hidden" name="action" value="update" />
                             <input type="hidden" name="id" id="editSubCategoryId" />
-                            <div class="mb-3">
-                                <label class="form-label">Name</label>
-                                <input class="form-control" type="text" name="name" id="editSubCategoryName" required />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Description</label>
-                                <input class="form-control" type="text" name="description" id="editSubCategoryDescription" />
-                            </div>
-                            <div class="mb-0">
-                                <label class="form-label">Parent category</label>
-                                <select class="form-select" name="categoryId" id="editSubCategoryCategory" required>
-                                    <option value="">-- Category --</option>
-                                    <%
-                                        if (cats != null) {
-                                            for (Category category : cats) {
-                                    %>
-                                    <option value="<%= category.getId() %>"><%= category.getName() %></option>
-                                    <%
-                                            }
-                                        }
-                                    %>
-                                </select>
-                            </div>
+                            <table class="table table-borderless align-middle form-table mb-0">
+                                <tbody>
+                                <tr>
+                                    <th scope="row" class="text-muted">Name</th>
+                                    <td><input class="form-control" type="text" name="name" id="editSubCategoryName" required /></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="text-muted">Description</th>
+                                    <td><input class="form-control" type="text" name="description" id="editSubCategoryDescription" /></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="text-muted">Parent category</th>
+                                    <td>
+                                        <select class="form-select select-btn" name="categoryId" id="editSubCategoryCategory" required>
+                                            <option value="">-- Category --</option>
+                                            <%
+                                                if (cats != null) {
+                                                    for (Category category : cats) {
+                                            %>
+                                            <option value="<%= category.getId() %>"><%= category.getName() %></option>
+                                            <%
+                                                    }
+                                                }
+                                            %>
+                                        </select>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="modal-footer border-0">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>

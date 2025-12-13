@@ -31,19 +31,21 @@
                         </div>
                         <span class="badge-subcategory">Real-time flow</span>
                     </div>
-                    <form method="post" action="${pageContext.request.contextPath}/admin/categories" class="row g-3 align-items-end">
+                    <form method="post" action="${pageContext.request.contextPath}/admin/categories">
                         <input type="hidden" name="action" value="create" />
-                        <div class="col-md-4">
-                            <label class="form-label">Name</label>
-                            <input class="form-control" type="text" name="name" placeholder="Name" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Description</label>
-                            <input class="form-control" type="text" name="description" placeholder="Description" />
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn-soft w-100 justify-content-center" type="submit">Add</button>
-                        </div>
+                        <table class="table table-borderless align-middle form-table mb-0">
+                            <tbody>
+                            <tr>
+                                <th scope="row" class="text-muted">Name</th>
+                                <td><input class="form-control" type="text" name="name" placeholder="Name" required /></td>
+                                <td class="text-end" rowspan="2" style="width: 1%;"><button class="btn-soft" type="submit">Add</button></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Description</th>
+                                <td><input class="form-control" type="text" name="description" placeholder="Description" /></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </form>
                 </div>
             </div>
@@ -162,14 +164,18 @@
                         <div class="modal-body">
                             <input type="hidden" name="action" value="update" />
                             <input type="hidden" name="id" id="editCategoryId" />
-                            <div class="mb-3">
-                                <label class="form-label">Name</label>
-                                <input class="form-control" type="text" name="name" id="editCategoryName" required />
-                            </div>
-                            <div class="mb-0">
-                                <label class="form-label">Description</label>
-                                <input class="form-control" type="text" name="description" id="editCategoryDescription" />
-                            </div>
+                            <table class="table table-borderless align-middle form-table mb-0">
+                                <tbody>
+                                <tr>
+                                    <th scope="row" class="text-muted">Name</th>
+                                    <td><input class="form-control" type="text" name="name" id="editCategoryName" required /></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" class="text-muted">Description</th>
+                                    <td><input class="form-control" type="text" name="description" id="editCategoryDescription" /></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="modal-footer border-0">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>

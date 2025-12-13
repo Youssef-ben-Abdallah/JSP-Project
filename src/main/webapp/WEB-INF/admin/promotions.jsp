@@ -35,34 +35,43 @@
                     </div>
                     <form method="post" class="promo-form">
                         <input type="hidden" name="action" value="create" />
-                        <div class="mb-3">
-                            <label class="form-label">Title</label>
-                            <input class="form-control" type="text" name="title" required />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Description</label>
-                            <textarea class="form-control" name="description" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Discount type</label>
-                            <select class="form-select" name="discountType">
-                                <option value="PERCENTAGE">Percentage</option>
-                                <option value="FIXED_AMOUNT">Fixed amount</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Value</label>
-                            <input class="form-control" type="number" step="0.01" min="0" name="discountValue" required />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Start</label>
-                            <input class="form-control" type="datetime-local" name="startTime" required />
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label">End</label>
-                            <input class="form-control" type="datetime-local" name="endTime" required />
-                        </div>
-                        <button class="btn-soft w-100" type="submit">Publish promotion</button>
+                        <table class="table table-borderless align-middle form-table mb-0">
+                            <tbody>
+                            <tr>
+                                <th scope="row" class="text-muted">Title</th>
+                                <td><input class="form-control" type="text" name="title" required /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Description</th>
+                                <td><textarea class="form-control" name="description" rows="3" required></textarea></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Discount type</th>
+                                <td>
+                                    <select class="form-select select-btn" name="discountType">
+                                        <option value="PERCENTAGE">Percentage</option>
+                                        <option value="FIXED_AMOUNT">Fixed amount</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Value</th>
+                                <td><input class="form-control" type="number" step="0.01" min="0" name="discountValue" required /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">Start</th>
+                                <td><input class="form-control" type="datetime-local" name="startTime" required /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="text-muted">End</th>
+                                <td><input class="form-control" type="datetime-local" name="endTime" required /></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-end"><button class="btn-soft" type="submit">Publish promotion</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </form>
                     <%
                         String error = (String) session.getAttribute("promotionError");
@@ -179,35 +188,39 @@
                 <div class="modal-body">
                     <input type="hidden" name="action" value="update" />
                     <input type="hidden" name="id" id="editPromotionId" />
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Title</label>
-                            <input class="form-control" type="text" name="title" id="editPromotionTitle" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Discount type</label>
-                            <select class="form-select" name="discountType" id="editPromotionDiscountType">
-                                <option value="PERCENTAGE">Percentage</option>
-                                <option value="FIXED_AMOUNT">Fixed amount</option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Description</label>
-                            <textarea class="form-control" name="description" id="editPromotionDescription" rows="3" required></textarea>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Value</label>
-                            <input class="form-control" type="number" step="0.01" min="0" name="discountValue" id="editPromotionValue" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Start</label>
-                            <input class="form-control" type="datetime-local" name="startTime" id="editPromotionStart" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">End</label>
-                            <input class="form-control" type="datetime-local" name="endTime" id="editPromotionEnd" required />
-                        </div>
-                    </div>
+                    <table class="table table-borderless align-middle form-table mb-0">
+                        <tbody>
+                        <tr>
+                            <th scope="row" class="text-muted">Title</th>
+                            <td><input class="form-control" type="text" name="title" id="editPromotionTitle" required /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-muted">Discount type</th>
+                            <td>
+                                <select class="form-select select-btn" name="discountType" id="editPromotionDiscountType">
+                                    <option value="PERCENTAGE">Percentage</option>
+                                    <option value="FIXED_AMOUNT">Fixed amount</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-muted">Description</th>
+                            <td><textarea class="form-control" name="description" id="editPromotionDescription" rows="3" required></textarea></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-muted">Value</th>
+                            <td><input class="form-control" type="number" step="0.01" min="0" name="discountValue" id="editPromotionValue" required /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-muted">Start</th>
+                            <td><input class="form-control" type="datetime-local" name="startTime" id="editPromotionStart" required /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-muted">End</th>
+                            <td><input class="form-control" type="datetime-local" name="endTime" id="editPromotionEnd" required /></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
