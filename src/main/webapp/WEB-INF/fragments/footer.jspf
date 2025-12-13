@@ -1,6 +1,6 @@
 <footer class="bg-dark text-light py-4 mt-5">
     <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
         <span class="fw-semibold">MyShop</span>
-        <small class="footer-note">&copy; 2025 MyShop JEE — Simple, fast deliveries and elegant showcases.</small>
+        <small class="footer-note">&copy; 2025 MyShop JEE - Simple, fast deliveries and elegant showcases.</small>
     </div>
 </footer>

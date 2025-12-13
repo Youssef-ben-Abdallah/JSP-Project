@@ -51,7 +51,8 @@
                     List<Product> prods = (List<Product>) request.getAttribute("products");
                     if (prods != null && !prods.isEmpty()) {
                         for (Product p : prods) {
-                            String location = placeholderLocations[locationIndex % placeholderLocations.length];
+                            //String location = placeholderLocations[locationIndex % placeholderLocations.length];
+                            String location = p.getCategoryName();
                             locationIndex++;
                 %>
                 <div class="col-md-6 col-lg-4 col-xl-3">

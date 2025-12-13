@@ -347,8 +347,10 @@
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content glass-card">
-            <div class="modal-header border-0">
-                <h5 class="modal-title" id="deletePromotionLabel">Delete promotion</h5>
+            <div class="modal-header border-0 d-flex align-items-center justify-content-between">
+                <h5 class="modal-title ms-auto" id="editProductLabel">
+                    Delete promotion
+                </h5>
                 <button
                         type="button"
                         class="btn btn-sm btn-outline-light modal-close-btn rounded-circle"
