@@ -76,7 +76,7 @@
                                 <jsp:include page="/WEB-INF/fragments/product-price.jspf">
                                     <jsp:param name="price" value="<%= String.valueOf(p.getPrice()) %>" />
                                     <jsp:param name="categoryId" value="<%= String.valueOf(p.getCategoryId()) %>" />
-                                    <jsp:param name="subCategoryId" value="<%= p.getSubCategoryId() != null ? p.getSubCategoryId().toString() : "" %>" />
+                                    <jsp:param name="subCategoryId" value='<%= p.getSubCategoryId() != null ? p.getSubCategoryId().toString() : "" %>' />
                                 </jsp:include>
                                 <a class="btn btn-outline-primary btn-sm" href="${pageContext.request.contextPath}/product?id=<%= p.getId() %>">View product</a>
                             </div>
