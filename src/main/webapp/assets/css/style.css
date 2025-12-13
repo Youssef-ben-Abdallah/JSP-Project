@@ -374,3 +374,20 @@ body {
 .footer-note {
     color: var(--brand-muted);
 }
+.modal-close-btn {
+    width: 36px;
+    height: 36px;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.modal-close-btn:hover {
+    background: rgba(0, 0, 0, 0.55);
+    transform: scale(1.05);
+}
+
