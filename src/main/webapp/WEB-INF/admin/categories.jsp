@@ -123,7 +123,10 @@
                             </td>
                             <td class="text-end">
                                 <button class="btn btn-sm btn-outline-secondary me-2" type="button"
-                                        data-bs-toggle="modal" data-bs-target="#editCategoryModal<%= c.getId() %>">
+                                        data-bs-toggle="modal" data-bs-target="#editCategoryModal"
+                                        data-category-id="<%= c.getId() %>"
+                                        data-category-name="<%= c.getName() %>"
+                                        data-category-description="<%= c.getDescription() != null ? c.getDescription() : "" %>">
                                     Modifier
                                 </button>
                                 <form method="post" action="${pageContext.request.contextPath}/admin/categories" class="d-inline">
@@ -147,29 +150,25 @@
                 </table>
             </div>
         </div>
-        <%
-            if (cats != null && !cats.isEmpty()) {
-                for (Category c : cats) {
-        %>
-        <div class="modal fade" id="editCategoryModal<%= c.getId() %>" tabindex="-1"
-             aria-labelledby="editCategoryLabel<%= c.getId() %>" aria-hidden="true">
+        <div class="modal fade" id="editCategoryModal" tabindex="-1"
+             aria-labelledby="editCategoryLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content glass-card">
                     <div class="modal-header border-0">
-                        <h5 class="modal-title" id="editCategoryLabel<%= c.getId() %>">Modifier la catégorie</h5>
+                        <h5 class="modal-title" id="editCategoryLabel">Modifier la catégorie</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="post" action="${pageContext.request.contextPath}/admin/categories">
+                    <form id="editCategoryForm" method="post" action="${pageContext.request.contextPath}/admin/categories">
                         <div class="modal-body">
                             <input type="hidden" name="action" value="update" />
-                            <input type="hidden" name="id" value="<%= c.getId() %>" />
+                            <input type="hidden" name="id" id="editCategoryId" />
                             <div class="mb-3">
                                 <label class="form-label">Nom</label>
-                                <input class="form-control" type="text" name="name" value="<%= c.getName() %>" required />
+                                <input class="form-control" type="text" name="name" id="editCategoryName" required />
                             </div>
                             <div class="mb-0">
                                 <label class="form-label">Description</label>
-                                <input class="form-control" type="text" name="description" value="<%= c.getDescription() != null ? c.getDescription() : "" %>" />
+                                <input class="form-control" type="text" name="description" id="editCategoryDescription" />
                             </div>
                         </div>
                         <div class="modal-footer border-0">
@@ -180,12 +179,25 @@
                 </div>
             </div>
         </div>
-        <%
-                }
-            }
-        %>
     </div>
 </main>
+<script>
+    const editCategoryModal = document.getElementById('editCategoryModal');
+    if (editCategoryModal) {
+        editCategoryModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            if (!button) return;
+
+            const id = button.getAttribute('data-category-id');
+            const name = button.getAttribute('data-category-name');
+            const description = button.getAttribute('data-category-description') || '';
+
+            document.getElementById('editCategoryId').value = id;
+            document.getElementById('editCategoryName').value = name;
+            document.getElementById('editCategoryDescription').value = description;
+        });
+    }
+</script>
 <script src="${pageContext.request.contextPath}/assets/js/bootstrap-lite.js"></script>
 </body>
 </html>

@@ -131,7 +131,14 @@
                                 <td class="text-end">
                                     <div class="d-flex justify-content-end gap-2">
                                         <button class="btn btn-sm btn-outline-light" type="button"
-                                                data-bs-toggle="modal" data-bs-target="#editPromotionModal<%= promo.getId() %>">
+                                                data-bs-toggle="modal" data-bs-target="#editPromotionModal"
+                                                data-promo-id="<%= promo.getId() %>"
+                                                data-promo-title="<%= promo.getTitle() %>"
+                                                data-promo-description="<%= promo.getDescription() %>"
+                                                data-promo-discount-type="<%= promo.isPercentage() ? "PERCENTAGE" : "FIXED_AMOUNT" %>"
+                                                data-promo-discount-value="<%= decimalFormat.format(promo.getDiscountValue()) %>"
+                                                data-promo-start="<%= startTime != null ? startTime.format(isoFormatter) : "" %>"
+                                                data-promo-end="<%= endTime != null ? endTime.format(isoFormatter) : "" %>">
                                             Modifier
                                         </button>
                                         <form method="post" onsubmit="return confirm('Supprimer cette promotion ?');">
@@ -160,50 +167,45 @@
         </div>
     </div>
 </main>
-<%
-    if (promos != null && !promos.isEmpty()) {
-        java.time.format.DateTimeFormatter isoFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        for (Promotion promo : promos) {
-%>
-<div class="modal fade" id="editPromotionModal<%= promo.getId() %>" tabindex="-1"
-     aria-labelledby="editPromotionLabel<%= promo.getId() %>" aria-hidden="true">
+<div class="modal fade" id="editPromotionModal" tabindex="-1"
+     aria-labelledby="editPromotionLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content glass-card">
             <div class="modal-header border-0">
-                <h5 class="modal-title" id="editPromotionLabel<%= promo.getId() %>">Modifier la promotion</h5>
+                <h5 class="modal-title" id="editPromotionLabel">Modifier la promotion</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post">
+            <form id="editPromotionForm" method="post">
                 <div class="modal-body">
                     <input type="hidden" name="action" value="update" />
-                    <input type="hidden" name="id" value="<%= promo.getId() %>" />
+                    <input type="hidden" name="id" id="editPromotionId" />
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Titre</label>
-                            <input class="form-control" type="text" name="title" value="<%= promo.getTitle() %>" required />
+                            <input class="form-control" type="text" name="title" id="editPromotionTitle" required />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Type de remise</label>
-                            <select class="form-select" name="discountType">
-                                <option value="PERCENTAGE" <%= promo.isPercentage() ? "selected" : "" %>>Pourcentage</option>
-                                <option value="FIXED_AMOUNT" <%= promo.isPercentage() ? "" : "selected" %>>Montant fixe</option>
+                            <select class="form-select" name="discountType" id="editPromotionDiscountType">
+                                <option value="PERCENTAGE">Pourcentage</option>
+                                <option value="FIXED_AMOUNT">Montant fixe</option>
                             </select>
                         </div>
                         <div class="col-12">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" name="description" rows="3" required><%= promo.getDescription() %></textarea>
+                            <textarea class="form-control" name="description" id="editPromotionDescription" rows="3" required></textarea>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Valeur</label>
-                            <input class="form-control" type="number" step="0.01" min="0" name="discountValue" value="<%= promo.getDiscountValue() %>" required />
+                            <input class="form-control" type="number" step="0.01" min="0" name="discountValue" id="editPromotionValue" required />
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Début</label>
-                            <input class="form-control" type="datetime-local" name="startTime" value="<%= promo.getStartTime() != null ? promo.getStartTime().format(isoFormatter) : "" %>" required />
+                            <input class="form-control" type="datetime-local" name="startTime" id="editPromotionStart" required />
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Fin</label>
-                            <input class="form-control" type="datetime-local" name="endTime" value="<%= promo.getEndTime() != null ? promo.getEndTime().format(isoFormatter) : "" %>" required />
+                            <input class="form-control" type="datetime-local" name="endTime" id="editPromotionEnd" required />
                         </div>
                     </div>
                 </div>
@@ -215,10 +217,23 @@
         </div>
     </div>
 </div>
-<%
-        }
+<script>
+    const editPromotionModal = document.getElementById('editPromotionModal');
+    if (editPromotionModal) {
+        editPromotionModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            if (!button) return;
+
+            document.getElementById('editPromotionId').value = button.getAttribute('data-promo-id');
+            document.getElementById('editPromotionTitle').value = button.getAttribute('data-promo-title') || '';
+            document.getElementById('editPromotionDescription').value = button.getAttribute('data-promo-description') || '';
+            document.getElementById('editPromotionDiscountType').value = button.getAttribute('data-promo-discount-type') || 'PERCENTAGE';
+            document.getElementById('editPromotionValue').value = button.getAttribute('data-promo-discount-value') || '';
+            document.getElementById('editPromotionStart').value = button.getAttribute('data-promo-start') || '';
+            document.getElementById('editPromotionEnd').value = button.getAttribute('data-promo-end') || '';
+        });
     }
-%>
+</script>
 <jsp:include page="/WEB-INF/fragments/footer.jspf" />
 <script src="${pageContext.request.contextPath}/assets/js/bootstrap-lite.js"></script>
 </body>
