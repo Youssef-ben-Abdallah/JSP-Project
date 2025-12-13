@@ -54,7 +54,7 @@
                         <span class="price-tag">$<%= p.getPrice() %></span>
                         <button class="btn-soft" type="button">Ajouter au panier</button>
                     </div>
-                    <p class="mt-4 text-muted">Ce décor conceptuel est inspiré des ruelles de <%= location %>, idéal pour valoriser l’esprit de votre collection.</p>
+                    <p class="mt-4 text-muted">Décor inspiré de <%= location %> : textures chaleureuses, lumière diffuse et mise en scène pensée pour vos corners éphémères.</p>
                 </div>
             </div>
         </div>

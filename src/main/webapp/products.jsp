@@ -13,7 +13,7 @@
     <div class="container py-5">
         <div class="section-heading">
             <h1>Catalogue immersif</h1>
-            <p>Chaque fiche produit s’accompagne d’un décor lumineux inspiré d’une destination. Inspirez-vous de ces ambiances pour sublimer vos prochaines vitrines.</p>
+            <p>Découvrez des sélections prêtes à exposer : mobilier, luminaires et accessoires pensés pour des concepts stores chaleureux et modulables.</p>
         </div>
 
         <%
@@ -54,7 +54,7 @@
 
         <div class="glass-card p-4 mb-5 placeholder-banner" role="img" aria-label="Itinéraire design - Nice, Lille, Montpellier">
             <strong class="d-block mb-1">Parcours inspiration</strong>
-            Explorez virtuellement nos escales de Nice à Lille en passant par Montpellier : des univers pensés pour accueillir vos produits phares.
+            Une ligne directrice claire : mettre en scène vos articles comme dans nos showrooms de Nice, Lille ou Montpellier, avec lumière douce et matériaux naturels.
         </div>
 
         <div class="row g-4">

@@ -17,7 +17,7 @@
         MyShop
         <span class="brand-pill">Flagship</span>
       </a>
-      <div class="nav-tagline d-none d-lg-flex">Destinations retail immersives</div>
+      <div class="nav-tagline d-none d-lg-flex">Concept stores &amp; design chaleureux</div>
     </div>
 
     <button class="navbar-toggler nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-controls="navbarsExample" aria-expanded="false" aria-label="Ouvrir le menu">
@@ -88,7 +88,7 @@
       </ul>
 
       <div class="navbar-actions">
-        <div class="nav-meta">Livraison premium 48h • Showrooms immersifs en France</div>
+        <div class="nav-meta">Livraison premium 48h • Scénographie par nos équipes locales</div>
         <div class="nav-actions-row">
             <a class="nav-link text-white-50 <%= isLogin ? "active" : "" %>" href="${pageContext.request.contextPath}/login">Espace admin</a>
             <span class="nav-separator" aria-hidden="true"></span>
