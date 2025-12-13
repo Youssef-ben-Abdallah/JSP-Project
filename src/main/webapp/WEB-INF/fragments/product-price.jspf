@@ -4,18 +4,22 @@
 <%@ page import="java.text.DecimalFormat" %>
 <%
     double price = Double.parseDouble(request.getParameter("price"));
+    DiscountedPrice precomputedDiscount = (DiscountedPrice) request.getAttribute("productDiscount");
+    java.util.Optional<DiscountedPrice> discount = java.util.Optional.ofNullable(precomputedDiscount);
     String categoryParam = request.getParameter("categoryId");
     String subCategoryParam = request.getParameter("subCategoryId");
-    Integer categoryId = null;
-    Integer subCategoryId = null;
-    if (categoryParam != null && !categoryParam.isBlank()) {
-        try { categoryId = Integer.parseInt(categoryParam); } catch (NumberFormatException ignored) {}
+    if (discount.isEmpty()) {
+        Integer categoryId = null;
+        Integer subCategoryId = null;
+        if (categoryParam != null && !categoryParam.isBlank()) {
+            try { categoryId = Integer.parseInt(categoryParam); } catch (NumberFormatException ignored) {}
+        }
+        if (subCategoryParam != null && !subCategoryParam.isBlank()) {
+            try { subCategoryId = Integer.parseInt(subCategoryParam); } catch (NumberFormatException ignored) {}
+        }
+        java.util.List<Promotion> activePromotions = (java.util.List<Promotion>) request.getAttribute("activePromotions");
+        discount = PromotionDiscountCalculator.calculate(price, categoryId, subCategoryId, activePromotions);
     }
-    if (subCategoryParam != null && !subCategoryParam.isBlank()) {
-        try { subCategoryId = Integer.parseInt(subCategoryParam); } catch (NumberFormatException ignored) {}
-    }
-    java.util.List<Promotion> activePromotions = (java.util.List<Promotion>) request.getAttribute("activePromotions");
-    java.util.Optional<DiscountedPrice> discount = PromotionDiscountCalculator.calculate(price, categoryId, subCategoryId, activePromotions);
     DecimalFormat decimalFormat = new DecimalFormat("#.##");
 %>
 <% if (discount.isPresent()) { DiscountedPrice info = discount.get(); %>

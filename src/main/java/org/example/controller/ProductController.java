@@ -8,9 +8,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import org.example.model.Category;
+import org.example.model.DiscountedPrice;
 import org.example.model.Product;
+import org.example.model.Promotion;
 import org.example.model.SubCategory;
 import org.example.service.CategoryService;
+import org.example.service.PromotionDiscountCalculator;
+import org.example.service.PromotionService;
 import org.example.service.ProductService;
 import org.example.service.SubCategoryService;
 
@@ -29,6 +33,7 @@ public class ProductController extends HttpServlet {
     private final ProductService productService = new ProductService();
     private final CategoryService categoryService = new CategoryService();
     private final SubCategoryService subCategoryService = new SubCategoryService();
+    private final PromotionService promotionService = new PromotionService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -85,6 +90,21 @@ public class ProductController extends HttpServlet {
                 } catch (Exception e) {
                     e.printStackTrace();
                     error = "Impossible de charger ce produit pour le moment.";
+                }
+            }
+            if (product != null) {
+                try {
+                    List<Promotion> activePromotions = promotionService.getActive();
+                    req.setAttribute("activePromotions", activePromotions);
+                    java.util.Optional<DiscountedPrice> discount = PromotionDiscountCalculator.calculate(
+                            product.getPrice(),
+                            product.getCategoryId(),
+                            product.getSubCategoryId(),
+                            activePromotions
+                    );
+                    discount.ifPresent(value -> req.setAttribute("productDiscount", value));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
             req.setAttribute("product", product);
