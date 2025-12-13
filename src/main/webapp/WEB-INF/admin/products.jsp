@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
-<body>
+<body class="admin-shell">
 <main class="page-wrapper">
     <div class="container py-5">
         <jsp:include page="/WEB-INF/admin/admin-header.jspf" />
@@ -33,73 +33,97 @@
             }
         %>
 
-        <div class="glass-card mb-4 p-4">
-            <h5 class="mb-3">Ajouter un produit</h5>
-            <form method="post" action="${pageContext.request.contextPath}/admin/products" class="row g-3 align-items-end" enctype="multipart/form-data">
-                <input type="hidden" name="action" value="create" />
-                <div class="col-md-3">
-                    <label class="form-label">Nom</label>
-                    <input class="form-control" type="text" name="name" placeholder="Nom" required />
+        <div class="row g-4 mb-4">
+            <div class="col-lg-8">
+                <div class="glass-card mb-0 p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                        <div>
+                            <h5 class="mb-1">Ajouter un produit</h5>
+                            <p class="text-muted mb-0">Renseignez l'essentiel, les champs restent accessibles en modification via un modal dédié.</p>
+                        </div>
+                        <span class="badge-subcategory">Workflow guidé</span>
+                    </div>
+                    <form method="post" action="${pageContext.request.contextPath}/admin/products" class="row g-3 align-items-end" enctype="multipart/form-data">
+                        <input type="hidden" name="action" value="create" />
+                        <div class="col-md-3">
+                            <label class="form-label">Nom</label>
+                            <input class="form-control" type="text" name="name" placeholder="Nom" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Description</label>
+                            <input class="form-control" type="text" name="description" placeholder="Description" />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Prix</label>
+                            <input class="form-control" type="number" step="0.01" min="0" name="price" placeholder="0.00" required />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Visuel produit</label>
+                            <input class="form-control" type="file" name="image" accept="image/*" />
+                            <small class="text-muted">PNG ou JPG, 5 Mo max.</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Catégorie</label>
+                            <select class="form-select" name="categoryId" required>
+                                <option value="">-- Catégorie --</option>
+                                <%
+                                    List<Category> cats2 = (List<Category>) request.getAttribute("categories");
+                                    if (cats2 != null) {
+                                        for (Category c2 : cats2) {
+                                %>
+                                <option value="<%= c2.getId() %>"><%= c2.getName() %></option>
+                                <%
+                                        }
+                                    }
+                                %>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Sous-catégorie</label>
+                            <select class="form-select" name="subCategoryId">
+                                <option value="">-- Sous-catégorie (optionnel) --</option>
+                                <%
+                                    List<SubCategory> subs2 = (List<SubCategory>) request.getAttribute("subCategories");
+                                    if (subs2 != null) {
+                                        for (SubCategory sc2 : subs2) {
+                                %>
+                                <option value="<%= sc2.getId() %>"><%= sc2.getCategoryName() %> • <%= sc2.getName() %></option>
+                                <%
+                                        }
+                                    }
+                                %>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn-soft w-100 justify-content-center" type="submit">Ajouter</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label">Description</label>
-                    <input class="form-control" type="text" name="description" placeholder="Description" />
+            </div>
+            <div class="col-lg-4">
+                <div class="glass-card p-4 h-100">
+                    <h6 class="mb-2">Sécurité des modifications</h6>
+                    <p class="text-muted small mb-2">Chaque clic sur "Modifier" ouvre un modal contextuel : aucune navigation perdue, données préremplies.</p>
+                    <ul class="text-muted small ps-3 mb-0">
+                        <li>Prévisualisez l'image existante avant de la remplacer.</li>
+                        <li>Utilisez les catégories pour harmoniser vos collections.</li>
+                        <li>Définissez les prix avec le format décimal guidé.</li>
+                    </ul>
                 </div>
-                <div class="col-md-2">
-                    <label class="form-label">Prix</label>
-                    <input class="form-control" type="number" step="0.01" min="0" name="price" placeholder="0.00" required />
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Visuel produit</label>
-                    <input class="form-control" type="file" name="image" accept="image/*" />
-                    <small class="text-muted">PNG ou JPG, 5 Mo max.</small>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Catégorie</label>
-                    <select class="form-select" name="categoryId" required>
-                        <option value="">-- Catégorie --</option>
-                        <%
-                            List<Category> cats2 = (List<Category>) request.getAttribute("categories");
-                            if (cats2 != null) {
-                                for (Category c2 : cats2) {
-                        %>
-                        <option value="<%= c2.getId() %>"><%= c2.getName() %></option>
-                        <%
-                                }
-                            }
-                        %>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Sous-catégorie</label>
-                    <select class="form-select" name="subCategoryId">
-                        <option value="">-- Sous-catégorie (optionnel) --</option>
-                        <%
-                            List<SubCategory> subs2 = (List<SubCategory>) request.getAttribute("subCategories");
-                            if (subs2 != null) {
-                                for (SubCategory sc2 : subs2) {
-                        %>
-                        <option value="<%= sc2.getId() %>"><%= sc2.getCategoryName() %> • <%= sc2.getName() %></option>
-                        <%
-                                }
-                            }
-                        %>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <button class="btn-soft w-100 justify-content-center" type="submit">Ajouter</button>
-                </div>
-            </form>
+            </div>
         </div>
 
         <div class="glass-card p-0">
             <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div>
                     <h5 class="mb-1">Liste des produits</h5>
-                    <p class="mb-0 text-muted">Visualisez vos collections et leurs ambiances fictives inspirées de nos ateliers itinérants.</p>
+                    <p class="mb-0 text-muted">Visualisez vos collections, ajustez les détails via des modals fluides et restez focus sur la lecture.</p>
                 </div>
-                <div class="placeholder-banner mb-0" role="img" aria-label="Réseau d'ateliers - Rouen, Nancy, Brest">
-                    Inspirations ateliers : Rouen, Nancy &amp; Brest
+                <div class="admin-toolbar">
+                    <div class="placeholder-banner mb-0" role="img" aria-label="Réseau d'ateliers - Rouen, Nancy, Brest">
+                        Interface sans rechargement
+                    </div>
+                    <span class="badge-subcategory">Edition contextualisée</span>
                 </div>
             </div>
             <div class="table-responsive">

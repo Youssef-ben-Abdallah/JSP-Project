@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
-<body>
+<body class="admin-shell">
 <main class="page-wrapper">
     <div class="container py-5">
         <jsp:include page="/WEB-INF/admin/admin-header.jspf" />
@@ -21,32 +21,55 @@
             }
         %>
 
-        <div class="glass-card p-4 mb-4">
-            <h5 class="mb-3">Ajouter une catégorie</h5>
-            <form method="post" action="${pageContext.request.contextPath}/admin/categories" class="row g-3 align-items-end">
-                <input type="hidden" name="action" value="create" />
-                <div class="col-md-4">
-                    <label class="form-label">Nom</label>
-                    <input class="form-control" type="text" name="name" placeholder="Nom" required />
+        <div class="row g-4 mb-4">
+            <div class="col-lg-8">
+                <div class="glass-card p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                        <div>
+                            <h5 class="mb-1">Ajouter une catégorie</h5>
+                            <p class="text-muted mb-0">Créez un univers en quelques clics avant de le décliner en sous-collections.</p>
+                        </div>
+                        <span class="badge-subcategory">Flux en temps réel</span>
+                    </div>
+                    <form method="post" action="${pageContext.request.contextPath}/admin/categories" class="row g-3 align-items-end">
+                        <input type="hidden" name="action" value="create" />
+                        <div class="col-md-4">
+                            <label class="form-label">Nom</label>
+                            <input class="form-control" type="text" name="name" placeholder="Nom" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Description</label>
+                            <input class="form-control" type="text" name="description" placeholder="Description" />
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn-soft w-100 justify-content-center" type="submit">Ajouter</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Description</label>
-                    <input class="form-control" type="text" name="description" placeholder="Description" />
+            </div>
+            <div class="col-lg-4">
+                <div class="glass-card p-4 h-100">
+                    <h6 class="mb-2">Conseils rapides</h6>
+                    <ul class="mb-0 text-muted small ps-3">
+                        <li>Utilisez des descriptions évocatrices pour guider la navigation.</li>
+                        <li>Le bouton "Modifier" ouvre désormais une fenêtre dédiée pour limiter les erreurs.</li>
+                        <li>Gardez moins de 8 catégories pour une expérience fluide.</li>
+                    </ul>
                 </div>
-                <div class="col-md-2">
-                    <button class="btn-soft w-100 justify-content-center" type="submit">Ajouter</button>
-                </div>
-            </form>
+            </div>
         </div>
 
         <div class="glass-card p-0">
             <div class="p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div>
                     <h5 class="mb-1">Liste des catégories</h5>
-                    <p class="mb-0 text-muted">Structurez vos collections autour de décors emblématiques pour vos prochains pop-up stores.</p>
+                    <p class="mb-0 text-muted">Un résumé clair avec modification en modal pour rester concentré sur le catalogue.</p>
                 </div>
-                <div class="placeholder-banner mb-0" role="img" aria-label="Cartographie créative - Metz, Pau, Ajaccio">
-                    Cartographie créative : Metz, Pau &amp; Ajaccio
+                <div class="admin-toolbar">
+                    <div class="placeholder-banner mb-0" role="img" aria-label="Cartographie créative - Metz, Pau, Ajaccio">
+                        Modifications en un clic
+                    </div>
+                    <span class="badge-subcategory">Sauvegarde instantanée</span>
                 </div>
             </div>
             <div class="table-responsive">

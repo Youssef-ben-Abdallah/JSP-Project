@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-lite.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css" />
 </head>
-<body>
+<body class="admin-shell">
 <jsp:include page="/WEB-INF/fragments/navbar.jspf" />
 <main class="page-wrapper">
     <div class="container py-5">
@@ -26,8 +26,13 @@
         <div class="row g-4">
             <div class="col-lg-5">
                 <div class="glass-card p-4 h-100">
-                    <h3 class="mb-3">Créer une promotion</h3>
-                    <p class="text-muted">Proposez une offre limitée dans le temps. Elle s'affichera automatiquement sur le site pendant sa période de validité.</p>
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                        <div>
+                            <h3 class="mb-1">Créer une promotion</h3>
+                            <p class="text-muted mb-0">Proposez une offre limitée. Chaque modification ultérieure s'effectue dans un modal dédié.</p>
+                        </div>
+                        <span class="badge-subcategory">Planification guidée</span>
+                    </div>
                     <form method="post" class="promo-form">
                         <input type="hidden" name="action" value="create" />
                         <div class="mb-3">
@@ -74,7 +79,18 @@
             </div>
             <div class="col-lg-7">
                 <div class="glass-card p-4 h-100">
-                    <h3 class="mb-4">Promotions programmées</h3>
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                        <div>
+                            <h3 class="mb-1">Promotions programmées</h3>
+                            <p class="text-muted mb-0">Editions en modal : conservez le contexte tout en ajustant les périodes.</p>
+                        </div>
+                        <div class="admin-toolbar">
+                            <div class="placeholder-banner mb-0" role="img" aria-label="Planning des promotions">
+                                Ajustements instantanés
+                            </div>
+                            <span class="badge-subcategory">Vue calendrier</span>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table align-middle text-white promo-table">
                             <thead>
