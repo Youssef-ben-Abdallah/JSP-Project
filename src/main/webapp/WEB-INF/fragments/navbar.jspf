@@ -1,4 +1,4 @@
-<%@ page import="java.util.*,org.example.model.Category,org.example.model.SubCategory" %>
+<%@ page import="java.util.*,org.example.model.Category,org.example.model.SubCategory,org.example.model.User" %>
 <%
     List<Category> navCats = (List<Category>) request.getAttribute("navCategories");
     if (navCats == null) {
@@ -9,6 +9,12 @@
     boolean isHome = currentPath.endsWith("/home") || currentPath.endsWith("/home.jsp") || "/".equals(currentPath);
     boolean isProducts = currentPath.contains("/products") || currentPath.contains("/product");
     boolean isLogin = currentPath.contains("/login");
+    boolean isRegister = currentPath.contains("/register");
+    boolean isCart = currentPath.contains("/cart");
+    boolean isDashboard = currentPath.contains("/dashboard");
+    Integer cartCount = (Integer) request.getAttribute("cartCount");
+    if (cartCount == null) cartCount = 0;
+    User currentUser = (User) request.getAttribute("currentUser");
 %>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
     <div class="container">
@@ -72,7 +78,24 @@
                 <%
                     }
                 %>
-                <a class="btn btn-outline-light btn-sm <%= isLogin ? "active" : "" %>" href="${pageContext.request.contextPath}/login">Admin area</a>
+                <a class="btn btn-outline-light position-relative <%= isCart ? "active" : "" %>" href="${pageContext.request.contextPath}/cart">
+                    Cart
+                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill"><%= cartCount %></span>
+                </a>
+                <%
+                    if (currentUser != null) {
+                %>
+                <a class="btn btn-outline-light <%= isDashboard ? "active" : "" %>" href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
+                <span class="text-light">Hello, <%= currentUser.getUsername() %></span>
+                <a class="btn btn-light btn-sm" href="${pageContext.request.contextPath}/logout">Logout</a>
+                <%
+                    } else {
+                %>
+                <a class="btn btn-outline-light btn-sm <%= isLogin ? "active" : "" %>" href="${pageContext.request.contextPath}/login">Login</a>
+                <a class="btn btn-primary btn-sm <%= isRegister ? "active" : "" %>" href="${pageContext.request.contextPath}/register">Register</a>
+                <%
+                    }
+                %>
             </div>
         </div>
     </div>

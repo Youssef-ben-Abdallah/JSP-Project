@@ -38,6 +38,10 @@ public class LoginController extends HttpServlet {
             return;
         }
         req.getSession().setAttribute("user", u);
-        resp.sendRedirect(req.getContextPath() + "/admin/products");
+        if (userService.isAdmin(u)) {
+            resp.sendRedirect(req.getContextPath() + "/admin/products");
+        } else {
+            resp.sendRedirect(req.getContextPath() + "/dashboard");
+        }
     }
 }
