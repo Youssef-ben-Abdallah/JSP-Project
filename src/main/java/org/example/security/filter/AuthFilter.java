@@ -23,6 +23,10 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
+        resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        resp.setHeader("Pragma", "no-cache");
+        resp.setDateHeader("Expires", 0);
+
         User u = (User) req.getSession().getAttribute("user");
         if (u == null || !userService.isAdmin(u)) {
             resp.sendRedirect(req.getContextPath() + "/login");
