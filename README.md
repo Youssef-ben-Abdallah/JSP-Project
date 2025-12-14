@@ -1,54 +1,68 @@
 # JSP E-Commerce Project
 
-## Overview
-This project is a JSP/Servlet-based e-commerce prototype packaged as a Maven WAR. It provides catalog browsing, product detail pages, promotions, basic cart handling, and administrative CRUD screens for products, categories, and promotions backed by a MySQL database initialized via `sql/init.sql`. Core dependencies include Jakarta Servlet/JSP APIs, JSTL, the MySQL JDBC driver, and BCrypt for password hashing readiness. 【F:pom.xml†L1-L49】【F:sql/init.sql†L1-L39】
+A JSP/Servlet e-commerce prototype packaged as a Maven WAR. It ships with product catalog browsing, detailed product pages, promotions, cart handling, and admin CRUD screens powered by a MySQL database.
 
-## Application Structure
-The Java code under `src/main/java` follows a layered layout:
+## Table of Contents
+- [At a Glance](#at-a-glance)
+- [Tech Stack](#tech-stack)
+- [Project Layout](#project-layout)
+- [Key Flows](#key-flows)
+- [Setup & Run](#setup--run)
+- [Database](#database)
+- [Seeded Credentials](#seeded-credentials)
+- [Handy Commands](#handy-commands)
 
-- **Models (`org.example.model`)** define simple POJOs for domain concepts such as products, categories, sub-categories, promotions, orders, and users. Each class exposes fields with getters/setters (and in some cases convenience properties) to carry data between the database, services, and JSP views. 【F:src/main/java/org/example/model/Product.java†L1-L53】
-- **Repositories (`org.example.repository`)** encapsulate JDBC access. They retrieve a connection from `DBConnection` (configured for `ecommerce_db`) and expose CRUD helpers per entity (e.g., `CategoryRepository`, `ProductRepository`, `PromotionRepository`, `UserRepository`). 【F:src/main/java/org/example/repository/DBConnection.java†L1-L13】【F:src/main/java/org/example/repository/CategoryRepository.java†L1-L63】
-- **Services (`org.example.service`)** orchestrate repository calls and business rules. Examples include `ProductService` for catalog operations, `PromotionService` plus `PromotionDiscountCalculator` for pricing logic, `CategoryService`/`SubCategoryService` for navigation trees, `OrderService` for checkout data, `ImageStorageService` for upload paths, and `UserService` for authentication/authorization helpers. 【F:src/main/java/org/example/service/ProductService.java†L1-L36】【F:src/main/java/org/example/service/PromotionDiscountCalculator.java†L1-L44】
-- **Web layer (`org.example.controller`)** contains servlets handling incoming requests, populating data from services, and dispatching to JSPs. `HomeController` renders the storefront home page, `ProductController` drives catalog/detail/admin product flows, while dedicated controllers manage categories, sub-categories, promotions, authentication (login/register), dashboards, user dashboards, carts, and image download responses. 【F:src/main/java/org/example/controller/HomeController.java†L1-L31】【F:src/main/java/org/example/controller/ProductController.java†L1-L162】
-- **Filters (`org.example.filter`, `org.example.security.filter`)** add cross-cutting behavior. `NavigationDataFilter` preloads categories, promotions, cart counts, and session user info for all requests, skipping static assets. `AuthFilter` guards `/admin/*` routes by redirecting unauthenticated or non-admin users. 【F:src/main/java/org/example/filter/NavigationDataFilter.java†L1-L61】【F:src/main/java/org/example/security/filter/AuthFilter.java†L1-L33】
+## At a Glance
+- **Frontend:** JSP views under `src/main/webapp`, with admin pages inside `WEB-INF/admin`.
+- **Controllers:** Servlets in `org.example.controller` route requests, call services, and forward to JSPs.
+- **Services:** `org.example.service` wraps business logic like promotion calculations, catalog lookup, and auth helpers.
+- **Repositories:** `org.example.repository` handles JDBC CRUD via a shared MySQL connection helper.
+- **Filters:** Navigation data preloading and admin auth live in `org.example.filter` and `org.example.security.filter`.
 
-JSP views live in `src/main/webapp` (with admin pages under `WEB-INF/admin`), and `web.xml` registers servlets/filters for servlet containers. Static assets are expected under `src/main/webapp/assets` (not included by default).
+## Tech Stack
+- Java 17+, Maven, Jakarta Servlet/JSP 6, JSTL
+- MySQL with JDBC driver
+- BCrypt for password hashing readiness
 
-## Class Responsibilities (by package)
-**Model classes**
-- `Product`, `Category`, `SubCategory`: hold catalog metadata and, where helpful, resolved names from JOINs. 【F:src/main/java/org/example/model/Product.java†L1-L53】
-- `Promotion`: describes discount windows, targeted categories/subcategories, and discount type/value.
-- `DiscountedPrice`: wraps original vs. discounted amounts plus the promotion used, enabling JSP display of savings.
-- `User`: stores credentials and role for login/admin checks.
-- `CartItem`, `Order`, `OrderItem`: capture shopping cart and order state for checkout flows.
+## Project Layout
+```
+src/main/java/org/example
+├── controller/        # Servlets: home, products, categories, promotions, cart, auth, dashboards
+├── filter/            # Navigation data preload for requests
+├── model/             # POJOs for products, categories, promotions, users, orders, cart items
+├── repository/        # JDBC repositories sharing DBConnection
+├── security/filter/   # Admin auth filter
+├── service/           # Business logic (catalog, promotions, orders, users, storage)
+└── servlet/           # File streaming (e.g., product images)
 
-**Repository classes**
-- `DBConnection`: centralizes MySQL connection creation for the `ecommerce_db` schema. 【F:src/main/java/org/example/repository/DBConnection.java†L1-L13】
-- `CategoryRepository`, `SubCategoryRepository`, `ProductRepository`, `PromotionRepository`, `UserRepository`, `OrderRepository`: execute SQL for listing, retrieving by id, inserting, updating, and deleting their respective entities. Methods return model objects that propagate upward. 【F:src/main/java/org/example/repository/CategoryRepository.java†L1-L63】
+src/main/webapp
+├── WEB-INF/admin/     # Admin JSPs for catalog and promotions
+├── assets/            # Static assets (expected)
+└── *.jsp              # Storefront JSPs (home, detail, cart, auth, etc.)
+```
 
-**Service classes**
-- `ProductService`: wraps catalog queries plus mutation helpers used by admin product forms. 【F:src/main/java/org/example/service/ProductService.java†L1-L36】
-- `CategoryService` & `SubCategoryService`: supply navigation-ready collections and CRUD wiring for category hierarchies.
-- `PromotionService`: fetches active promotions; `PromotionDiscountCalculator` applies percentage or fixed discounts to a product, choosing the best available offer. 【F:src/main/java/org/example/service/PromotionDiscountCalculator.java†L1-L44】
-- `OrderService`: coordinates `OrderRepository` for cart checkout and retrieval.
-- `UserService`: handles login checks, registration, and role inspection used by filters/controllers.
-- `ImageStorageService`: resolves upload directories and file paths for product images.
+## Key Flows
+- **Storefront:** `HomeController` lists featured products, `ProductController` serves product detail pages with promotion-aware pricing, and cart endpoints manage session cart state.
+- **Admin:** CRUD flows for products, categories, sub-categories, and promotions, plus dashboard views.
+- **Promotions:** `PromotionService` fetches active promotions while `PromotionDiscountCalculator` applies percentage or fixed discounts to products, selecting the best offer.
+- **Security:** `AuthFilter` guards `/admin/*` routes; `NavigationDataFilter` injects navigation data (categories, promotions, cart count, current user) into requests.
 
-**Controller classes**
-- `HomeController`: loads featured products and forwards to `home.jsp`. 【F:src/main/java/org/example/controller/HomeController.java†L1-L31】
-- `ProductController`: handles listing, detail display with promotion calculations, and admin CRUD (including image uploads). 【F:src/main/java/org/example/controller/ProductController.java†L1-L162】
-- `CategoryController`, `SubCategoryController`, `PromotionController`: admin endpoints for managing taxonomy and promotions.
-- `CartController`: manages cart session state and prepares checkout pages.
-- `DashboardController` & `UserDashboardController`: render admin/user landing pages with relevant data.
-- `LoginController` & `RegisterController`: manage authentication and account creation flows.
-- `ProductImageServlet`: streams stored product images back to clients.
+## Setup & Run
+1. **Install dependencies:** JDK 17+, Maven, and a running MySQL instance.
+2. **Prepare the database:** Run `sql/init.sql` to create and seed the `ecommerce_db` schema.
+3. **Build:** `mvn clean package` produces `target/ecommerce.war`.
+4. **Deploy:** Drop the WAR into a Jakarta Servlet 6+ container (e.g., Tomcat 10.1+).
+5. **Visit:** `/home` for the storefront or `/admin/products` after logging in as an admin user.
 
-**Filters**
-- `NavigationDataFilter`: loads navigation categories, active promotions, cart counts, and the current user into the request scope for all non-static requests. 【F:src/main/java/org/example/filter/NavigationDataFilter.java†L1-L61】
-- `AuthFilter`: restricts `/admin/*` to authenticated admin users. 【F:src/main/java/org/example/security/filter/AuthFilter.java†L1-L33】
+## Database
+- Connection details are configured in `org.example.repository.DBConnection` for the `ecommerce_db` schema.
+- Schema and seed data live in `sql/init.sql` (products, categories, promotions, users, and sample orders).
 
-## Running the project
-1. Ensure MySQL is running and execute `sql/init.sql` to create and seed `ecommerce_db`. 【F:sql/init.sql†L1-L39】
-2. Build the WAR with `mvn clean package` (requires JDK 17+). 【F:pom.xml†L11-L48】
-3. Deploy the generated `ecommerce.war` to a Jakarta Servlet 6–compatible container (e.g., Tomcat 10.1+).
-4. Access the site at `/home` (storefront) or `/admin/products` (admin catalog) after logging in with seeded credentials.
+## Seeded Credentials
+- **Admin:** `admin@ecommerce.com` / `admin123`
+- **User:** `john.doe@example.com` / `password`
+
+## Handy Commands
+- Build: `mvn clean package`
+- Run unit tests: `mvn test`
+- Format (if configured): `mvn fmt:format`
