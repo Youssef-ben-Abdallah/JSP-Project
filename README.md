@@ -59,8 +59,8 @@ src/main/webapp
 - Schema and seed data live in `sql/init.sql` (products, categories, promotions, users, and sample orders).
 
 ## Seeded Credentials
-- **Admin:** `admin@ecommerce.com` / `admin123`
-- **User:** `john.doe@example.com` / `password`
+- **Admin:** `admin` / `admin`
+- **User:** `john` / `1234`
 
 ## Handy Commands
 - Build: `mvn clean package`
